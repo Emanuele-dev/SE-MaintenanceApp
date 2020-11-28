@@ -10,5 +10,16 @@ package com.team14.se.maintenanceapp;
  * @author mario
  */
 public class User {
+    String Nome;
+    String Cognome;
+    String Username;
+
+
+    public User(String Nome, String Cognome, String Username) {
+        this.Nome = Nome;
+        this.Cognome = Cognome;
+        this.Username = Username;
+    }
+    
     
 }
