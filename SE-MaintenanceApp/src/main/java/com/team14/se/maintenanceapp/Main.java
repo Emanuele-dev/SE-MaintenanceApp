@@ -65,7 +65,12 @@ public class Main { //behave as home: connection created only here
             for(Procedure p : procedures){
                 System.out.println(p.getName());
             }
-            
+            // try to show logs in database 
+            LinkedList<Log> logs = Log.getLogs(conn);   
+            System.out.println("\nLogs:");
+            for(Log l : logs){
+                System.out.println(l.getUsername() + " " + l.getTimestamp());
+            }
              
              
             

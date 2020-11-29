@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 package com.team14.se.maintenanceapp;
-import java.util.Date; // format year, month, day)
-import java.sql.Time; //format hour, minutes, seconds
+import java.sql.Timestamp; //format hour, minutes, seconds
+import java.util.*;
+import java.sql.*;
 
 /**
  *
@@ -14,15 +15,13 @@ import java.sql.Time; //format hour, minutes, seconds
 public class Log {
     private int id;
     private String username;
-    private Date date;
-    private Time time; 
+    private Timestamp timestamp; 
     
   
-    public Log(int id, String username, Date date, Time time){
+    public Log(int id, String username, Timestamp timestamp){
         this.id = id;
         this.username = username;
-        this.date = date;
-        this.time = time;
+        this.timestamp = timestamp;
         
     }
     public int getId(){
@@ -31,11 +30,8 @@ public class Log {
     public String getUsername(){
         return username;
     }
-    public Date getDate(){
-        return date;
-    }
-    public Time getTime(){
-        return time;
+    public Timestamp getTimestamp(){
+        return timestamp;
     }
     public void setId(int id){
         this.id = id;
@@ -43,19 +39,27 @@ public class Log {
     public void setUsername(String name){
         this.username = username;
     }
-    public void setDate(Date date){
-        this.date = date; 
-    }
-    public void setTime(Time time){
-        this.time = time; 
+    public void setTimestamp(Timestamp timestamp){
+        this.timestamp = timestamp; 
     }
 
     @Override
     public String toString() {
-        return "Log{" + "id=" + id + ", username=" + username + ", date=" + date + ", time=" + time + '}';
+        return "Log{" + "id=" + id + ", username=" + username + ", timestamp=" + timestamp + '}';
     }
-    
-    
+
+    //Access to database methods
+    //Acquire list of compentencies
+    public static LinkedList<Log> getLogs (Connection conn) throws SQLException{
+        LinkedList<Log> logs = new LinkedList<>();
+        String query = "SELECT * FROM logging";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            logs.add(new Log(rst.getInt("id"), rst.getString("username"), rst.getTimestamp("log_time")));
+        }
+        return logs;    
+    }
     
     
     
