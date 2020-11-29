@@ -18,17 +18,16 @@ DROP TABLE IF EXISTS ESECUZIONE CASCADE;
 DROP TABLE IF EXISTS QUALIFICAZIONE CASCADE;
 
 
-CREATE TYPE RUOLO AS ENUM
-    (  'System Administrator', 'Maintainer', 'Planner');
-	
+
 CREATE TABLE UTENTE(
 	nome VARCHAR(15) NOT NULL,
 	cognome VARCHAR(15) NOT NULL,
 	username VARCHAR(25) NOT NULL,
 	pass VARCHAR(25) NOT NULL,
 	attivo BOOLEAN DEFAULT TRUE,
-	ruolo RUOLO NOT NULL,
-	CONSTRAINT PK_USERNAME PRIMARY KEY(username)
+	ruolo VARCHAR(19) NOT NULL,
+	CONSTRAINT PK_USERNAME PRIMARY KEY(username),
+	CONSTRAINT check_ruolo CHECK(ruolo = 'SystemAdministrator' or ruolo = 'Maintainer' or ruolo = 'Planner')
 );
 
 CREATE TABLE LOGGING(
