@@ -27,42 +27,295 @@ public class AdminGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        UsersPanel = new javax.swing.JPanel();
-        jSplitPane2 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        RolejComboBox1 = new javax.swing.JComboBox<>();
-        jPanel9 = new javax.swing.JPanel();
-        UpdateUserjButton = new javax.swing.JButton();
-        EditPasswordjButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        AddUserjButton1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        adminMainJTabbedPane = new javax.swing.JTabbedPane();
+        usersJPanel = new javax.swing.JPanel();
+        usersTopJPanel = new javax.swing.JPanel();
+        refreshUsersJButton = new javax.swing.JButton();
+        usersDetailsJPanel = new javax.swing.JPanel();
+        addUserJButton = new javax.swing.JButton();
+        editUsersJPanel = new javax.swing.JPanel();
+        userNameJLabel = new javax.swing.JLabel();
+        userSurnameJLabel = new javax.swing.JLabel();
+        usernameJLabel = new javax.swing.JLabel();
+        userRoleJLabel = new javax.swing.JLabel();
+        changePasswordJButton = new javax.swing.JButton();
+        userNameJTextField = new javax.swing.JTextField();
+        userSurnameJTextField = new javax.swing.JTextField();
+        usernameJTextField = new javax.swing.JTextField();
+        userRoleJComboBox = new javax.swing.JComboBox<>();
+        MantainercompetencesJPanel = new javax.swing.JPanel();
+        mantainerCompetencesJScrollPane = new javax.swing.JScrollPane();
+        mantainerCompetencesJList = new javax.swing.JList<>();
+        removeMantainerCompetencesJButton = new javax.swing.JButton();
+        addMantainerCompetencesJButton = new javax.swing.JButton();
+        updateUserJButton = new javax.swing.JButton();
+        removeUserJButton = new javax.swing.JButton();
+        usersTableJScrollPane = new javax.swing.JScrollPane();
+        usersTableJTable = new javax.swing.JTable();
+        proceduresJPanel = new javax.swing.JPanel();
+        proceduresTopJPanel = new javax.swing.JPanel();
+        refreshProceduresJButton = new javax.swing.JButton();
+        proceduresDetailsJPanel = new javax.swing.JPanel();
+        addProcedureJButton = new javax.swing.JButton();
+        editProceduresJPanel = new javax.swing.JPanel();
+        procedureNameJLabel = new javax.swing.JLabel();
+        procedureNameJTextField = new javax.swing.JTextField();
+        SMPJLabel = new javax.swing.JLabel();
+        SMPJTextField = new javax.swing.JTextField();
+        procedureCompetenceJLabel = new javax.swing.JLabel();
+        procedureCompetenceJComboBox = new javax.swing.JComboBox<>();
+        updateProcedureJButton = new javax.swing.JButton();
+        removeProcedureJButton = new javax.swing.JButton();
+        proceduresTableJScrollPane = new javax.swing.JScrollPane();
+        proceduresTableJTable = new javax.swing.JTable();
+        competencesJPanel = new javax.swing.JPanel();
+        competencesTopJPanel = new javax.swing.JPanel();
+        refreshCompetencesJButton = new javax.swing.JButton();
+        competencesDetailsJPanel = new javax.swing.JPanel();
+        addCompetenceJButton = new javax.swing.JButton();
+        editCompetencesJPanel = new javax.swing.JPanel();
+        competenceIDJLabel = new javax.swing.JLabel();
+        competenceIDJTextField = new javax.swing.JTextField();
+        competenceNameJLabel = new javax.swing.JLabel();
+        competenceNameJTextField = new javax.swing.JTextField();
+        updateCompetenceJButton = new javax.swing.JButton();
+        removeCompetenceJButton = new javax.swing.JButton();
+        competencesTableJScrollPane = new javax.swing.JScrollPane();
+        competencesTableJTable = new javax.swing.JTable();
+        sitesJPanel = new javax.swing.JPanel();
+        sitesTopJPanel = new javax.swing.JPanel();
+        refreshSitesJButton = new javax.swing.JButton();
+        sitesDetailsJPanel = new javax.swing.JPanel();
+        addSiteJButton = new javax.swing.JButton();
+        editSitesJPanel = new javax.swing.JPanel();
+        siteNameJLabel = new javax.swing.JLabel();
+        siteNameJTextField = new javax.swing.JTextField();
+        updateSiteJButton = new javax.swing.JButton();
+        removeSiteJButton = new javax.swing.JButton();
+        sitesListJScrollPane = new javax.swing.JScrollPane();
+        sitesJList = new javax.swing.JList<>();
+        MaterialJPanel = new javax.swing.JPanel();
+        MaterialTopJPanel = new javax.swing.JPanel();
+        refreshMaterialsJButton = new javax.swing.JButton();
+        materialsDetailsJPanel = new javax.swing.JPanel();
+        addMaterialJButton = new javax.swing.JButton();
+        editMaterialJPanel = new javax.swing.JPanel();
+        materialNameJLabel = new javax.swing.JLabel();
+        materialNameJTextField = new javax.swing.JTextField();
+        updateMaterialJButton = new javax.swing.JButton();
+        materialDescriptionJScrollPane = new javax.swing.JScrollPane();
+        materialDescriptionJTextArea = new javax.swing.JTextArea();
+        removeMaterialJButton = new javax.swing.JButton();
+        materialsTableJScrollPane = new javax.swing.JScrollPane();
+        materialsTableJTable = new javax.swing.JTable();
+        TypeJPanel = new javax.swing.JPanel();
+        typesTopJPanel = new javax.swing.JPanel();
+        refreshTypesJButton = new javax.swing.JButton();
+        typesDetailsjPanel = new javax.swing.JPanel();
+        addTypeJButton = new javax.swing.JButton();
+        editTypeJPanel = new javax.swing.JPanel();
+        typeNameJLabel = new javax.swing.JLabel();
+        typeNameJTextField = new javax.swing.JTextField();
+        updateTypeJButton = new javax.swing.JButton();
+        removeTypeJButton = new javax.swing.JButton();
+        typesListJScrollPane2 = new javax.swing.JScrollPane();
+        typesJList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Admin");
+        setMinimumSize(new java.awt.Dimension(806, 589));
 
-        jSplitPane2.setDividerSize(7);
-        jSplitPane2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        usersJPanel.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(400, 40));
+        refreshUsersJButton.setText("Refresh List");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        javax.swing.GroupLayout usersTopJPanelLayout = new javax.swing.GroupLayout(usersTopJPanel);
+        usersTopJPanel.setLayout(usersTopJPanelLayout);
+        usersTopJPanelLayout.setHorizontalGroup(
+            usersTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(usersTopJPanelLayout.createSequentialGroup()
+                .addComponent(refreshUsersJButton)
+                .addContainerGap(724, Short.MAX_VALUE))
+        );
+        usersTopJPanelLayout.setVerticalGroup(
+            usersTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(usersTopJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(refreshUsersJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        usersJPanel.add(usersTopJPanel, java.awt.BorderLayout.PAGE_START);
+
+        addUserJButton.setText("Add New User");
+
+        editUsersJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected User"));
+        editUsersJPanel.setEnabled(false);
+
+        userNameJLabel.setText("Name");
+        userNameJLabel.setEnabled(false);
+
+        userSurnameJLabel.setText("Surname");
+        userSurnameJLabel.setEnabled(false);
+
+        usernameJLabel.setText("Username");
+        usernameJLabel.setEnabled(false);
+
+        userRoleJLabel.setText("Role");
+        userRoleJLabel.setEnabled(false);
+
+        changePasswordJButton.setText("Change Password");
+        changePasswordJButton.setEnabled(false);
+
+        userNameJTextField.setEnabled(false);
+        userNameJTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userNameJTextFieldActionPerformed(evt);
+            }
+        });
+
+        userSurnameJTextField.setEnabled(false);
+
+        usernameJTextField.setEnabled(false);
+
+        userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mantainer", "Planer", "System Administrator" }));
+        userRoleJComboBox.setEnabled(false);
+
+        MantainercompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Mantainer Competences"));
+        MantainercompetencesJPanel.setEnabled(false);
+
+        mantainerCompetencesJList.setEnabled(false);
+        mantainerCompetencesJScrollPane.setViewportView(mantainerCompetencesJList);
+
+        removeMantainerCompetencesJButton.setText("Remove Selected");
+        removeMantainerCompetencesJButton.setEnabled(false);
+
+        addMantainerCompetencesJButton.setText("Add Competence");
+        addMantainerCompetencesJButton.setEnabled(false);
+
+        javax.swing.GroupLayout MantainercompetencesJPanelLayout = new javax.swing.GroupLayout(MantainercompetencesJPanel);
+        MantainercompetencesJPanel.setLayout(MantainercompetencesJPanelLayout);
+        MantainercompetencesJPanelLayout.setHorizontalGroup(
+            MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MantainercompetencesJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mantainerCompetencesJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                    .addGroup(MantainercompetencesJPanelLayout.createSequentialGroup()
+                        .addGroup(MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(removeMantainerCompetencesJButton)
+                            .addComponent(addMantainerCompetencesJButton))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        MantainercompetencesJPanelLayout.setVerticalGroup(
+            MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MantainercompetencesJPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mantainerCompetencesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removeMantainerCompetencesJButton)
+                .addGap(18, 18, 18)
+                .addComponent(addMantainerCompetencesJButton))
+        );
+
+        updateUserJButton.setText("Update User");
+        updateUserJButton.setEnabled(false);
+
+        javax.swing.GroupLayout editUsersJPanelLayout = new javax.swing.GroupLayout(editUsersJPanel);
+        editUsersJPanel.setLayout(editUsersJPanelLayout);
+        editUsersJPanelLayout.setHorizontalGroup(
+            editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editUsersJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editUsersJPanelLayout.createSequentialGroup()
+                        .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(userSurnameJLabel)
+                            .addComponent(userNameJLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(userSurnameJTextField)
+                            .addComponent(userNameJTextField)))
+                    .addGroup(editUsersJPanelLayout.createSequentialGroup()
+                        .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(usernameJLabel)
+                            .addComponent(userRoleJLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(editUsersJPanelLayout.createSequentialGroup()
+                                .addComponent(userRoleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 78, Short.MAX_VALUE))
+                            .addComponent(usernameJTextField)))
+                    .addGroup(editUsersJPanelLayout.createSequentialGroup()
+                        .addComponent(changePasswordJButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editUsersJPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(updateUserJButton))
+                    .addComponent(MantainercompetencesJPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        editUsersJPanelLayout.setVerticalGroup(
+            editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editUsersJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userNameJLabel)
+                    .addComponent(userNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userSurnameJLabel)
+                    .addComponent(userSurnameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameJLabel)
+                    .addComponent(usernameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userRoleJLabel)
+                    .addComponent(userRoleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(changePasswordJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MantainercompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(updateUserJButton)
+                .addContainerGap())
+        );
+
+        removeUserJButton.setText("Remove Selected User");
+        removeUserJButton.setEnabled(false);
+
+        javax.swing.GroupLayout usersDetailsJPanelLayout = new javax.swing.GroupLayout(usersDetailsJPanel);
+        usersDetailsJPanel.setLayout(usersDetailsJPanelLayout);
+        usersDetailsJPanelLayout.setHorizontalGroup(
+            usersDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(usersDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(usersDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editUsersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addUserJButton)
+                    .addComponent(removeUserJButton))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        usersDetailsJPanelLayout.setVerticalGroup(
+            usersDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(usersDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addUserJButton)
+                .addGap(18, 18, 18)
+                .addComponent(editUsersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(removeUserJButton)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        usersJPanel.add(usersDetailsJPanel, java.awt.BorderLayout.LINE_END);
+
+        usersTableJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Users"));
+
+        usersTableJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -70,238 +323,678 @@ public class AdminGUI extends javax.swing.JFrame {
                 "Name", "Surname", "Username", "Role"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        usersTableJTable.getTableHeader().setReorderingAllowed(false);
+        usersTableJScrollPane.setViewportView(usersTableJTable);
+        if (usersTableJTable.getColumnModel().getColumnCount() > 0) {
+            usersTableJTable.getColumnModel().getColumn(2).setHeaderValue("Username");
+            usersTableJTable.getColumnModel().getColumn(3).setHeaderValue("Role");
+        }
 
-        jSplitPane2.setLeftComponent(jScrollPane1);
+        usersJPanel.add(usersTableJScrollPane, java.awt.BorderLayout.CENTER);
 
-        jPanel7.setMinimumSize(new java.awt.Dimension(80, 50));
+        adminMainJTabbedPane.addTab("Users", usersJPanel);
 
-        jLabel1.setText("Name");
+        proceduresJPanel.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText("Surname");
+        refreshProceduresJButton.setText("Refresh List");
 
-        jLabel3.setText("Username");
+        javax.swing.GroupLayout proceduresTopJPanelLayout = new javax.swing.GroupLayout(proceduresTopJPanel);
+        proceduresTopJPanel.setLayout(proceduresTopJPanelLayout);
+        proceduresTopJPanelLayout.setHorizontalGroup(
+            proceduresTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(proceduresTopJPanelLayout.createSequentialGroup()
+                .addComponent(refreshProceduresJButton)
+                .addContainerGap(724, Short.MAX_VALUE))
+        );
+        proceduresTopJPanelLayout.setVerticalGroup(
+            proceduresTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(proceduresTopJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(refreshProceduresJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jLabel4.setText("Role");
+        proceduresJPanel.add(proceduresTopJPanel, java.awt.BorderLayout.PAGE_START);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        addProcedureJButton.setText("Add New Procedure");
+
+        editProceduresJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Procedure"));
+        editProceduresJPanel.setEnabled(false);
+
+        procedureNameJLabel.setText("Name");
+        procedureNameJLabel.setEnabled(false);
+
+        procedureNameJTextField.setEnabled(false);
+        procedureNameJTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                procedureNameJTextFieldActionPerformed(evt);
             }
         });
 
-        RolejComboBox1.setMaximumRowCount(3);
-        RolejComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Mantainer", "Planner", "System Administrator" }));
-        RolejComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        SMPJLabel.setText("SMP");
+        SMPJLabel.setEnabled(false);
+
+        SMPJTextField.setEnabled(false);
+
+        procedureCompetenceJLabel.setText("Competence");
+        procedureCompetenceJLabel.setEnabled(false);
+
+        procedureCompetenceJComboBox.setEnabled(false);
+
+        updateProcedureJButton.setText("Update Procedure");
+        updateProcedureJButton.setEnabled(false);
+
+        javax.swing.GroupLayout editProceduresJPanelLayout = new javax.swing.GroupLayout(editProceduresJPanel);
+        editProceduresJPanel.setLayout(editProceduresJPanelLayout);
+        editProceduresJPanelLayout.setHorizontalGroup(
+            editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editProceduresJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editProceduresJPanelLayout.createSequentialGroup()
+                        .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(procedureNameJLabel)
+                            .addComponent(SMPJLabel))
+                        .addGap(26, 26, 26)
+                        .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(procedureNameJTextField)
+                            .addComponent(SMPJTextField)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editProceduresJPanelLayout.createSequentialGroup()
+                        .addGap(0, 182, Short.MAX_VALUE)
+                        .addComponent(updateProcedureJButton))
+                    .addGroup(editProceduresJPanelLayout.createSequentialGroup()
+                        .addComponent(procedureCompetenceJLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(procedureCompetenceJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        editProceduresJPanelLayout.setVerticalGroup(
+            editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editProceduresJPanelLayout.createSequentialGroup()
+                .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(procedureNameJLabel)
+                    .addComponent(procedureNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SMPJLabel)
+                    .addComponent(SMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(procedureCompetenceJLabel)
+                    .addComponent(procedureCompetenceJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(updateProcedureJButton)
+                .addContainerGap())
+        );
+
+        removeProcedureJButton.setText("Remove Selected Procedure");
+        removeProcedureJButton.setEnabled(false);
+
+        javax.swing.GroupLayout proceduresDetailsJPanelLayout = new javax.swing.GroupLayout(proceduresDetailsJPanel);
+        proceduresDetailsJPanel.setLayout(proceduresDetailsJPanelLayout);
+        proceduresDetailsJPanelLayout.setHorizontalGroup(
+            proceduresDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(proceduresDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(proceduresDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editProceduresJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addProcedureJButton)
+                    .addComponent(removeProcedureJButton))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        proceduresDetailsJPanelLayout.setVerticalGroup(
+            proceduresDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(proceduresDetailsJPanelLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(addProcedureJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editProceduresJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(removeProcedureJButton)
+                .addContainerGap(361, Short.MAX_VALUE))
+        );
+
+        proceduresJPanel.add(proceduresDetailsJPanel, java.awt.BorderLayout.LINE_END);
+
+        proceduresTableJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Procedures"));
+
+        proceduresTableJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "SMP", "Competences"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        proceduresTableJTable.getTableHeader().setReorderingAllowed(false);
+        proceduresTableJScrollPane.setViewportView(proceduresTableJTable);
+
+        proceduresJPanel.add(proceduresTableJScrollPane, java.awt.BorderLayout.CENTER);
+
+        adminMainJTabbedPane.addTab("Procedures", proceduresJPanel);
+
+        competencesJPanel.setLayout(new java.awt.BorderLayout());
+
+        refreshCompetencesJButton.setText("Refresh List");
+
+        javax.swing.GroupLayout competencesTopJPanelLayout = new javax.swing.GroupLayout(competencesTopJPanel);
+        competencesTopJPanel.setLayout(competencesTopJPanelLayout);
+        competencesTopJPanelLayout.setHorizontalGroup(
+            competencesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(competencesTopJPanelLayout.createSequentialGroup()
+                .addComponent(refreshCompetencesJButton)
+                .addContainerGap(724, Short.MAX_VALUE))
+        );
+        competencesTopJPanelLayout.setVerticalGroup(
+            competencesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(competencesTopJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(refreshCompetencesJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        competencesJPanel.add(competencesTopJPanel, java.awt.BorderLayout.PAGE_START);
+
+        addCompetenceJButton.setText("Add New Competence");
+
+        editCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Competence"));
+        editCompetencesJPanel.setEnabled(false);
+
+        competenceIDJLabel.setText("ID");
+        competenceIDJLabel.setEnabled(false);
+
+        competenceIDJTextField.setEnabled(false);
+        competenceIDJTextField.setFocusable(false);
+
+        competenceNameJLabel.setText("Name");
+        competenceNameJLabel.setEnabled(false);
+
+        competenceNameJTextField.setEnabled(false);
+        competenceNameJTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RolejComboBox1ActionPerformed(evt);
+                competenceNameJTextFieldActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+        updateCompetenceJButton.setText("Update Competence");
+        updateCompetenceJButton.setEnabled(false);
+
+        javax.swing.GroupLayout editCompetencesJPanelLayout = new javax.swing.GroupLayout(editCompetencesJPanel);
+        editCompetencesJPanel.setLayout(editCompetencesJPanelLayout);
+        editCompetencesJPanelLayout.setHorizontalGroup(
+            editCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editCompetencesJPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(RolejComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 28, Short.MAX_VALUE)))
+                .addGroup(editCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editCompetencesJPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(updateCompetenceJButton))
+                    .addGroup(editCompetencesJPanelLayout.createSequentialGroup()
+                        .addGroup(editCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(competenceNameJLabel)
+                            .addComponent(competenceIDJLabel))
+                        .addGap(32, 32, 32)
+                        .addGroup(editCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(competenceNameJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                            .addComponent(competenceIDJTextField))))
                 .addContainerGap())
         );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(RolejComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        UpdateUserjButton.setText("Update User");
-
-        EditPasswordjButton.setText("Edit Password");
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+        editCompetencesJPanelLayout.setVerticalGroup(
+            editCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editCompetencesJPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(EditPasswordjButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(UpdateUserjButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(UpdateUserjButton)
-                    .addComponent(EditPasswordjButton))
-                .addGap(15, 15, 15))
-        );
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jScrollPane2.setViewportView(jPanel7);
-
-        jSplitPane2.setRightComponent(jScrollPane2);
-
-        AddUserjButton1.setText("Add New User");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(AddUserjButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
-                .addComponent(AddUserjButton1)
+                .addGroup(editCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(competenceIDJLabel)
+                    .addComponent(competenceIDJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(competenceNameJLabel)
+                    .addComponent(competenceNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(updateCompetenceJButton)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout UsersPanelLayout = new javax.swing.GroupLayout(UsersPanel);
-        UsersPanel.setLayout(UsersPanelLayout);
-        UsersPanelLayout.setHorizontalGroup(
-            UsersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 794, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        removeCompetenceJButton.setText("Remove Selected Competence");
+        removeCompetenceJButton.setEnabled(false);
+
+        javax.swing.GroupLayout competencesDetailsJPanelLayout = new javax.swing.GroupLayout(competencesDetailsJPanel);
+        competencesDetailsJPanel.setLayout(competencesDetailsJPanelLayout);
+        competencesDetailsJPanelLayout.setHorizontalGroup(
+            competencesDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(competencesDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(competencesDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addCompetenceJButton)
+                    .addComponent(removeCompetenceJButton))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
-        UsersPanelLayout.setVerticalGroup(
-            UsersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UsersPanelLayout.createSequentialGroup()
+        competencesDetailsJPanelLayout.setVerticalGroup(
+            competencesDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(competencesDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addCompetenceJButton)
+                .addGap(14, 14, 14)
+                .addComponent(editCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(removeCompetenceJButton)
+                .addContainerGap(373, Short.MAX_VALUE))
+        );
+
+        competencesJPanel.add(competencesDetailsJPanel, java.awt.BorderLayout.LINE_END);
+
+        competencesTableJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Competences"));
+
+        competencesTableJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        competencesTableJTable.getTableHeader().setReorderingAllowed(false);
+        competencesTableJScrollPane.setViewportView(competencesTableJTable);
+
+        competencesJPanel.add(competencesTableJScrollPane, java.awt.BorderLayout.CENTER);
+
+        adminMainJTabbedPane.addTab("Competences", competencesJPanel);
+
+        sitesJPanel.setLayout(new java.awt.BorderLayout());
+
+        refreshSitesJButton.setText("Refresh List");
+
+        javax.swing.GroupLayout sitesTopJPanelLayout = new javax.swing.GroupLayout(sitesTopJPanel);
+        sitesTopJPanel.setLayout(sitesTopJPanelLayout);
+        sitesTopJPanelLayout.setHorizontalGroup(
+            sitesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sitesTopJPanelLayout.createSequentialGroup()
+                .addComponent(refreshSitesJButton)
+                .addContainerGap(724, Short.MAX_VALUE))
+        );
+        sitesTopJPanelLayout.setVerticalGroup(
+            sitesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sitesTopJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(refreshSitesJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        sitesJPanel.add(sitesTopJPanel, java.awt.BorderLayout.PAGE_START);
+
+        addSiteJButton.setText("Add New Site");
+
+        editSitesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Site"));
+        editSitesJPanel.setEnabled(false);
+
+        siteNameJLabel.setText("Name");
+        siteNameJLabel.setEnabled(false);
+
+        siteNameJTextField.setEnabled(false);
+        siteNameJTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siteNameJTextFieldActionPerformed(evt);
+            }
+        });
+
+        updateSiteJButton.setText("Update Site");
+        updateSiteJButton.setEnabled(false);
+
+        javax.swing.GroupLayout editSitesJPanelLayout = new javax.swing.GroupLayout(editSitesJPanel);
+        editSitesJPanel.setLayout(editSitesJPanelLayout);
+        editSitesJPanelLayout.setHorizontalGroup(
+            editSitesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editSitesJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editSitesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editSitesJPanelLayout.createSequentialGroup()
+                        .addComponent(siteNameJLabel)
+                        .addGap(32, 32, 32)
+                        .addComponent(siteNameJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editSitesJPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(updateSiteJButton)))
+                .addContainerGap())
+        );
+        editSitesJPanelLayout.setVerticalGroup(
+            editSitesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editSitesJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editSitesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(siteNameJLabel)
+                    .addComponent(siteNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(updateSiteJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        removeSiteJButton.setText("Remove Selected Site");
+        removeSiteJButton.setEnabled(false);
+
+        javax.swing.GroupLayout sitesDetailsJPanelLayout = new javax.swing.GroupLayout(sitesDetailsJPanel);
+        sitesDetailsJPanel.setLayout(sitesDetailsJPanelLayout);
+        sitesDetailsJPanelLayout.setHorizontalGroup(
+            sitesDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sitesDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(sitesDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editSitesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addSiteJButton)
+                    .addComponent(removeSiteJButton))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        sitesDetailsJPanelLayout.setVerticalGroup(
+            sitesDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sitesDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addSiteJButton)
+                .addGap(14, 14, 14)
+                .addComponent(editSitesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(removeSiteJButton)
+                .addContainerGap(425, Short.MAX_VALUE))
+        );
+
+        sitesJPanel.add(sitesDetailsJPanel, java.awt.BorderLayout.LINE_END);
+
+        sitesListJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Sites"));
+
+        sitesListJScrollPane.setViewportView(sitesJList);
+
+        sitesJPanel.add(sitesListJScrollPane, java.awt.BorderLayout.CENTER);
+
+        adminMainJTabbedPane.addTab("Sites", sitesJPanel);
+
+        MaterialJPanel.setLayout(new java.awt.BorderLayout());
+
+        refreshMaterialsJButton.setText("Refresh List");
+
+        javax.swing.GroupLayout MaterialTopJPanelLayout = new javax.swing.GroupLayout(MaterialTopJPanel);
+        MaterialTopJPanel.setLayout(MaterialTopJPanelLayout);
+        MaterialTopJPanelLayout.setHorizontalGroup(
+            MaterialTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MaterialTopJPanelLayout.createSequentialGroup()
+                .addComponent(refreshMaterialsJButton)
+                .addContainerGap(724, Short.MAX_VALUE))
+        );
+        MaterialTopJPanelLayout.setVerticalGroup(
+            MaterialTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MaterialTopJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(refreshMaterialsJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        MaterialJPanel.add(MaterialTopJPanel, java.awt.BorderLayout.PAGE_START);
+
+        addMaterialJButton.setText("Add New Material");
+
+        editMaterialJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Material"));
+        editMaterialJPanel.setEnabled(false);
+
+        materialNameJLabel.setText("Name");
+        materialNameJLabel.setEnabled(false);
+
+        materialNameJTextField.setEnabled(false);
+        materialNameJTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                materialNameJTextFieldActionPerformed(evt);
+            }
+        });
+
+        updateMaterialJButton.setText("Update Material");
+        updateMaterialJButton.setEnabled(false);
+
+        materialDescriptionJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Desription"));
+        materialDescriptionJScrollPane.setEnabled(false);
+
+        materialDescriptionJTextArea.setColumns(20);
+        materialDescriptionJTextArea.setRows(5);
+        materialDescriptionJTextArea.setEnabled(false);
+        materialDescriptionJScrollPane.setViewportView(materialDescriptionJTextArea);
+
+        javax.swing.GroupLayout editMaterialJPanelLayout = new javax.swing.GroupLayout(editMaterialJPanel);
+        editMaterialJPanel.setLayout(editMaterialJPanelLayout);
+        editMaterialJPanelLayout.setHorizontalGroup(
+            editMaterialJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editMaterialJPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(updateMaterialJButton))
+            .addGroup(editMaterialJPanelLayout.createSequentialGroup()
+                .addGroup(editMaterialJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editMaterialJPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(materialNameJLabel)
+                        .addGap(32, 32, 32)
+                        .addComponent(materialNameJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE))
+                    .addComponent(materialDescriptionJScrollPane))
+                .addContainerGap())
+        );
+        editMaterialJPanelLayout.setVerticalGroup(
+            editMaterialJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editMaterialJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editMaterialJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(materialNameJLabel)
+                    .addComponent(materialNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(materialDescriptionJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(updateMaterialJButton)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Users", UsersPanel);
+        removeMaterialJButton.setText("Remove Selected Material");
+        removeMaterialJButton.setEnabled(false);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 794, Short.MAX_VALUE)
+        javax.swing.GroupLayout materialsDetailsJPanelLayout = new javax.swing.GroupLayout(materialsDetailsJPanel);
+        materialsDetailsJPanel.setLayout(materialsDetailsJPanelLayout);
+        materialsDetailsJPanelLayout.setHorizontalGroup(
+            materialsDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(materialsDetailsJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(materialsDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editMaterialJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addMaterialJButton)
+                    .addComponent(removeMaterialJButton))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Procedures", jPanel2);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 794, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Competences", jPanel3);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 794, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+        materialsDetailsJPanelLayout.setVerticalGroup(
+            materialsDetailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(materialsDetailsJPanelLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(addMaterialJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editMaterialJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(removeMaterialJButton)
+                .addContainerGap(267, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Sites", jPanel4);
+        MaterialJPanel.add(materialsDetailsJPanel, java.awt.BorderLayout.LINE_END);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 794, Short.MAX_VALUE)
+        materialsTableJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Materials"));
+
+        materialsTableJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Description"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        materialsTableJTable.getTableHeader().setReorderingAllowed(false);
+        materialsTableJScrollPane.setViewportView(materialsTableJTable);
+
+        MaterialJPanel.add(materialsTableJScrollPane, java.awt.BorderLayout.CENTER);
+
+        adminMainJTabbedPane.addTab("Materials", MaterialJPanel);
+
+        TypeJPanel.setLayout(new java.awt.BorderLayout());
+
+        refreshTypesJButton.setText("Refresh List");
+
+        javax.swing.GroupLayout typesTopJPanelLayout = new javax.swing.GroupLayout(typesTopJPanel);
+        typesTopJPanel.setLayout(typesTopJPanelLayout);
+        typesTopJPanelLayout.setHorizontalGroup(
+            typesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(typesTopJPanelLayout.createSequentialGroup()
+                .addComponent(refreshTypesJButton)
+                .addContainerGap(724, Short.MAX_VALUE))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+        typesTopJPanelLayout.setVerticalGroup(
+            typesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(typesTopJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(refreshTypesJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Materials", jPanel5);
+        TypeJPanel.add(typesTopJPanel, java.awt.BorderLayout.PAGE_START);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 794, Short.MAX_VALUE)
+        addTypeJButton.setText("Add New Type");
+
+        editTypeJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Type"));
+        editTypeJPanel.setEnabled(false);
+
+        typeNameJLabel.setText("Name");
+        typeNameJLabel.setEnabled(false);
+
+        typeNameJTextField.setEnabled(false);
+        typeNameJTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeNameJTextFieldActionPerformed(evt);
+            }
+        });
+
+        updateTypeJButton.setText("Update Type");
+        updateTypeJButton.setEnabled(false);
+
+        javax.swing.GroupLayout editTypeJPanelLayout = new javax.swing.GroupLayout(editTypeJPanel);
+        editTypeJPanel.setLayout(editTypeJPanelLayout);
+        editTypeJPanelLayout.setHorizontalGroup(
+            editTypeJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editTypeJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editTypeJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editTypeJPanelLayout.createSequentialGroup()
+                        .addComponent(typeNameJLabel)
+                        .addGap(32, 32, 32)
+                        .addComponent(typeNameJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editTypeJPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(updateTypeJButton)))
+                .addContainerGap())
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+        editTypeJPanelLayout.setVerticalGroup(
+            editTypeJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editTypeJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editTypeJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(typeNameJLabel)
+                    .addComponent(typeNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(updateTypeJButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Maintance Typology", jPanel6);
+        removeTypeJButton.setText("Remove Selected Type");
+        removeTypeJButton.setEnabled(false);
+
+        javax.swing.GroupLayout typesDetailsjPanelLayout = new javax.swing.GroupLayout(typesDetailsjPanel);
+        typesDetailsjPanel.setLayout(typesDetailsjPanelLayout);
+        typesDetailsjPanelLayout.setHorizontalGroup(
+            typesDetailsjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(typesDetailsjPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(typesDetailsjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editTypeJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addTypeJButton)
+                    .addComponent(removeTypeJButton))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        typesDetailsjPanelLayout.setVerticalGroup(
+            typesDetailsjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(typesDetailsjPanelLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(addTypeJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editTypeJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(removeTypeJButton)
+                .addContainerGap(425, Short.MAX_VALUE))
+        );
+
+        TypeJPanel.add(typesDetailsjPanel, java.awt.BorderLayout.LINE_END);
+
+        typesListJScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Maintenance Types"));
+
+        typesListJScrollPane2.setViewportView(typesJList);
+
+        TypeJPanel.add(typesListJScrollPane2, java.awt.BorderLayout.CENTER);
+
+        adminMainJTabbedPane.addTab("Maintenance Types", TypeJPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -309,24 +1002,43 @@ public class AdminGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(adminMainJTabbedPane)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(adminMainJTabbedPane)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void typeNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeNameJTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_typeNameJTextFieldActionPerformed
 
-    private void RolejComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RolejComboBox1ActionPerformed
+    private void materialNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_materialNameJTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_RolejComboBox1ActionPerformed
+    }//GEN-LAST:event_materialNameJTextFieldActionPerformed
+
+    private void siteNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siteNameJTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_siteNameJTextFieldActionPerformed
+
+    private void competenceNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_competenceNameJTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_competenceNameJTextFieldActionPerformed
+
+    private void procedureNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procedureNameJTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_procedureNameJTextFieldActionPerformed
+
+    private void userNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameJTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userNameJTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -364,31 +1076,98 @@ public class AdminGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddUserjButton1;
-    private javax.swing.JButton EditPasswordjButton;
-    private javax.swing.JComboBox<String> RolejComboBox1;
-    private javax.swing.JButton UpdateUserjButton;
-    private javax.swing.JPanel UsersPanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSplitPane jSplitPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JPanel MantainercompetencesJPanel;
+    private javax.swing.JPanel MaterialJPanel;
+    private javax.swing.JPanel MaterialTopJPanel;
+    private javax.swing.JLabel SMPJLabel;
+    private javax.swing.JTextField SMPJTextField;
+    private javax.swing.JPanel TypeJPanel;
+    private javax.swing.JButton addCompetenceJButton;
+    private javax.swing.JButton addMantainerCompetencesJButton;
+    private javax.swing.JButton addMaterialJButton;
+    private javax.swing.JButton addProcedureJButton;
+    private javax.swing.JButton addSiteJButton;
+    private javax.swing.JButton addTypeJButton;
+    private javax.swing.JButton addUserJButton;
+    private javax.swing.JTabbedPane adminMainJTabbedPane;
+    private javax.swing.JButton changePasswordJButton;
+    private javax.swing.JLabel competenceIDJLabel;
+    private javax.swing.JTextField competenceIDJTextField;
+    private javax.swing.JLabel competenceNameJLabel;
+    private javax.swing.JTextField competenceNameJTextField;
+    private javax.swing.JPanel competencesDetailsJPanel;
+    private javax.swing.JPanel competencesJPanel;
+    private javax.swing.JScrollPane competencesTableJScrollPane;
+    private javax.swing.JTable competencesTableJTable;
+    private javax.swing.JPanel competencesTopJPanel;
+    private javax.swing.JPanel editCompetencesJPanel;
+    private javax.swing.JPanel editMaterialJPanel;
+    private javax.swing.JPanel editProceduresJPanel;
+    private javax.swing.JPanel editSitesJPanel;
+    private javax.swing.JPanel editTypeJPanel;
+    private javax.swing.JPanel editUsersJPanel;
+    private javax.swing.JList<String> mantainerCompetencesJList;
+    private javax.swing.JScrollPane mantainerCompetencesJScrollPane;
+    private javax.swing.JScrollPane materialDescriptionJScrollPane;
+    private javax.swing.JTextArea materialDescriptionJTextArea;
+    private javax.swing.JLabel materialNameJLabel;
+    private javax.swing.JTextField materialNameJTextField;
+    private javax.swing.JPanel materialsDetailsJPanel;
+    private javax.swing.JScrollPane materialsTableJScrollPane;
+    private javax.swing.JTable materialsTableJTable;
+    private javax.swing.JComboBox<String> procedureCompetenceJComboBox;
+    private javax.swing.JLabel procedureCompetenceJLabel;
+    private javax.swing.JLabel procedureNameJLabel;
+    private javax.swing.JTextField procedureNameJTextField;
+    private javax.swing.JPanel proceduresDetailsJPanel;
+    private javax.swing.JPanel proceduresJPanel;
+    private javax.swing.JScrollPane proceduresTableJScrollPane;
+    private javax.swing.JTable proceduresTableJTable;
+    private javax.swing.JPanel proceduresTopJPanel;
+    private javax.swing.JButton refreshCompetencesJButton;
+    private javax.swing.JButton refreshMaterialsJButton;
+    private javax.swing.JButton refreshProceduresJButton;
+    private javax.swing.JButton refreshSitesJButton;
+    private javax.swing.JButton refreshTypesJButton;
+    private javax.swing.JButton refreshUsersJButton;
+    private javax.swing.JButton removeCompetenceJButton;
+    private javax.swing.JButton removeMantainerCompetencesJButton;
+    private javax.swing.JButton removeMaterialJButton;
+    private javax.swing.JButton removeProcedureJButton;
+    private javax.swing.JButton removeSiteJButton;
+    private javax.swing.JButton removeTypeJButton;
+    private javax.swing.JButton removeUserJButton;
+    private javax.swing.JLabel siteNameJLabel;
+    private javax.swing.JTextField siteNameJTextField;
+    private javax.swing.JPanel sitesDetailsJPanel;
+    private javax.swing.JList<String> sitesJList;
+    private javax.swing.JPanel sitesJPanel;
+    private javax.swing.JScrollPane sitesListJScrollPane;
+    private javax.swing.JPanel sitesTopJPanel;
+    private javax.swing.JLabel typeNameJLabel;
+    private javax.swing.JTextField typeNameJTextField;
+    private javax.swing.JPanel typesDetailsjPanel;
+    private javax.swing.JList<String> typesJList;
+    private javax.swing.JScrollPane typesListJScrollPane2;
+    private javax.swing.JPanel typesTopJPanel;
+    private javax.swing.JButton updateCompetenceJButton;
+    private javax.swing.JButton updateMaterialJButton;
+    private javax.swing.JButton updateProcedureJButton;
+    private javax.swing.JButton updateSiteJButton;
+    private javax.swing.JButton updateTypeJButton;
+    private javax.swing.JButton updateUserJButton;
+    private javax.swing.JLabel userNameJLabel;
+    private javax.swing.JTextField userNameJTextField;
+    private javax.swing.JComboBox<String> userRoleJComboBox;
+    private javax.swing.JLabel userRoleJLabel;
+    private javax.swing.JLabel userSurnameJLabel;
+    private javax.swing.JTextField userSurnameJTextField;
+    private javax.swing.JLabel usernameJLabel;
+    private javax.swing.JTextField usernameJTextField;
+    private javax.swing.JPanel usersDetailsJPanel;
+    private javax.swing.JPanel usersJPanel;
+    private javax.swing.JScrollPane usersTableJScrollPane;
+    private javax.swing.JTable usersTableJTable;
+    private javax.swing.JPanel usersTopJPanel;
     // End of variables declaration//GEN-END:variables
 }
