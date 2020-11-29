@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 package com.team14.se.maintenanceapp;
-
 import java.util.*;
+import java.sql.*;
+
 /**
  *
  * @author mario
@@ -15,15 +16,17 @@ public class User {
     private String surname;
     private String username;
     private String password;
+    private boolean state; //attivo o non attivo
     private String role;
     
 
 
-    public User(String nome, String cognome, String username, String password, String role) {
+    public User(String nome, String cognome, String username, String password, boolean state, String role) {
         this.name = nome;
         this.surname = cognome;
         this.username = username;
         this.password = password;
+        this.state = state;
         this.role = role;
     }
     
@@ -38,6 +41,9 @@ public class User {
     }
     public String getPassword(){
         return password;
+    }
+    public boolean getState(){
+        return state;
     }
     public String getRole(){
         return role;
@@ -54,6 +60,9 @@ public class User {
     public void setPassword(String password){
         this.password = password;
     }
+    public void setState(boolean state){
+        this.state = state;
+    }
     public void setRole(String role){
         this.role = role;
     }
@@ -63,6 +72,19 @@ public class User {
         return "User{" + "name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", role=" + role + '}';
     }
     
-    
+    //Access to database methods
+    //Acquire list of users
+    public static LinkedList<User> getUsers (Connection conn) throws SQLException{
+        LinkedList<User> users = new LinkedList<>();
+        String query = "SELECT * FROM utente";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            users.add(new User(rst.getString("nome"), rst.getString("cognome"), 
+                   rst.getString("username"), rst.getString("pass"),
+                   rst.getBoolean("attivo"), rst.getString("ruolo")));
+        }
+        return users;    
+    }
     
 }

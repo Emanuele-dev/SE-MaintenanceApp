@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package com.team14.se.maintenanceapp;
+import java.util.*;
+import java.sql.*;
 
 /**
  *
@@ -27,4 +29,17 @@ public class Typology {
         return "Typology{" + "name=" + name + '}';
     }
     
+    
+    //Access to database methods
+    //Acquire list of typologies
+    public static LinkedList<Typology> getTypologies (Connection conn) throws SQLException{
+        LinkedList<Typology> typologies = new LinkedList<>();
+        String query = "SELECT * FROM tipologia";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            typologies.add(new Typology(rst.getString("nome")));
+        }
+        return typologies;    
+    }
 }

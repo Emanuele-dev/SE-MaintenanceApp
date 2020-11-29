@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package com.team14.se.maintenanceapp;
+import java.util.*;
+import java.sql.*;
 
 /**
  *
@@ -37,5 +39,18 @@ public class Material {
         return "Material{" + "name=" + name + ", description=" + description + '}';
     }
     
+    
+    //Access to database methods
+    //Acquire list of material
+    public static LinkedList<Material> getMaterials (Connection conn) throws SQLException{
+        LinkedList<Material> materials = new LinkedList<>();
+        String query = "SELECT * FROM materiale";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            materials.add(new Material(rst.getString("nome"), rst.getString("descrizione")));
+        }
+        return materials;    
+    }
     
 }

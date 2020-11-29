@@ -5,7 +5,7 @@
  */
 package com.team14.se.maintenanceapp;
 import java.util.*;
-
+import java.sql.*;
 /**
  *
  * @author domal
@@ -48,5 +48,17 @@ public class Competence {
         return "Competence{" + "id=" + id + ", name=" + name + '}';
     }
     
+    //Access to database methods
+    //Acquire list of compentencies
+    public static LinkedList<Competence> getCompetences (Connection conn) throws SQLException{
+        LinkedList<Competence> competences = new LinkedList<>();
+        String query = "SELECT * FROM competenza";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            competences.add(new Competence(rst.getInt("id"), rst.getString("nome")));
+        }
+        return competences;    
+    }
     
 }
