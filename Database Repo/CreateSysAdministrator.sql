@@ -1,3 +1,2 @@
-INSERT INTO UTENTE (Nome, Cognome, Username, Pass) VALUES ('admin', 'admin', 'admin', 'admin');
-INSERT INTO SYSADMIN(Username) VALUES ('admin'); 
+INSERT INTO UTENTE (Nome, Cognome, Username, Pass, ruolo) VALUES ('admin', 'admin', 'admin', 'admin', 'System Administrator');
 
