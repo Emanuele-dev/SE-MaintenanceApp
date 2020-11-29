@@ -4,7 +4,12 @@
  * and open the template in the editor.
  */
 package GUI;
-
+import com.team14.se.maintenanceapp.MyConnection;
+import com.team14.se.maintenanceapp.User;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,6 +17,7 @@ import javax.swing.JOptionPane;
  * @author emale
  */
 public class Login extends javax.swing.JFrame {
+    User logUser;
 
     /**
      * Creates new form Login
@@ -113,14 +119,56 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginButtonActionPerformed
-        String username;
-        String password;
         
-        username = jTF_User.getText();
-        password = jPasswordField.getText();
-        /*CONTINUE...*/
-        if(username.equals("Fail")){
-            JOptionPane.showMessageDialog(rootPane, "Unable to login: incorrect username or password", "Login Failed", HEIGHT);
+        // Take string from interface
+        String username = jTF_User.getText();
+        if (username.isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Campo Username non può essere vuoto", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String password = jPasswordField.getText();
+        if (password.isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Campo Password non può essere vuoto", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+   
+        // JDBC Paramaters
+        Statement stmt;
+        ResultSet rs;
+        // List of query
+        
+        // query for Autentication
+        String autenticationQuery = "SELECT Nome, Cognome, Ruolo FROM UTENTE WHERE Username = '"+username+"' AND pass = '"+password+"' ;";
+        
+        //query to save the acces in the log
+        String logsaveQuery = "INSERT INTO LOGGING (username) VALUES ('" + username + "');";
+        
+        
+        try{
+            // Connection with DB
+            Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+            System.out.println(conn);
+            stmt = conn.createStatement();
+            // Send query
+            rs = stmt.executeQuery(autenticationQuery);
+            // If rs has no next, so no exists User with that username and password
+            if(!rs.next()){
+                JOptionPane.showMessageDialog(rootPane, "Unable to login: incorrect username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            }
+            // Else take the data and put in logUser
+            else{
+                String name = rs.getString("Nome");
+                String surname = rs.getString("Cognome");
+                String role = rs.getString("Ruolo");
+                JOptionPane.showMessageDialog(rootPane, "Welcome " + name + " " + surname + ", you are loginning as " + role, "Login Success", JOptionPane.INFORMATION_MESSAGE);
+                logUser = new User(name, surname, username, password);
+                /* Need update Class User to continue*/
+                
+                // Then save in DB the access
+                stmt.executeQuery(logsaveQuery);
+            }      
+        }catch(SQLException | ClassNotFoundException e){
+            System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_jLoginButtonActionPerformed
 
