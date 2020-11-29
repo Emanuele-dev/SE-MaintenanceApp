@@ -123,12 +123,12 @@ public class Login extends javax.swing.JFrame {
         // Take string from interface
         String username = jTF_User.getText();
         if (username.isEmpty()){
-            JOptionPane.showMessageDialog(rootPane, "Campo Username non può essere vuoto", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "Field 'Username' can't be empty", "Login Failed", JOptionPane.ERROR_MESSAGE);
             return;
         }
         String password = jPasswordField.getText();
         if (password.isEmpty()){
-            JOptionPane.showMessageDialog(rootPane, "Campo Password non può essere vuoto", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "Field 'Password' can't be empty ", "Login Failed", JOptionPane.ERROR_MESSAGE);
             return;
         }
    
