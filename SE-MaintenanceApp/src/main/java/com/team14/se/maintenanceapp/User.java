@@ -4,22 +4,27 @@
  * and open the template in the editor.
  */
 package com.team14.se.maintenanceapp;
+
+import java.util.*;
 /**
  *
  * @author mario
  */
 public class User {
-    String name;
-    String surname;
-    String username;
-    String password;
+    private String name;
+    private String surname;
+    private String username;
+    private String password;
+    private String role;
+    
 
 
-    public User(String nome, String cognome, String username, String password) {
+    public User(String nome, String cognome, String username, String password, String role) {
         this.name = nome;
         this.surname = cognome;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
     
     public String getName(){
@@ -34,6 +39,9 @@ public class User {
     public String getPassword(){
         return password;
     }
+    public String getRole(){
+        return role;
+    }
     public void setName(String name){
         this.name = name;
     }
@@ -46,5 +54,15 @@ public class User {
     public void setPassword(String password){
         this.password = password;
     }
+    public void setRole(String role){
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", role=" + role + '}';
+    }
+    
+    
     
 }
