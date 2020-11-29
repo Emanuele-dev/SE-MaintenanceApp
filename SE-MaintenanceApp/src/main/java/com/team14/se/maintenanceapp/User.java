@@ -34,16 +34,16 @@ public class User {
     public String getPassword(){
         return password;
     }
-    public void setName(){
+    public void setName(String name){
         this.name = name;
     }
-    public void setSurname(){
+    public void setSurname(String surname){
         this.surname = surname;
     }
-    public void setUsername(){
+    public void setUsername(String username){
         this.username = username;
     }
-    public void setPassword(){
+    public void setPassword(String password){
         this.password = password;
     }
     
