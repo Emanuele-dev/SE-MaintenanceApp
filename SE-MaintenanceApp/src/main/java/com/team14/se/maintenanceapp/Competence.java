@@ -74,4 +74,14 @@ public class Competence {
         stmtCompetence.executeUpdate();
     }
     
+    public void removeCompetence(Connection conn, Competence competence) throws SQLException{
+        String query_insert_competence="";
+        PreparedStatement stmtCompetence;
+        query_insert_competence = "DELETE FROM competenza WHERE (id) = (?)";
+        
+        stmtCompetence = conn.prepareStatement(query_insert_competence);
+        stmtCompetence.setInt(1, competence.getId());
+        stmtCompetence.executeUpdate();
+    }
+    
 }

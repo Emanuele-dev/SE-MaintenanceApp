@@ -173,7 +173,7 @@ public class MaintenanceActivity {
         return maintenaceActivities;    
     }
     
-     public void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
+    public void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
         query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
@@ -191,6 +191,15 @@ public class MaintenanceActivity {
         stmtMainActivity.setString(7, maintActivity.getSite().getName());
         stmtMainActivity.setString(8, maintActivity.getTypology().getName());
         stmtMainActivity.setBoolean(9, maintActivity.getState());
+        stmtMainActivity.executeUpdate();
+    }
+    public void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
+        String query_insert_maintActivity="";
+        PreparedStatement stmtMainActivity;
+        query_insert_maintActivity = "DELETE FROM attivita_manutenzione WHERE (activity_id) = (?)";
+        
+        stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
+        stmtMainActivity.setInt(1, maintActivity.getActivityId());
         stmtMainActivity.executeUpdate();
     }
     

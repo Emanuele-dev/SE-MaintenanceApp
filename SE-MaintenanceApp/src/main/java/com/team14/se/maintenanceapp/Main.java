@@ -84,6 +84,7 @@ public class Main { //behave as home: connection created only here
             //Add a note and visualize it
             Note note = new Note(" Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. ");
             note.addNote(conn, note);
+            //note.removeNote(conn, note);
             
             //Add a material and visualize it
             Material material = new Material("Legno", "Travi in ciliegio");
@@ -97,17 +98,15 @@ public class Main { //behave as home: connection created only here
             Site site = new Site("Fisciano");
             site.addSite(conn, site);
             
+            //Add a competence and visualize it
             Competence competence = new Competence("Prova");
-            competence.addCompetence(conn, competence);*/
+            competence.addCompetence(conn, competence);
             
+            //Add a user and visualize it
             User user = new User("Luca", "Dinos","luke","paris2000", true, "Planner");
             user.addUser(conn, user);
-            
-            LinkedList<User> userss = User.getUsers(conn);
-            System.out.println("Users:");
-            for(User u : userss){
-                System.out.println(u.getName());
-            }
+            */
+          
              
             
         }catch(SQLException e){

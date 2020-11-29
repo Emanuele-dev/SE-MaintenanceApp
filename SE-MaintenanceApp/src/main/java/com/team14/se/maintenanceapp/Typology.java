@@ -52,5 +52,15 @@ public class Typology {
         stmtTypology.setString(1, typology.getName());
         stmtTypology.executeUpdate();
     }
+    public void removeTypology(Connection conn, Typology typology) throws SQLException{
+        String query_insert_typology="";
+        PreparedStatement stmtMaterial;
+        query_insert_typology = "DELETE FROM tipologia WHERE (nome) = (?);";
+        
+        stmtMaterial = conn.prepareStatement(query_insert_typology);
+        stmtMaterial.setString(1, typology.getName());
+        
+        stmtMaterial.executeUpdate();
+    }
     
 }

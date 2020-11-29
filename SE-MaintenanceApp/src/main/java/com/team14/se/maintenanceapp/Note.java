@@ -69,4 +69,16 @@ public class Note {
         
         stmtNote.executeUpdate();
     }
+    
+    
+    public void removeNote(Connection conn, Note note) throws SQLException{
+        String query_insert_note="";
+        PreparedStatement stmtNote;
+        query_insert_note = "DELETE FROM nota WHERE (id) = (?);";
+        
+        stmtNote = conn.prepareStatement(query_insert_note);
+        stmtNote.setInt(1, note.getId());
+        
+        stmtNote.executeUpdate();
+    }
 }

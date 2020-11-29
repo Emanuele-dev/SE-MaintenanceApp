@@ -65,4 +65,15 @@ public class Material {
         stmtMaterial.executeUpdate();
     }
     
+    public void removeMaterial(Connection conn, Material material) throws SQLException{
+        String query_insert_material="";
+        PreparedStatement stmtMaterial;
+        query_insert_material = "DELETE FROM materiale WHERE (nome) = (?);";
+        
+        stmtMaterial = conn.prepareStatement(query_insert_material);
+        stmtMaterial.setString(1, material.getName());
+        
+        stmtMaterial.executeUpdate();
+    }
+    
 }

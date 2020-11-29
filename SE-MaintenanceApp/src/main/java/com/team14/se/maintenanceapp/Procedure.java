@@ -96,4 +96,13 @@ public class Procedure {
         stmtProcedure.executeUpdate();
     }
     
+    public void removeProcedure(Connection conn, Procedure procedure) throws SQLException{
+        String query_insert_procedure="";
+        PreparedStatement stmtProcedure;
+        query_insert_procedure = "DELETE FROM procedura WHERE (id) = (?)";
+        
+        stmtProcedure = conn.prepareStatement(query_insert_procedure);
+        stmtProcedure.setInt(1, procedure.getId());
+        stmtProcedure.executeUpdate();
+    }
 }

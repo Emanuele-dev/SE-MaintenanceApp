@@ -75,6 +75,15 @@ public class Log {
         stmtLog.executeUpdate();
     }
     
+    public void removeLog(Connection conn, Log log) throws SQLException{
+        String query_insert_log="";
+        PreparedStatement stmtLog;
+        query_insert_log = "DELETE FROM logging WHERE (id) = (?)";
+        
+        stmtLog = conn.prepareStatement(query_insert_log);
+        stmtLog.setInt(1, log.getId());
+        stmtLog.executeUpdate();
+    }
 
     
 }

@@ -101,4 +101,15 @@ public class User {
         stmtUser.executeUpdate();
         
     }
+    public void removeUser(Connection conn, User user) throws SQLException{
+        String query_insert_user="";
+        PreparedStatement stmtUser;
+        query_insert_user = "DELETE FROM utente WHERE nome) = (?);";
+        
+        stmtUser= conn.prepareStatement(query_insert_user);
+        stmtUser.setString(1, user.getName());
+        
+        stmtUser.executeUpdate();
+        
+    }
 }

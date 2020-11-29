@@ -52,5 +52,16 @@ public class Site {
         stmtSite.setString(1, site.getName());
         stmtSite.executeUpdate();
     }
+    
+     public void removeSite(Connection conn, Site site) throws SQLException{
+        String query_insert_site="";
+        PreparedStatement stmtSite;
+        query_insert_site = "DELETE FROM sito WHERE (nome) = (?);";
+        
+        stmtSite = conn.prepareStatement(query_insert_site);
+        stmtSite.setString(1, site.getName());
+        stmtSite.executeUpdate();
+    }
+
 
 }
