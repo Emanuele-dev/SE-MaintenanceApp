@@ -42,4 +42,15 @@ public class Typology {
         }
         return typologies;    
     }
+    
+    public void addTypology(Connection conn, Typology typology) throws SQLException{
+        String query_insert_typology="";
+        PreparedStatement stmtTypology;
+        query_insert_typology = "INSERT INTO tipologia (nome) VALUES (?);";
+        
+        stmtTypology = conn.prepareStatement(query_insert_typology);
+        stmtTypology.setString(1, typology.getName());
+        stmtTypology.executeUpdate();
+    }
+    
 }

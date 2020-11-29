@@ -53,4 +53,16 @@ public class Material {
         return materials;    
     }
     
+     
+    public void addMaterial(Connection conn, Material material) throws SQLException{
+        String query_insert_material="";
+        PreparedStatement stmtMaterial;
+        query_insert_material = "INSERT INTO materiale (nome, descrizione) VALUES (?, ?);";
+        
+        stmtMaterial = conn.prepareStatement(query_insert_material);
+        stmtMaterial.setString(1, material.getName());
+        stmtMaterial.setString(2, material.getDescription());
+        stmtMaterial.executeUpdate();
+    }
+    
 }

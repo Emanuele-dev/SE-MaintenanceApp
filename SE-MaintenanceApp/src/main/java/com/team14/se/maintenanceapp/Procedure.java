@@ -18,7 +18,11 @@ public class Procedure {
     private Competence competence;
     
     
-  
+    public Procedure(String name, String smpName, Competence competence){
+        this.name = name;
+        this.smpName = smpName;
+        this.competence = competence;
+    }
     public Procedure(int id, String name, String smpName, Competence competence){
         this.id = id;
         this.name = name;
@@ -68,7 +72,7 @@ public class Procedure {
         while(rst.next()){
             String competenceName = rst.getString("competenza");            
             String query2 = "SELECT id FROM competenza WHERE nome = '" + competenceName + "'";
-            PreparedStatement stm2 = conn.prepareStatement(query);
+            PreparedStatement stm2 = conn.prepareStatement(query2);
             ResultSet rst2 = stm2.executeQuery();
             while (rst2.next()) {
                 competenceId = rst2.getInt("id");
@@ -80,5 +84,16 @@ public class Procedure {
         return procedures;    
     }
     
+    public void addProcedure(Connection conn, Procedure procedure) throws SQLException{
+        String query_insert_procedure="";
+        PreparedStatement stmtProcedure;
+        query_insert_procedure = "INSERT INTO procedura (nome, smp, competenza) VALUES (?, ?);";
+        
+        stmtProcedure = conn.prepareStatement(query_insert_procedure);
+        stmtProcedure.setString(1, procedure.getName());
+        stmtProcedure.setString(2, procedure.getSmpName());
+        stmtProcedure.setString(3, procedure.getCompetence().getName());
+        stmtProcedure.executeUpdate();
+    }
     
 }

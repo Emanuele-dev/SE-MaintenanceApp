@@ -17,12 +17,15 @@ public class Log {
     private String username;
     private Timestamp timestamp; 
     
+    public Log(String username, Timestamp timestamp){
+        this.username = username;
+        this.timestamp = timestamp;  
+    }
   
     public Log(int id, String username, Timestamp timestamp){
         this.id = id;
         this.username = username;
-        this.timestamp = timestamp;
-        
+        this.timestamp = timestamp;  
     }
     public int getId(){
         return id;
@@ -61,7 +64,16 @@ public class Log {
         return logs;    
     }
     
-    
+    public void addLog(Connection conn, Log log) throws SQLException{
+        String query_insert_log="";
+        PreparedStatement stmtLog;
+        query_insert_log = "INSERT INTO logging (username, log_time) VALUES (?, ?);";
+        
+        stmtLog = conn.prepareStatement(query_insert_log);
+        stmtLog.setString(1, log.getUsername());
+        stmtLog.setTimestamp(2, log.getTimestamp());
+        stmtLog.executeUpdate();
+    }
     
 
     

@@ -71,7 +71,43 @@ public class Main { //behave as home: connection created only here
             for(Log l : logs){
                 System.out.println(l.getUsername() + " " + l.getTimestamp());
             }
-             
+            
+            // try to show maintenance activities in database 
+            LinkedList<MaintenanceActivity> maintActivities = MaintenanceActivity.getMaintenanceActivities(conn);   
+            System.out.println("\nMaintenance Activities:");
+            for(MaintenanceActivity m : maintActivities){
+                System.out.println(m.getDescription());
+            }
+            
+            /*
+            //TEST ADDING
+            //Add a note and visualize it
+            Note note = new Note(" Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. ");
+            note.addNote(conn, note);
+            
+            //Add a material and visualize it
+            Material material = new Material("Legno", "Travi in ciliegio");
+            material.addMaterial(conn, material);
+            
+            //Add a typology and visualize it
+            Typology typology = new Typology("Electrical");
+            typology.addTypology(conn, typology);
+            
+            //Add a site and visualize it
+            Site site = new Site("Fisciano");
+            site.addSite(conn, site);
+            
+            Competence competence = new Competence("Prova");
+            competence.addCompetence(conn, competence);*/
+            
+            User user = new User("Luca", "Dinos","luke","paris2000", true, "Planner");
+            user.addUser(conn, user);
+            
+            LinkedList<User> userss = User.getUsers(conn);
+            System.out.println("Users:");
+            for(User u : userss){
+                System.out.println(u.getName());
+            }
              
             
         }catch(SQLException e){

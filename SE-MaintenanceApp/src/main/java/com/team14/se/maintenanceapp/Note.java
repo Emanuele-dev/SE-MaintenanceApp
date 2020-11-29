@@ -16,9 +16,12 @@ public class Note {
     private int id;
     private String text;
     
-    
     public Note(int id, String text) {
         this.id = id;
+        this.text = text;
+    }
+    
+    public Note(String text) {
         this.text = text;
     }
     
@@ -53,5 +56,17 @@ public class Note {
             notes.add(new Note(rst.getInt("id"), rst.getString("testo")));
         }
         return notes;    
+    }
+    
+    
+    public void addNote(Connection conn, Note note) throws SQLException{
+        String query_insert_note="";
+        PreparedStatement stmtNote;
+        query_insert_note = "INSERT INTO nota (testo) VALUES (?);";
+        
+        stmtNote = conn.prepareStatement(query_insert_note);
+        stmtNote.setString(1, note.getText());
+        
+        stmtNote.executeUpdate();
     }
 }

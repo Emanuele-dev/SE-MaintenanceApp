@@ -15,6 +15,9 @@ public class Competence {
     private String name;
     private ArrayList<User> users; //Maintainers
     
+    public Competence(String name){
+        this.name = name;
+    }
     public Competence(int id, String name){
         this.id = id; 
         this.name = name;
@@ -59,6 +62,16 @@ public class Competence {
             competences.add(new Competence(rst.getInt("id"), rst.getString("nome")));
         }
         return competences;    
+    }
+    
+    public void addCompetence(Connection conn, Competence competence) throws SQLException{
+        String query_insert_competence="";
+        PreparedStatement stmtCompetence;
+        query_insert_competence = "INSERT INTO competenza (nome) VALUES (?);";
+        
+        stmtCompetence = conn.prepareStatement(query_insert_competence);
+        stmtCompetence.setString(1, competence.getName());
+        stmtCompetence.executeUpdate();
     }
     
 }

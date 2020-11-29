@@ -5,6 +5,7 @@
  */
 package com.team14.se.maintenanceapp;
 import java.util.*;
+import java.sql.*;
 
 
 /**
@@ -24,6 +25,21 @@ public class MaintenanceActivity {
     private Material material;
     private ArrayList<User> users; //Maintainers
     
+    public MaintenanceActivity(int activityId, String description, 
+            boolean interruptible, boolean ewo, int week, boolean state, 
+            Procedure procedure, Site site, Typology typology){
+        
+        this.activityId = activityId;
+        this.description = description;
+        this.interruptible = interruptible;
+        this.ewo = ewo;
+        this.week = week;
+        this.state = state;
+        this.procedure = procedure;
+        this.site = site;
+        this.typology = typology;
+        this.material = material;
+    }
     
     public MaintenanceActivity(int activityId, String description, 
             boolean interruptible, boolean ewo, int week, boolean state, 
@@ -40,8 +56,7 @@ public class MaintenanceActivity {
         this.site = site;
         this.typology = typology;
         this.material = material;
-        this.users = users;
-        
+        this.users = users;  
     }
     public int getActivityId(){
         return activityId;
@@ -117,7 +132,66 @@ public class MaintenanceActivity {
         return "MaintenanceActivity{" + "activityId=" + activityId + ", description=" + description + ", interruptible=" + interruptible + ", ewo=" + ewo + ", week=" + week + ", state=" + state + ", procedure=" + procedure + ", site=" + site + ", typology=" + typology + ", material=" + material + ", users=" + users + '}';
     }
     
+  
+    //Access to database methods
+    //Acquire list of Maintenance Activities
+    public static LinkedList<MaintenanceActivity> getMaintenanceActivities (Connection conn) throws SQLException{
+        int competenceId = 0;
+        int procedureId = 0;
+        String procedureSmp = null;
+        String competenceName = null;
+        Procedure procedure;
+        
+        LinkedList<MaintenanceActivity> maintenaceActivities = new LinkedList<>();
+        String query = "SELECT * FROM attivita_manutenzione";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            String procedureName = rst.getString("procedura");            
+            String query2 = "SELECT * FROM procedura WHERE nome = '" + procedureName + "'";
+            PreparedStatement stm2 = conn.prepareStatement(query2);
+            ResultSet rst2 = stm2.executeQuery();
+            while (rst2.next()) {
+                procedureId = rst2.getInt("id");
+                procedureSmp = rst2.getString("smp");
+                competenceName = rst2.getString("competenza"); 
+                String query3 = "SELECT id FROM competenza WHERE nome = '" + competenceName + "'";
+                PreparedStatement stm3 = conn.prepareStatement(query3);
+                ResultSet rst3 = stm3.executeQuery();
+                while (rst3.next()){
+                    competenceId = rst3.getInt("id");
+                }
+            }
+            procedure = new Procedure(procedureId, procedureName, procedureSmp, 
+                    new Competence(competenceId, competenceName));
+            
+            maintenaceActivities.add(new MaintenanceActivity(rst.getInt("activity_id"),
+                    rst.getString("descrizione"), rst.getBoolean("interrompibile"), 
+                    rst.getBoolean("ewo"), rst.getInt("settimana"), rst.getBoolean("completa"), 
+                    procedure, new Site(rst.getString("sito")), new Typology(rst.getString("tipologia"))));
+            }
+        return maintenaceActivities;    
+    }
     
-    
+     public void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
+        String query_insert_maintActivity="";
+        PreparedStatement stmtMainActivity;
+        query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
+                + "(activity_id, descrizione, interrompibile, ewo, settimana,"
+                + "procedura, sito, tipologia, completa) VALUES (?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?);";
+        
+        stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
+        stmtMainActivity.setInt(1, maintActivity.getActivityId());
+        stmtMainActivity.setString(2, maintActivity.getDescription());
+        stmtMainActivity.setBoolean(3, maintActivity.getInterruptable());
+        stmtMainActivity.setBoolean(4, maintActivity.getEwo());
+        stmtMainActivity.setInt(5, maintActivity.getWeek());
+        stmtMainActivity.setString(6, maintActivity.getProcedure().getName());
+        stmtMainActivity.setString(7, maintActivity.getSite().getName());
+        stmtMainActivity.setString(8, maintActivity.getTypology().getName());
+        stmtMainActivity.setBoolean(9, maintActivity.getState());
+        stmtMainActivity.executeUpdate();
+    }
     
 }

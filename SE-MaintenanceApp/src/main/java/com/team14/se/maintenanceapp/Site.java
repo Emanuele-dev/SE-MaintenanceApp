@@ -42,5 +42,15 @@ public class Site {
         }
         return sites;    
     }
+    
+    public void addSite(Connection conn, Site site) throws SQLException{
+        String query_insert_site="";
+        PreparedStatement stmtSite;
+        query_insert_site = "INSERT INTO sito (nome) VALUES (?);";
+        
+        stmtSite = conn.prepareStatement(query_insert_site);
+        stmtSite.setString(1, site.getName());
+        stmtSite.executeUpdate();
+    }
 
 }
