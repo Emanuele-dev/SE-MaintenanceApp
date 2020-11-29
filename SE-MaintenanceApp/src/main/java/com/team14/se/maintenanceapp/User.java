@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.team14.se.maintenanceapp;
-
 /**
  *
  * @author mario
