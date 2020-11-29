@@ -19,7 +19,7 @@ public class Main {
      */
     public static void main(String[] args) {
         try{
-            Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenance", "team14", "team14").getConnection();
+            Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
             System.out.println(conn);
         }catch(SQLException e){
             System.out.println(e.getMessage());
