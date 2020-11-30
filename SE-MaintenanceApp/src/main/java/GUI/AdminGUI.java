@@ -5,16 +5,34 @@
  */
 package GUI;
 
+import com.team14.se.maintenanceapp.User;
+import java.sql.Connection;
+
 /**
  *
  * @author mario
  */
 public class AdminGUI extends javax.swing.JFrame {
     
+    private User loggedUser;
+    private Connection connection;
+    
     /**
      * Creates new form AdminGUI
      */
     public AdminGUI() {
+        initComponents();
+    }
+    
+    /**
+     * Creates new form AdminGUI
+     * 
+     * @param loggedUser the logged user
+     * @param connection the database connection
+     */
+    public AdminGUI(User loggedUser, Connection connection) {
+        this.loggedUser = loggedUser;
+        this.connection = connection;
         initComponents();
     }
 

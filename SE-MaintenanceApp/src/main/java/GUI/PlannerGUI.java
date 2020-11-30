@@ -5,16 +5,34 @@
  */
 package GUI;
 
+import com.team14.se.maintenanceapp.User;
+import java.sql.Connection;
+
 /**
  *
  * @author mario
  */
 public class PlannerGUI extends javax.swing.JFrame {
+    
+    private User loggedUser;
+    private Connection connection;
 
     /**
      * Creates new form MantainerGUI
      */
     public PlannerGUI() {
+        initComponents();
+    }
+    
+    /**
+     * Creates new form MantainerGUI
+     * 
+     * @param loggedUser the logged user
+     * @param connection the database connection
+     */
+    public PlannerGUI(User loggedUser, Connection connection) {
+        this.loggedUser = loggedUser;
+        this.connection = connection;
         initComponents();
     }
 
