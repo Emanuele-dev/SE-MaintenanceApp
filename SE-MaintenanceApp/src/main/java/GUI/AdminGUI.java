@@ -43,11 +43,13 @@ public class AdminGUI extends javax.swing.JFrame {
         userSurnameJTextField = new javax.swing.JTextField();
         usernameJTextField = new javax.swing.JTextField();
         userRoleJComboBox = new javax.swing.JComboBox<>();
-        MantainercompetencesJPanel = new javax.swing.JPanel();
-        mantainerCompetencesJScrollPane = new javax.swing.JScrollPane();
-        mantainerCompetencesJList = new javax.swing.JList<>();
-        removeMantainerCompetencesJButton = new javax.swing.JButton();
-        addMantainerCompetencesJButton = new javax.swing.JButton();
+        maintainerCompetencesJPanel = new javax.swing.JPanel();
+        maintainerCompetencesJScrollPane = new javax.swing.JScrollPane();
+        maintainerCompetencesJList = new javax.swing.JList<>();
+        removeMaintainerCompetencesJButton = new javax.swing.JButton();
+        addMaintainerCompetencesJPanel = new javax.swing.JPanel();
+        addMaintainerCompetencesJButton = new javax.swing.JButton();
+        addMaintainerCompetencesJComboBox = new javax.swing.JComboBox<>();
         updateUserJButton = new javax.swing.JButton();
         removeUserJButton = new javax.swing.JButton();
         usersTableJScrollPane = new javax.swing.JScrollPane();
@@ -178,45 +180,69 @@ public class AdminGUI extends javax.swing.JFrame {
 
         usernameJTextField.setEnabled(false);
 
-        userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mantainer", "Planer", "System Administrator" }));
+        userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maintainer", "Planer", "System Administrator" }));
         userRoleJComboBox.setEnabled(false);
 
-        MantainercompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Mantainer Competences"));
-        MantainercompetencesJPanel.setEnabled(false);
+        maintainerCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Maintainer Competences"));
+        maintainerCompetencesJPanel.setEnabled(false);
 
-        mantainerCompetencesJList.setEnabled(false);
-        mantainerCompetencesJScrollPane.setViewportView(mantainerCompetencesJList);
+        maintainerCompetencesJList.setEnabled(false);
+        maintainerCompetencesJScrollPane.setViewportView(maintainerCompetencesJList);
 
-        removeMantainerCompetencesJButton.setText("Remove Selected");
-        removeMantainerCompetencesJButton.setEnabled(false);
+        removeMaintainerCompetencesJButton.setText("Remove Selected");
+        removeMaintainerCompetencesJButton.setEnabled(false);
 
-        addMantainerCompetencesJButton.setText("Add Competence");
-        addMantainerCompetencesJButton.setEnabled(false);
+        addMaintainerCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Competences"));
+        addMaintainerCompetencesJPanel.setEnabled(false);
 
-        javax.swing.GroupLayout MantainercompetencesJPanelLayout = new javax.swing.GroupLayout(MantainercompetencesJPanel);
-        MantainercompetencesJPanel.setLayout(MantainercompetencesJPanelLayout);
-        MantainercompetencesJPanelLayout.setHorizontalGroup(
-            MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MantainercompetencesJPanelLayout.createSequentialGroup()
+        addMaintainerCompetencesJButton.setText("Add ");
+        addMaintainerCompetencesJButton.setEnabled(false);
+
+        addMaintainerCompetencesJComboBox.setEnabled(false);
+
+        javax.swing.GroupLayout addMaintainerCompetencesJPanelLayout = new javax.swing.GroupLayout(addMaintainerCompetencesJPanel);
+        addMaintainerCompetencesJPanel.setLayout(addMaintainerCompetencesJPanelLayout);
+        addMaintainerCompetencesJPanelLayout.setHorizontalGroup(
+            addMaintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addMaintainerCompetencesJPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mantainerCompetencesJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-                    .addGroup(MantainercompetencesJPanelLayout.createSequentialGroup()
-                        .addGroup(MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(removeMantainerCompetencesJButton)
-                            .addComponent(addMantainerCompetencesJButton))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(addMaintainerCompetencesJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addMaintainerCompetencesJButton)
                 .addContainerGap())
         );
-        MantainercompetencesJPanelLayout.setVerticalGroup(
-            MantainercompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MantainercompetencesJPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(mantainerCompetencesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+        addMaintainerCompetencesJPanelLayout.setVerticalGroup(
+            addMaintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addMaintainerCompetencesJPanelLayout.createSequentialGroup()
+                .addGroup(addMaintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addMaintainerCompetencesJButton)
+                    .addComponent(addMaintainerCompetencesJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout maintainerCompetencesJPanelLayout = new javax.swing.GroupLayout(maintainerCompetencesJPanel);
+        maintainerCompetencesJPanel.setLayout(maintainerCompetencesJPanelLayout);
+        maintainerCompetencesJPanelLayout.setHorizontalGroup(
+            maintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maintainerCompetencesJPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maintainerCompetencesJScrollPane)
+                    .addGroup(maintainerCompetencesJPanelLayout.createSequentialGroup()
+                        .addComponent(removeMaintainerCompetencesJButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(addMaintainerCompetencesJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        maintainerCompetencesJPanelLayout.setVerticalGroup(
+            maintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maintainerCompetencesJPanelLayout.createSequentialGroup()
+                .addComponent(maintainerCompetencesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(removeMantainerCompetencesJButton)
+                .addComponent(removeMaintainerCompetencesJButton)
                 .addGap(18, 18, 18)
-                .addComponent(addMantainerCompetencesJButton))
+                .addComponent(addMaintainerCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         updateUserJButton.setText("Update User");
@@ -250,10 +276,10 @@ public class AdminGUI extends javax.swing.JFrame {
                     .addGroup(editUsersJPanelLayout.createSequentialGroup()
                         .addComponent(changePasswordJButton)
                         .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(maintainerCompetencesJPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editUsersJPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(updateUserJButton))
-                    .addComponent(MantainercompetencesJPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(updateUserJButton)))
                 .addContainerGap())
         );
         editUsersJPanelLayout.setVerticalGroup(
@@ -278,10 +304,10 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(changePasswordJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(MantainercompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(maintainerCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(updateUserJButton)
-                .addContainerGap())
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         removeUserJButton.setText("Remove Selected User");
@@ -304,11 +330,11 @@ public class AdminGUI extends javax.swing.JFrame {
             .addGroup(usersDetailsJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(addUserJButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(editUsersJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(removeUserJButton)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         usersJPanel.add(usersDetailsJPanel, java.awt.BorderLayout.LINE_END);
@@ -466,7 +492,7 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addComponent(editProceduresJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(removeProcedureJButton)
-                .addContainerGap(361, Short.MAX_VALUE))
+                .addContainerGap(386, Short.MAX_VALUE))
         );
 
         proceduresJPanel.add(proceduresDetailsJPanel, java.awt.BorderLayout.LINE_END);
@@ -609,7 +635,7 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addComponent(editCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(removeCompetenceJButton)
-                .addContainerGap(373, Short.MAX_VALUE))
+                .addContainerGap(398, Short.MAX_VALUE))
         );
 
         competencesJPanel.add(competencesDetailsJPanel, java.awt.BorderLayout.LINE_END);
@@ -738,7 +764,7 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addComponent(editSitesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(removeSiteJButton)
-                .addContainerGap(425, Short.MAX_VALUE))
+                .addContainerGap(450, Short.MAX_VALUE))
         );
 
         sitesJPanel.add(sitesDetailsJPanel, java.awt.BorderLayout.LINE_END);
@@ -854,7 +880,7 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addComponent(editMaterialJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(removeMaterialJButton)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addContainerGap(292, Short.MAX_VALUE))
         );
 
         MaterialJPanel.add(materialsDetailsJPanel, java.awt.BorderLayout.LINE_END);
@@ -983,7 +1009,7 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addComponent(editTypeJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(removeTypeJButton)
-                .addContainerGap(425, Short.MAX_VALUE))
+                .addContainerGap(450, Short.MAX_VALUE))
         );
 
         TypeJPanel.add(typesDetailsjPanel, java.awt.BorderLayout.LINE_END);
@@ -1076,14 +1102,15 @@ public class AdminGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel MantainercompetencesJPanel;
     private javax.swing.JPanel MaterialJPanel;
     private javax.swing.JPanel MaterialTopJPanel;
     private javax.swing.JLabel SMPJLabel;
     private javax.swing.JTextField SMPJTextField;
     private javax.swing.JPanel TypeJPanel;
     private javax.swing.JButton addCompetenceJButton;
-    private javax.swing.JButton addMantainerCompetencesJButton;
+    private javax.swing.JButton addMaintainerCompetencesJButton;
+    private javax.swing.JComboBox<String> addMaintainerCompetencesJComboBox;
+    private javax.swing.JPanel addMaintainerCompetencesJPanel;
     private javax.swing.JButton addMaterialJButton;
     private javax.swing.JButton addProcedureJButton;
     private javax.swing.JButton addSiteJButton;
@@ -1106,8 +1133,9 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JPanel editSitesJPanel;
     private javax.swing.JPanel editTypeJPanel;
     private javax.swing.JPanel editUsersJPanel;
-    private javax.swing.JList<String> mantainerCompetencesJList;
-    private javax.swing.JScrollPane mantainerCompetencesJScrollPane;
+    private javax.swing.JList<String> maintainerCompetencesJList;
+    private javax.swing.JPanel maintainerCompetencesJPanel;
+    private javax.swing.JScrollPane maintainerCompetencesJScrollPane;
     private javax.swing.JScrollPane materialDescriptionJScrollPane;
     private javax.swing.JTextArea materialDescriptionJTextArea;
     private javax.swing.JLabel materialNameJLabel;
@@ -1131,7 +1159,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JButton refreshTypesJButton;
     private javax.swing.JButton refreshUsersJButton;
     private javax.swing.JButton removeCompetenceJButton;
-    private javax.swing.JButton removeMantainerCompetencesJButton;
+    private javax.swing.JButton removeMaintainerCompetencesJButton;
     private javax.swing.JButton removeMaterialJButton;
     private javax.swing.JButton removeProcedureJButton;
     private javax.swing.JButton removeSiteJButton;
