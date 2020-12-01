@@ -4,17 +4,31 @@
  * and open the template in the editor.
  */
 package GUI;
+import com.team14.se.maintenanceapp.MyConnection;
+import com.team14.se.maintenanceapp.User;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author emale
  */
 public class Login extends javax.swing.JFrame {
+    private User logUser;
+    private Connection conn;
+    private Statement stmt;
+    private ResultSet rs;
 
     /**
      * Creates new form Login
      */
-    public Login() {
+    public Login() throws SQLException, ClassNotFoundException {
+        initConn();
         initComponents();
     }
 
@@ -27,14 +41,42 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToggleButton1 = new javax.swing.JToggleButton();
+        jLoginButton = new javax.swing.JToggleButton();
+        jLabelTitle = new javax.swing.JLabel();
+        jTF_User = new javax.swing.JTextField();
+        jLabel_Username = new javax.swing.JLabel();
+        jLabel_Password = new javax.swing.JLabel();
+        jPasswordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
+        setResizable(false);
 
-        jToggleButton1.setText("Test");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        jLoginButton.setText("Login");
+        jLoginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                jLoginButtonActionPerformed(evt);
+            }
+        });
+
+        jLabelTitle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabelTitle.setText("MaintenanceApp");
+
+        jTF_User.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTF_UserActionPerformed(evt);
+            }
+        });
+
+        jLabel_Username.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel_Username.setText("Username:");
+
+        jLabel_Password.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel_Password.setText("Password:");
+
+        jPasswordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordFieldActionPerformed(evt);
             }
         });
 
@@ -42,25 +84,99 @@ public class Login extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(105, 105, 105))
             .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel_Password, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel_Username, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                            .addComponent(jTF_User))))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(132, 132, 132)
-                .addComponent(jToggleButton1)
-                .addContainerGap(145, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTF_User))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_Password))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void jLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginButtonActionPerformed
+        
+        // Take string from interface
+        String username = jTF_User.getText();
+        if (username.isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Field 'Username' can't be empty", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String password = jPasswordField.getText();
+        if (password.isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Field 'Password' can't be empty ", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+   
+        // List of query
+        // query for Autentication
+        String autenticationQuery = "SELECT Nome, Cognome, Ruolo FROM UTENTE WHERE Username = '"+username+"' AND pass = '"+password+"' ;";
+        //query to save the acces in the log
+        String logsaveQuery = "INSERT INTO LOGGING (username) VALUES ('" + username + "');";
+        
+        
+        try{
+  
+            stmt = conn.createStatement();
+            // Send query
+            rs = stmt.executeQuery(autenticationQuery);
+            // If rs has no next, so no exists User with that username and password
+            if(!rs.next()){
+                JOptionPane.showMessageDialog(rootPane, "Unable to login: incorrect username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            }
+            // Else take the data and put in logUser
+            else{
+                String name = rs.getString("Nome");
+                String surname = rs.getString("Cognome");
+                String role = rs.getString("Ruolo");
+                JOptionPane.showMessageDialog(rootPane, "Welcome " + name + " " + surname + ", you are loginning as " + role, "Login Success", JOptionPane.INFORMATION_MESSAGE);
+                logUser = new User(name, surname, username, password);
+                /* Need update Class User to continue*/
+                this.dispose();
+                // Then save in DB the access
+                stmt.executeQuery(logsaveQuery);
+            }      
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_jLoginButtonActionPerformed
+
+    private void jTF_UserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTF_UserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_jTF_UserActionPerformed
+
+    private void jPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -90,14 +206,28 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
                 new Login().setVisible(true);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel jLabelTitle;
+    private javax.swing.JLabel jLabel_Password;
+    private javax.swing.JLabel jLabel_Username;
+    private javax.swing.JToggleButton jLoginButton;
+    private javax.swing.JPasswordField jPasswordField;
+    private javax.swing.JTextField jTF_User;
     // End of variables declaration//GEN-END:variables
+
+    
+    // Init Connection
+    private void initConn() throws SQLException, ClassNotFoundException {
+            conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+            System.out.println(conn);
+    }
 }
