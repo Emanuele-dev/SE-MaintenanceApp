@@ -5,8 +5,14 @@
  */
 package GUI;
 
+import com.team14.se.maintenanceapp.MaintenanceActivity;
 import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -34,6 +40,11 @@ public class PlannerGUI extends javax.swing.JFrame {
         this.loggedUser = loggedUser;
         this.connection = connection;
         initComponents();
+        initTable(0);
+    }
+
+    PlannerGUI(User logUser, Connection conn, LinkedList<MaintenanceActivity> activityList) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -99,6 +110,11 @@ public class PlannerGUI extends javax.swing.JFrame {
         assignTabJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshJButton.setText("Refresh List");
+        refreshJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshJButtonActionPerformed(evt);
+            }
+        });
 
         weekNumberJLabel.setText("Week N.");
 
@@ -183,31 +199,30 @@ public class PlannerGUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, detailsJPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(forwardJButton))
-                    .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(detailsJPanelLayout.createSequentialGroup()
-                            .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(detailsDescriptionJScrollPanel)
-                                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(detailsJPanelLayout.createSequentialGroup()
-                                        .addComponent(detailsWeekJLabel)
+                    .addGroup(detailsJPanelLayout.createSequentialGroup()
+                        .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(detailsDescriptionJScrollPanel)
+                            .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(detailsJPanelLayout.createSequentialGroup()
+                                    .addComponent(detailsWeekJLabel)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                                        .addComponent(detailsSMPJLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                                        .addComponent(detailsActivityJLabel)
                                         .addGap(18, 18, 18)
-                                        .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
-                                            .addComponent(detailsSMPJLabel)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
-                                            .addComponent(detailsActivityJLabel)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addComponent(detailsSkillsJScrollPane)
-                                .addComponent(detailsNotesJScrollPane))
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addGroup(detailsJPanelLayout.createSequentialGroup()
-                            .addComponent(assignJLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(assignJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(detailsSkillsJScrollPane)
+                            .addComponent(detailsNotesJScrollPane))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(detailsJPanelLayout.createSequentialGroup()
+                        .addComponent(assignJLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(assignJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         detailsJPanelLayout.setVerticalGroup(
@@ -245,7 +260,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         activitiesJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null}
             },
             new String [] {
                 "ID", "Area", "Type", "EIT"
@@ -331,8 +346,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                             .addGroup(addJPanelLayout.createSequentialGroup()
                                 .addComponent(interruptYesJRadioButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(interruptNoJRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(interruptNoJRadioButton))
                             .addComponent(estimatedTimeJSpinner)))
                     .addGroup(addJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(addJPanelLayout.createSequentialGroup()
@@ -424,12 +438,18 @@ public class PlannerGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainJTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+                .addComponent(mainJTabbedPane)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
+        int week_n = (int) weekNumberJSpinner.getValue();
+        System.out.println(week_n);
+        initTable(week_n);
+    }//GEN-LAST:event_refreshJButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -517,4 +537,18 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel weekNumberJLabel;
     private javax.swing.JSpinner weekNumberJSpinner;
     // End of variables declaration//GEN-END:variables
+
+    private void initTable(int n_week) {
+        try {
+            LinkedList<MaintenanceActivity> activityList = MaintenanceActivity.getMaintenanceActivities(connection);
+            DefaultTableModel activitiesTabelModel = (DefaultTableModel) activitiesJTable.getModel();
+            activityList.forEach((MaintenanceActivity activity) -> {
+                if(activity.getWeek() == n_week)
+                    activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getWeek()});
+            });
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
