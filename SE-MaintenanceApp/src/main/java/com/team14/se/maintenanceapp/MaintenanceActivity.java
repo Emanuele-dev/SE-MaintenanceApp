@@ -16,6 +16,7 @@ public class MaintenanceActivity {
     private int activityId;
     private String description;
     private boolean interruptible;
+    private int estimatedIntervention;
     private boolean ewo;
     private int week;
     private boolean state; // completa o no
@@ -26,12 +27,13 @@ public class MaintenanceActivity {
     private ArrayList<User> users; //Maintainers
     
     public MaintenanceActivity(int activityId, String description, 
-            boolean interruptible, boolean ewo, int week, boolean state, 
+            boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
             Procedure procedure, Site site, Typology typology){
         
         this.activityId = activityId;
         this.description = description;
         this.interruptible = interruptible;
+        this.estimatedIntervention = estimatedIntervention;
         this.ewo = ewo;
         this.week = week;
         this.state = state;
@@ -42,13 +44,14 @@ public class MaintenanceActivity {
     }
     
     public MaintenanceActivity(int activityId, String description, 
-            boolean interruptible, boolean ewo, int week, boolean state, 
+            boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
             Procedure procedure, Site site, Typology typology, 
             Material material, ArrayList<User> users){
         
         this.activityId = activityId;
         this.description = description;
         this.interruptible = interruptible;
+        this.estimatedIntervention = estimatedIntervention;
         this.ewo = ewo;
         this.week = week;
         this.state = state;
@@ -66,6 +69,9 @@ public class MaintenanceActivity {
     }
     public boolean getInterruptable(){
         return interruptible;
+    }
+    public int getEstimatedIntervention(){
+        return estimatedIntervention;
     }
     public boolean getEwo(){
         return ewo;
@@ -101,6 +107,9 @@ public class MaintenanceActivity {
     }
     public void setInterruptable(boolean interruptible){
         this.interruptible = interruptible;
+    }
+    public void setEstimatedIntervention(int estimatedIntervention){
+        this.estimatedIntervention = estimatedIntervention;
     }
     public void setEwo(boolean ewo){
         this.ewo = ewo;
@@ -167,8 +176,9 @@ public class MaintenanceActivity {
             
             maintenaceActivities.add(new MaintenanceActivity(rst.getInt("activity_id"),
                     rst.getString("descrizione"), rst.getBoolean("interrompibile"), 
-                    rst.getBoolean("ewo"), rst.getInt("settimana"), rst.getBoolean("completa"), 
-                    procedure, new Site(rst.getString("sito")), new Typology(rst.getString("tipologia"))));
+                    rst.getInt("intervento_stimato"), rst.getBoolean("ewo"), 
+                    rst.getInt("settimana"), rst.getBoolean("completa"), procedure, 
+                    new Site(rst.getString("sito")), new Typology(rst.getString("tipologia"))));
             }
         return maintenaceActivities;    
     }
@@ -177,20 +187,21 @@ public class MaintenanceActivity {
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
         query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
-                + "(activity_id, descrizione, interrompibile, ewo, settimana,"
-                + "procedura, sito, tipologia, completa) VALUES (?, ?, ?, ?, ?, "
-                + "?, ?, ?, ?);";
+                + "(activity_id, descrizione, interrompibile, intervento_stimato,"
+                + " ewo, settimana,procedura, sito, tipologia, completa) "
+                + "VALUES (?, ?, ?, ?, ?,?, ?, ?, ?);";
         
         stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
         stmtMainActivity.setInt(1, maintActivity.getActivityId());
         stmtMainActivity.setString(2, maintActivity.getDescription());
         stmtMainActivity.setBoolean(3, maintActivity.getInterruptable());
-        stmtMainActivity.setBoolean(4, maintActivity.getEwo());
-        stmtMainActivity.setInt(5, maintActivity.getWeek());
-        stmtMainActivity.setString(6, maintActivity.getProcedure().getName());
-        stmtMainActivity.setString(7, maintActivity.getSite().getName());
-        stmtMainActivity.setString(8, maintActivity.getTypology().getName());
-        stmtMainActivity.setBoolean(9, maintActivity.getState());
+        stmtMainActivity.setInt(4, maintActivity.getEstimatedIntervention());
+        stmtMainActivity.setBoolean(5, maintActivity.getEwo());
+        stmtMainActivity.setInt(6, maintActivity.getWeek());
+        stmtMainActivity.setString(7, maintActivity.getProcedure().getName());
+        stmtMainActivity.setString(8, maintActivity.getSite().getName());
+        stmtMainActivity.setString(9, maintActivity.getTypology().getName());
+        stmtMainActivity.setBoolean(10, maintActivity.getState());
         stmtMainActivity.executeUpdate();
     }
     public void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
