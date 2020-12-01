@@ -15,4 +15,7 @@ DELETE FROM TIPOLOGIA WHERE TIPOLOGIA.nome = 'Culinaria';
 SELECT * FROM ATTIVITA_MANUTENZIONE
 
 
+update UTENTE set nome = 'silvio', cognome = 'cus', username = 'silvy', pass = 'mo', attivo = 'true', ruolo = 'Planner' WHERE username = 'FraCal'
+INSERT INTO logging (username, log_time) VALUES ('FraCal', '2020-12-01');
+
 */
