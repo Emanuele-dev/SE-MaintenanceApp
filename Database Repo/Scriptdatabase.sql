@@ -94,6 +94,7 @@ CREATE TABLE NOTA(
 
 CREATE TABLE ATTIVITA_MANUTENZIONE(
 	activity_id SERIAL,
+	nome VARCHAR(30),
 	descrizione VARCHAR(255),							   
 	interrompibile BOOLEAN,
 	intervento_stimato INTEGER NOT NULL,	
