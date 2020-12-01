@@ -81,4 +81,15 @@ public class Note {
         
         stmtNote.executeUpdate();
     }
+    
+    public void updateNote(Connection conn, Note note, int oldId) throws SQLException{
+        String query_insert_note="";
+        PreparedStatement stmtNote;
+        query_insert_note = "UPDATE nota SET testo = (?) WHERE id = (?)";
+        stmtNote= conn.prepareStatement(query_insert_note);
+        stmtNote.setString(1, note.getText());
+        stmtNote.setInt(2, oldId);
+        stmtNote.executeUpdate();
+        
+    }
 }

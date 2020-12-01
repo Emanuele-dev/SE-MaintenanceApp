@@ -243,4 +243,32 @@ public class MaintenanceActivity {
         stmtMainActivity.executeUpdate();
     }
     
+    public void updateMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity, int oldActivityId) throws SQLException{
+        String query_insert_maintActivity="";
+        PreparedStatement stmtMainActivity;
+        query_insert_maintActivity = "UPDATE attivita_manutenzione SET nome = (?), "
+                + "descrizione = (?), interrompibile = (?), "
+                + "intervento_stimato = (?), ewo = (?),"
+                + "settimana = (?), procedura = (?), "
+                + "sito = (?), tipologia = (?),"
+                + "completa = (?) WHERE id = (?)";
+        
+        stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
+        stmtMainActivity.setString(1, maintActivity.getName());
+        stmtMainActivity.setString(2, maintActivity.getDescription());
+        stmtMainActivity.setBoolean(3, maintActivity.getInterruptable());
+        stmtMainActivity.setInt(4, maintActivity.getEstimatedIntervention());
+        stmtMainActivity.setBoolean(5, maintActivity.getEwo());
+        stmtMainActivity.setInt(6, maintActivity.getWeek());
+        stmtMainActivity.setString(7, maintActivity.getProcedure().getName());
+        stmtMainActivity.setString(8, maintActivity.getSite().getName());
+        stmtMainActivity.setString(9, maintActivity.getTypology().getName());
+        stmtMainActivity.setBoolean(10, maintActivity.getState());
+        stmtMainActivity.setInt(11, oldActivityId);
+        stmtMainActivity.executeUpdate();
+        
+    }
+    
+    
 }
+

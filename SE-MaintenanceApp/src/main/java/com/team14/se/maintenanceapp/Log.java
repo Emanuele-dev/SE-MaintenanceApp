@@ -85,5 +85,16 @@ public class Log {
         stmtLog.executeUpdate();
     }
 
+    public void updateLog(Connection conn, Log log, int oldId) throws SQLException{
+        String query_insert_log="";
+        PreparedStatement stmtLog;
+        query_insert_log = "UPDATE logging SET username = (?), log_time = (?) WHERE id = (?)";
+        stmtLog= conn.prepareStatement(query_insert_log);
+        stmtLog.setString(1, log.getUsername());
+        stmtLog.setTimestamp(2, log.getTimestamp());
+        stmtLog.setInt(3, oldId);
+        stmtLog.executeUpdate();
+        
+    }
     
 }
