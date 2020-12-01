@@ -31,7 +31,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private LinkedList<Material> materialsList = null;
     private LinkedList<Typology> typesList = null;
     
-    private DefaultTableModel usersTableModel = null;
+    //private DefaultTableModel usersTableModel = null;
     
     /**
      * Creates new form AdminGUI
@@ -52,45 +52,103 @@ public class AdminGUI extends javax.swing.JFrame {
         initComponents();
         
        
-        usersTableJTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                usersTableJTableActionPerformed();
-            }
+        usersTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            usersTableJTableActionPerformed();
+        });
+        
+        proceduresTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            proceduresTableJTableActionPerformed();
         });
 
         
-        try {
-            refreshUsersList();
-            //this.proceduresList = Procedure.getProcedures(connection);
-            //this.competencesList = Competence.getCompetences(connection);
-            //this.sitesList = Site.getSites(connection);
-            //this.materialsList = Material.getMaterials(connection);
-            //this.typesList = Typology.getTypologies(connection);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        refreshUsersList();
+        refreshProceduresList();
+        //this.competencesList = Competence.getCompetences(connection);
+        //this.sitesList = Site.getSites(connection);
+        //this.materialsList = Material.getMaterials(connection);
+        //this.typesList = Typology.getTypologies(connection);
 
         setVisible(true);
     }
     
-    private void refreshUsersList() throws SQLException{
+    private void refreshUsersList(){
         this.usersTableJTable.setEnabled(false);
-        this.usersList = User.getUsers(connection);
-        usersTableModel = (DefaultTableModel) usersTableJTable.getModel();
-        for(User user:usersList){
+        
+        if (this.editUsersJPanel.isEnabled()){
+            this.editUsersJPanel.setEnabled(false);
+            
+            this.userNameJLabel.setEnabled(false);
+            this.userNameJTextField.setEnabled(false);
+            
+            this.userSurnameJLabel.setEnabled(false);
+            this.userSurnameJTextField.setEnabled(false);
+            
+            this.usernameJLabel.setEnabled(false);
+            this.usernameJTextField.setEnabled(false);
+                   
+            this.userRoleJLabel.setEnabled(false);
+            this.userRoleJComboBox.setEnabled(false);
+            userCompetencePanel.deactivate();
+        }
+        
+        DefaultTableModel usersTableModel = (DefaultTableModel) usersTableJTable.getModel();
+        usersTableModel.setRowCount(0);
+        
+        try {
+            this.usersList = User.getUsers(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        usersList.forEach(user -> {
             usersTableModel.addRow(new String[]{
-                user.getName(), 
+                user.getName(),
                 user.getSurname(), 
                 user.getUsername(),
                 user.getRole()
             });
-        }
+        });
         this.usersTableJTable.setEnabled(true);
     }
-
+    
+    private void refreshProceduresList(){
+        this.proceduresTableJTable.setEnabled(false);
         
+        if (this.editProceduresJPanel.isEnabled()){
+            this.editProceduresJPanel.setEnabled(false);
+            
+            this.procedureNameJLabel.setEnabled(false);
+            this.procedureNameJTextField.setEnabled(false);
+            
+            this.SMPJLabel.setEnabled(false);
+            this.SMPJTextField.setEnabled(false);
+            procedureCompetencePanel.deactivate();
+        }
+        
+        DefaultTableModel proceduresTableModel  = (DefaultTableModel) proceduresTableJTable.getModel();
+        proceduresTableModel.setRowCount(0);
+        
+        try {
+            this.proceduresList = Procedure.getProcedures(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        proceduresList.forEach(procedure -> {
+            proceduresTableModel.addRow(new String[]{
+                procedure.getName(), 
+                procedure.getSmpName()
+            });
+        });
+        this.proceduresTableJTable.setEnabled(true);
+    }
+
+    
+
     private void usersTableJTableActionPerformed() {
         int selectedUserIndex = usersTableJTable.getSelectedRow();
+        
+        if (selectedUserIndex == -1) return;
         
         if (!this.editUsersJPanel.isEnabled()){
             this.editUsersJPanel.setEnabled(true);
@@ -118,16 +176,52 @@ public class AdminGUI extends javax.swing.JFrame {
         
         if (usersList.get(selectedUserIndex).getRole().equals("Maintainer")){
             try {
-                userCompetencePanel.activate(null);
+                //TODO: pass user's competences list instead of null
+                userCompetencePanel.activate(new LinkedList<Competence>());
             } catch (SQLException ex) {
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             userCompetencePanel.deactivate();
         }
-        
-        
     }
+    
+    
+        private void proceduresTableJTableActionPerformed() {
+        int selectedProcedureIndex = proceduresTableJTable.getSelectedRow();
+        
+        if (selectedProcedureIndex == -1) return;
+        
+        if (!this.editProceduresJPanel.isEnabled()){
+            this.editProceduresJPanel.setEnabled(true);
+            
+            this.procedureNameJLabel.setEnabled(true);
+            this.procedureNameJTextField.setEnabled(true);
+            
+            this.SMPJLabel.setEnabled(true);
+            this.SMPJTextField.setEnabled(true);
+        }
+
+        this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
+
+        this.SMPJTextField.setText(proceduresList.get(selectedProcedureIndex).getSmpName());
+        
+        
+        try {
+            //LinkedList<Competence> procedureCompetences = Competence.getCompetences(connection);
+            //procedureCompetences.remove(proceduresList.get(selectedUserIndex).getCompetence());
+            LinkedList<Competence> procedureCompetences = new LinkedList<Competence>();
+            procedureCompetences.add(proceduresList.get(selectedProcedureIndex).getCompetence());
+            procedureCompetencePanel.activate(procedureCompetences);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -170,13 +264,7 @@ public class AdminGUI extends javax.swing.JFrame {
         SMPJLabel = new javax.swing.JLabel();
         SMPJTextField = new javax.swing.JTextField();
         updateProcedureJButton = new javax.swing.JButton();
-        ProcedureCompetencesJPanel = new javax.swing.JPanel();
-        procedureCompetencesJScrollPane = new javax.swing.JScrollPane();
-        procedureCompetencesJList = new javax.swing.JList<>();
-        removeProcedureCompetencesJButton = new javax.swing.JButton();
-        addProcedureCompetencesJPanel = new javax.swing.JPanel();
-        addProcedureCompetencesJButton = new javax.swing.JButton();
-        addProcedureCompetencesJComboBox = new javax.swing.JComboBox<>();
+        procedureCompetencePanel = new GUI.CompetencePanel(connection);
         removeProcedureJButton = new javax.swing.JButton();
         proceduresTableJScrollPane = new javax.swing.JScrollPane();
         proceduresTableJTable = new javax.swing.JTable();
@@ -240,6 +328,11 @@ public class AdminGUI extends javax.swing.JFrame {
         usersJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshUsersJButton.setText("Refresh List");
+        refreshUsersJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshUsersListJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout usersTopJPanelLayout = new javax.swing.GroupLayout(usersTopJPanel);
         usersTopJPanel.setLayout(usersTopJPanelLayout);
@@ -247,7 +340,7 @@ public class AdminGUI extends javax.swing.JFrame {
             usersTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(usersTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshUsersJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         usersTopJPanelLayout.setVerticalGroup(
             usersTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,6 +523,11 @@ public class AdminGUI extends javax.swing.JFrame {
         proceduresJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshProceduresJButton.setText("Refresh List");
+        refreshProceduresJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshProceduresJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout proceduresTopJPanelLayout = new javax.swing.GroupLayout(proceduresTopJPanel);
         proceduresTopJPanel.setLayout(proceduresTopJPanelLayout);
@@ -437,7 +535,7 @@ public class AdminGUI extends javax.swing.JFrame {
             proceduresTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proceduresTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshProceduresJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         proceduresTopJPanelLayout.setVerticalGroup(
             proceduresTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -472,68 +570,6 @@ public class AdminGUI extends javax.swing.JFrame {
         updateProcedureJButton.setText("Update Procedure");
         updateProcedureJButton.setEnabled(false);
 
-        ProcedureCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Competences"));
-        ProcedureCompetencesJPanel.setEnabled(false);
-
-        procedureCompetencesJList.setEnabled(false);
-        procedureCompetencesJScrollPane.setViewportView(procedureCompetencesJList);
-
-        removeProcedureCompetencesJButton.setText("Remove Selected");
-        removeProcedureCompetencesJButton.setEnabled(false);
-
-        addProcedureCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Competences"));
-        addProcedureCompetencesJPanel.setEnabled(false);
-
-        addProcedureCompetencesJButton.setText("Add ");
-        addProcedureCompetencesJButton.setEnabled(false);
-
-        addProcedureCompetencesJComboBox.setEnabled(false);
-
-        javax.swing.GroupLayout addProcedureCompetencesJPanelLayout = new javax.swing.GroupLayout(addProcedureCompetencesJPanel);
-        addProcedureCompetencesJPanel.setLayout(addProcedureCompetencesJPanelLayout);
-        addProcedureCompetencesJPanelLayout.setHorizontalGroup(
-            addProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addProcedureCompetencesJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addProcedureCompetencesJButton)
-                .addContainerGap())
-        );
-        addProcedureCompetencesJPanelLayout.setVerticalGroup(
-            addProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addGroup(addProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addProcedureCompetencesJButton)
-                    .addComponent(addProcedureCompetencesJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout ProcedureCompetencesJPanelLayout = new javax.swing.GroupLayout(ProcedureCompetencesJPanel);
-        ProcedureCompetencesJPanel.setLayout(ProcedureCompetencesJPanelLayout);
-        ProcedureCompetencesJPanelLayout.setHorizontalGroup(
-            ProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(procedureCompetencesJScrollPane)
-                    .addGroup(ProcedureCompetencesJPanelLayout.createSequentialGroup()
-                        .addComponent(removeProcedureCompetencesJButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(addProcedureCompetencesJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        ProcedureCompetencesJPanelLayout.setVerticalGroup(
-            ProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addComponent(procedureCompetencesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(removeProcedureCompetencesJButton)
-                .addGap(18, 18, 18)
-                .addComponent(addProcedureCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout editProceduresJPanelLayout = new javax.swing.GroupLayout(editProceduresJPanel);
         editProceduresJPanel.setLayout(editProceduresJPanelLayout);
         editProceduresJPanelLayout.setHorizontalGroup(
@@ -550,10 +586,12 @@ public class AdminGUI extends javax.swing.JFrame {
                             .addComponent(procedureNameJTextField)
                             .addComponent(SMPJTextField)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editProceduresJPanelLayout.createSequentialGroup()
-                        .addGap(0, 182, Short.MAX_VALUE)
-                        .addComponent(updateProcedureJButton))
-                    .addComponent(ProcedureCompetencesJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(updateProcedureJButton)))
                 .addContainerGap())
+            .addGroup(editProceduresJPanelLayout.createSequentialGroup()
+                .addComponent(procedureCompetencePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         editProceduresJPanelLayout.setVerticalGroup(
             editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -565,9 +603,9 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SMPJLabel)
                     .addComponent(SMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ProcedureCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(procedureCompetencePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
                 .addComponent(updateProcedureJButton))
         );
 
@@ -607,14 +645,14 @@ public class AdminGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "SMP", "Competences"
+                "Name", "SMP"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -642,7 +680,7 @@ public class AdminGUI extends javax.swing.JFrame {
             competencesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(competencesTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshCompetencesJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         competencesTopJPanelLayout.setVerticalGroup(
             competencesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -785,7 +823,7 @@ public class AdminGUI extends javax.swing.JFrame {
             sitesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sitesTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshSitesJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         sitesTopJPanelLayout.setVerticalGroup(
             sitesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -890,7 +928,7 @@ public class AdminGUI extends javax.swing.JFrame {
             MaterialTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MaterialTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshMaterialsJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         MaterialTopJPanelLayout.setVerticalGroup(
             MaterialTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1030,7 +1068,7 @@ public class AdminGUI extends javax.swing.JFrame {
             typesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(typesTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshTypesJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         typesTopJPanelLayout.setVerticalGroup(
             typesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1170,18 +1208,22 @@ public class AdminGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_userNameJTextFieldActionPerformed
 
+    private void refreshUsersListJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshUsersListJButtonActionPerformed
+        this.refreshUsersList();
+    }//GEN-LAST:event_refreshUsersListJButtonActionPerformed
+
+    private void refreshProceduresJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshProceduresJButtonActionPerformed
+        this.refreshProceduresList();
+    }//GEN-LAST:event_refreshProceduresJButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MaterialJPanel;
     private javax.swing.JPanel MaterialTopJPanel;
-    private javax.swing.JPanel ProcedureCompetencesJPanel;
     private javax.swing.JLabel SMPJLabel;
     private javax.swing.JTextField SMPJTextField;
     private javax.swing.JPanel TypeJPanel;
     private javax.swing.JButton addCompetenceJButton;
     private javax.swing.JButton addMaterialJButton;
-    private javax.swing.JButton addProcedureCompetencesJButton;
-    private javax.swing.JComboBox<String> addProcedureCompetencesJComboBox;
-    private javax.swing.JPanel addProcedureCompetencesJPanel;
     private javax.swing.JButton addProcedureJButton;
     private javax.swing.JButton addSiteJButton;
     private javax.swing.JButton addTypeJButton;
@@ -1210,8 +1252,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JPanel materialsDetailsJPanel;
     private javax.swing.JScrollPane materialsTableJScrollPane;
     private javax.swing.JTable materialsTableJTable;
-    private javax.swing.JList<String> procedureCompetencesJList;
-    private javax.swing.JScrollPane procedureCompetencesJScrollPane;
+    private GUI.CompetencePanel procedureCompetencePanel;
     private javax.swing.JLabel procedureNameJLabel;
     private javax.swing.JTextField procedureNameJTextField;
     private javax.swing.JPanel proceduresDetailsJPanel;
@@ -1227,7 +1268,6 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JButton refreshUsersJButton;
     private javax.swing.JButton removeCompetenceJButton;
     private javax.swing.JButton removeMaterialJButton;
-    private javax.swing.JButton removeProcedureCompetencesJButton;
     private javax.swing.JButton removeProcedureJButton;
     private javax.swing.JButton removeSiteJButton;
     private javax.swing.JButton removeTypeJButton;

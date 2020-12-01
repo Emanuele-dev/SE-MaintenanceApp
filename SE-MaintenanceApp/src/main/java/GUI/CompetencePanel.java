@@ -8,8 +8,10 @@ package GUI;
 import com.team14.se.maintenanceapp.Competence;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
+import javax.swing.event.ListSelectionEvent;
 
 /**
  *
@@ -34,49 +36,60 @@ public class CompetencePanel extends javax.swing.JPanel {
         this.competencesListModel = new DefaultListModel<>();
         this.connection = connection;
         initComponents();
+        
+        this.competencesJList.addListSelectionListener((ListSelectionEvent event) -> { 
+            this.removeCompetencesJButton.setEnabled(true);
+        });
     }
     
-    public LinkedList<Competence> getSelectedCompetences() {
-        return this.selectedCompetences;
+    public LinkedList<String> getSelectedCompetences() {
+        return new LinkedList<>(Arrays.asList((String[])this.competencesListModel.toArray()));
     }
     
-    public void activate(LinkedList<Competence> selectedCometences) throws SQLException{
+    public void activate(LinkedList<Competence> selectedCompetences) throws SQLException{
+        this.addCompetencesJComboBox.removeAllItems();
+        this.competencesListModel.clear();
         
         setEnabled(true);
-        this.selectedCompetences = selectedCometences;
+        this.selectedCompetences = selectedCompetences;
         this.competences = Competence.getCompetences(connection);
         
         this.competencesListModel = new DefaultListModel<>();
         
-        if (selectedCometences != null){
-            for(Competence competence:this.selectedCompetences){
-                this.competencesListModel.addElement(competence.getName());
-            }
-            this.competencesJList.setModel(competencesListModel);
-            this.competences.removeAll(selectedCometences);
-        }
+        this.selectedCompetences.forEach(competence -> {
+            this.competencesListModel.addElement(competence.getName());
+        });
+        this.competencesJList.setModel(competencesListModel);
         
-        for(Competence competence:this.competences){
+        this.competences.removeAll(this.selectedCompetences);
+
+        this.competences.forEach(competence -> {
             addCompetencesJComboBox.addItem(competence.getName());
-        }
+        });
         
         this.competencesJScrollPane.setEnabled(true);
         this.competencesJList.setEnabled(true);
         
         this.addCompetencesJPanel.setEnabled(true);
-        this.addCompetencesJComboBox.setEditable(true);
+        this.addCompetencesJComboBox.setEnabled(true);
+        
+        if (this.competences.size() > 0){
+            this.addCompetencesJButton.setEnabled(true);
+        }
     }
 
     public void deactivate(){
         this.competencesListModel.clear();
-        addCompetencesJComboBox.removeAllItems();
+        this.addCompetencesJComboBox.removeAllItems();
                 
         setEnabled(false);
         this.competencesJScrollPane.setEnabled(false);
         this.competencesJList.setEnabled(false);
         
         this.addCompetencesJPanel.setEnabled(false);
-        this.addCompetencesJComboBox.setEditable(false);
+        this.addCompetencesJComboBox.setEnabled(false);
+        this.addCompetencesJButton.setEnabled(false);
+        this.removeCompetencesJButton.setEnabled(false);
     }
     
     
@@ -104,12 +117,22 @@ public class CompetencePanel extends javax.swing.JPanel {
 
         removeCompetencesJButton.setText("Remove Selected");
         removeCompetencesJButton.setEnabled(false);
+        removeCompetencesJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeCompetencesJButtonActionPerformed(evt);
+            }
+        });
 
         addCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Competences"));
         addCompetencesJPanel.setEnabled(false);
 
         addCompetencesJButton.setText("Add ");
         addCompetencesJButton.setEnabled(false);
+        addCompetencesJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCompetencesJButtonActionPerformed(evt);
+            }
+        });
 
         addCompetencesJComboBox.setEnabled(false);
 
@@ -162,6 +185,24 @@ public class CompetencePanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addCompetencesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCompetencesJButtonActionPerformed
+        this.competencesListModel.addElement(this.addCompetencesJComboBox.getSelectedItem().toString());
+        this.addCompetencesJComboBox.removeItem(this.addCompetencesJComboBox.getSelectedItem());
+        if (this.addCompetencesJComboBox.getItemCount() < 1){
+            this.addCompetencesJButton.setEnabled(false);
+        }
+        this.removeCompetencesJButton.setEnabled(false);
+    }//GEN-LAST:event_addCompetencesJButtonActionPerformed
+
+    private void removeCompetencesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCompetencesJButtonActionPerformed
+        this.addCompetencesJComboBox.addItem(this.competencesJList.getSelectedValue());
+        this.competencesListModel.removeElement(this.competencesJList.getSelectedValue());
+        if (this.addCompetencesJComboBox.getItemCount() > 0){
+            this.addCompetencesJButton.setEnabled(true);
+        }
+        this.removeCompetencesJButton.setEnabled(false);
+    }//GEN-LAST:event_removeCompetencesJButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

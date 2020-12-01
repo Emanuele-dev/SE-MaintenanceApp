@@ -80,6 +80,9 @@
         <Property name="text" type="java.lang.String" value="Remove Selected"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeCompetencesJButtonActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="addCompetencesJPanel">
       <Properties>
@@ -121,6 +124,9 @@
             <Property name="text" type="java.lang.String" value="Add "/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addCompetencesJButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="addCompetencesJComboBox">
           <Properties>
