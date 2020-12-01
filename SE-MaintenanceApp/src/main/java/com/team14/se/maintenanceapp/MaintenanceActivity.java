@@ -42,7 +42,6 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
-        this.material = material;
     }
     
     public MaintenanceActivity(int activityId, String name, String description, 
@@ -151,10 +150,8 @@ public class MaintenanceActivity {
     }
 
     
-  
     //Access to database methods
-    //Acquire list of Maintenance Activities
-    public static LinkedList<MaintenanceActivity> getMaintenanceActivities (Connection conn) throws SQLException{
+    public static LinkedList<MaintenanceActivity> resultQueryGetActivities(Connection conn, String query) throws SQLException{
         int competenceId = 0;
         int procedureId = 0;
         String procedureSmp = null;
@@ -162,7 +159,7 @@ public class MaintenanceActivity {
         Procedure procedure;
         
         LinkedList<MaintenanceActivity> maintenaceActivities = new LinkedList<>();
-        String query = "SELECT * FROM attivita_manutenzione";
+        
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
@@ -197,7 +194,21 @@ public class MaintenanceActivity {
                     new Site(rst.getString("sito")), 
                     new Typology(rst.getString("tipologia"))));
             }
-        return maintenaceActivities;    
+        return maintenaceActivities;
+    }
+    
+   
+    //Acquire list of Maintenance Activities
+    public static LinkedList<MaintenanceActivity> getMaintenanceActivities (Connection conn) throws SQLException{
+        String query = "SELECT * FROM attivita_manutenzione";
+        return resultQueryGetActivities(conn, query);
+    }
+    
+    
+    //Acquire list of Maintenance Activities in a particular week
+    public static LinkedList<MaintenanceActivity> getMaintenanceActivitiesByWeek (Connection conn, int week_number) throws SQLException{
+        String query = "SELECT * FROM attivita_manutenzione WHERE settimana = " + week_number;
+        return resultQueryGetActivities(conn, query);
     }
     
     public void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
