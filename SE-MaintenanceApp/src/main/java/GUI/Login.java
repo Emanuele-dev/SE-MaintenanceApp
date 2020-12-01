@@ -159,7 +159,7 @@ public class Login extends javax.swing.JFrame {
                 String surname = rs.getString("Cognome");
                 String role = rs.getString("Ruolo");
                 JOptionPane.showMessageDialog(rootPane, "Welcome " + name + " " + surname + ", you are loginning as " + role, "Login Success", JOptionPane.INFORMATION_MESSAGE);
-                logUser = new User(name, surname, username, password);
+                logUser = new User(name, surname, username, password, true, role);
                 /* Need update Class User to continue*/
                 this.dispose();
                 // Then save in DB the access
