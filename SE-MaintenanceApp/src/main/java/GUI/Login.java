@@ -164,13 +164,12 @@ public class Login extends javax.swing.JFrame {
                 logUser = new User(name, surname, username, password, true, role);
                 /* Need update Class User to continue*/
                 this.dispose();
-                                if(role.equals("System Administrator")){
+                if(role.equals("SystemAdministrator")){
                     AdminGUI sysGui = new AdminGUI(logUser, conn);
                     sysGui.setVisible(true);
                 }
                 if(role.equals("Planner")){
-                    LinkedList<MaintenanceActivity> activityList = MaintenanceActivity.getMaintenanceActivities(conn);
-                    PlannerGUI plannerGui = new PlannerGUI(logUser, conn, activityList);
+                    PlannerGUI plannerGui = new PlannerGUI(logUser, conn);
                     plannerGui.setVisible(true);
                 }
                 if(role.equals("Maintainer")){
