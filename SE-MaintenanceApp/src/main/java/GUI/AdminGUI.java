@@ -5,35 +5,320 @@
  */
 package GUI;
 
-import com.team14.se.maintenanceapp.User;
+import com.team14.se.maintenanceapp.*;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Main GUI for system administrator
+ * 
  * @author mario
  */
 public class AdminGUI extends javax.swing.JFrame {
     
     private User loggedUser;
-    private Connection connection;
+    private Connection connection;  // DataBase connection
+    
+    // database data lists
+    private LinkedList<User> usersList;
+    private LinkedList<Procedure> proceduresList;
+    private LinkedList<Competence> competencesList;
+    private LinkedList<Site> sitesList;
+    private LinkedList<Material> materialsList;
+    private LinkedList<Typology> typesList;
     
     /**
      * Creates new form AdminGUI
      */
     public AdminGUI() {
+        this.typesList = null;
+        this.materialsList = null;
+        this.sitesList = null;
+        this.competencesList = null;
+        this.proceduresList = null;
+        this.usersList = null;
+        
         initComponents();
     }
     
     /**
-     * Creates new form AdminGUI
+     * Creates new form AdminGUI for specific user and database connection
      * 
      * @param loggedUser the logged user
      * @param connection the database connection
      */
     public AdminGUI(User loggedUser, Connection connection) {
+        this.typesList = null;
+        this.materialsList = null;
+        this.sitesList = null;
+        this.competencesList = null;
+        this.proceduresList = null;
+        this.usersList = null;
+        
         this.loggedUser = loggedUser;
         this.connection = connection;
+        
         initComponents();
+        
+       //set event listner for data tables and lists
+        this.usersTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            usersTableJTableActionPerformed();
+        });
+        
+        this.proceduresTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            proceduresTableJTableActionPerformed();
+        });
+        
+        this.competencesTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            competencesTableJTableActionPerformed();
+        });
+        
+        this.sitesJList.addListSelectionListener((ListSelectionEvent e) -> {
+            sitesJListeActionPerformed();
+        });
+        
+        this.materialsTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            materialsTableJTableActionPerformed();
+        });
+        
+        this.typesJList.addListSelectionListener((ListSelectionEvent e) -> {
+            typesJListeActionPerformed();
+        });
+
+        // load data from database
+        this.refreshUsersList();
+        this.refreshProceduresList();
+        this.refreshCompetencesList();
+        this.refreshSitesList();
+        this.refreshMaterialsList();
+        this.refreshTypesList();
+
+        setVisible(true);
+    }
+    
+    /**
+     * Update users table from the database
+     * 
+     */
+    private void refreshUsersList(){
+        this.usersTableJTable.setEnabled(false);
+        
+        // disable sude form until a new row is selected
+        if (this.editUsersJPanel.isEnabled()){
+            this.editUsersJPanel.setEnabled(false);
+            
+            this.userNameJLabel.setEnabled(false);
+            this.userNameJTextField.setEnabled(false);
+            
+            this.userSurnameJLabel.setEnabled(false);
+            this.userSurnameJTextField.setEnabled(false);
+            
+            this.usernameJLabel.setEnabled(false);
+            this.usernameJTextField.setEnabled(false);
+                   
+            this.userRoleJLabel.setEnabled(false);
+            this.userRoleJComboBox.setEnabled(false);
+            userCompetencePanel.deactivate();
+        }
+        
+        // clear table
+        DefaultTableModel usersTableModel = (DefaultTableModel) usersTableJTable.getModel();
+        usersTableModel.setRowCount(0);
+        
+        // update list from database
+        try {
+            this.usersList = User.getUsers(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // update table whith new data
+        usersList.forEach(user -> {
+            usersTableModel.addRow(new String[]{
+                user.getName(),
+                user.getSurname(), 
+                user.getUsername(),
+                user.getRole()
+            });
+        });
+        this.usersTableJTable.setEnabled(true);
+    }
+    
+    /**
+     * Update procedures table from the database
+     * 
+     */
+    private void refreshProceduresList(){
+        this.proceduresTableJTable.setEnabled(false);
+        
+        // disable sude form until a new row is selected
+        if (this.editProceduresJPanel.isEnabled()){
+            this.editProceduresJPanel.setEnabled(false);
+            
+            this.procedureNameJLabel.setEnabled(false);
+            this.procedureNameJTextField.setEnabled(false);
+            
+            this.SMPJLabel.setEnabled(false);
+            this.SMPJTextField.setEnabled(false);
+            procedureCompetencePanel.deactivate();
+        }
+        
+        // clear table
+        DefaultTableModel proceduresTableModel  = (DefaultTableModel) proceduresTableJTable.getModel();
+        proceduresTableModel.setRowCount(0);
+        
+        // update list from database
+        try {
+            this.proceduresList = Procedure.getProcedures(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // update table whith new data
+        proceduresList.forEach(procedure -> {
+            proceduresTableModel.addRow(new String[]{
+                procedure.getName(), 
+                procedure.getSmpName()
+            });
+        });
+        this.proceduresTableJTable.setEnabled(true);
+    }
+    
+    private void refreshCompetencesList(){
+        this.competencesTableJTable.setEnabled(false);
+        
+        if (this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(false);
+            
+            this.competenceNameJLabel.setEnabled(false);
+            this.competenceNameJTextField.setEnabled(false);
+            
+            this.competenceIDJLabel.setEnabled(false);
+            this.competenceIDJTextField.setEnabled(false);
+        }
+        
+        DefaultTableModel competencesTableModel  = (DefaultTableModel) competencesTableJTable.getModel();
+        competencesTableModel.setRowCount(0);
+        
+        try {
+            this.competencesList = Competence.getCompetences(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        competencesList.forEach(competence -> {
+            competencesTableModel.addRow(new String[]{
+                String.valueOf(competence.getId()),
+                competence.getName()
+            });
+        });
+        this.competencesTableJTable.setEnabled(true);
+    }
+    
+    private void refreshSitesList(){
+        this.sitesJList.setEnabled(false);
+        
+        if (this.editSitesJPanel.isEnabled()){
+            this.editSitesJPanel.setEnabled(false);
+            
+            this.siteNameJLabel.setEnabled(false);
+            this.siteNameJTextField.setEnabled(false);
+        }
+        
+        DefaultListModel<String> siteslistModel  = new DefaultListModel<>();
+        
+        try {
+            this.sitesList = Site.getSites(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        sitesList.forEach(site -> {
+            siteslistModel.addElement(site.getName());
+        });
+        
+        this.sitesJList.setModel(siteslistModel);
+        this.sitesJList.setEnabled(true);
+    }
+    
+    private void refreshMaterialsList(){
+        this.materialsTableJTable.setEnabled(false);
+        
+        if (this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(false);
+            
+            this.materialNameJLabel.setEnabled(false);
+            this.materialNameJTextField.setEnabled(false);
+            
+            this.materialDescriptionJScrollPane.setEnabled(false);
+            this.materialDescriptionJTextArea.setEnabled(false);
+        }
+        
+        DefaultTableModel materialsTableModel  = (DefaultTableModel) materialsTableJTable.getModel();
+        materialsTableModel.setRowCount(0);
+        
+        try {
+            this.materialsList = Material.getMaterials(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        materialsList.forEach(material -> {
+            materialsTableModel.addRow(new String[]{
+                material.getName(),
+                material.getDescription()
+            });
+        });
+        this.materialsTableJTable.setEnabled(true);
+    }
+    
+    private void refreshTypesList(){
+        this.typesJList.setEnabled(false);
+        
+        if (this.editTypeJPanel.isEnabled()){
+            this.editTypeJPanel.setEnabled(false);
+            
+            this.typeNameJLabel.setEnabled(false);
+            this.typeNameJTextField.setEnabled(false);
+        }
+        
+        DefaultListModel<String> typeslistModel  = new DefaultListModel<>();
+        
+        try {
+            this.typesList = Typology.getTypologies(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        typesList.forEach(type -> {
+            typeslistModel.addElement(type.getName());
+        });
+        
+        this.typesJList.setModel(typeslistModel);
+        this.typesJList.setEnabled(true);
+    }
+    
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        try{
+            Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "postgres", "postgressse2020").getConnection();
+            System.out.println("Connession to " + conn + " successfully created");
+            
+            java.awt.EventQueue.invokeLater(() -> {
+                AdminGUI adminGUI = new AdminGUI(null, conn);
+            });
+        }catch(SQLException | ClassNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -61,14 +346,8 @@ public class AdminGUI extends javax.swing.JFrame {
         userSurnameJTextField = new javax.swing.JTextField();
         usernameJTextField = new javax.swing.JTextField();
         userRoleJComboBox = new javax.swing.JComboBox<>();
-        maintainerCompetencesJPanel = new javax.swing.JPanel();
-        maintainerCompetencesJScrollPane = new javax.swing.JScrollPane();
-        maintainerCompetencesJList = new javax.swing.JList<>();
-        removeMaintainerCompetencesJButton = new javax.swing.JButton();
-        addMaintainerCompetencesJPanel = new javax.swing.JPanel();
-        addMaintainerCompetencesJButton = new javax.swing.JButton();
-        addMaintainerCompetencesJComboBox = new javax.swing.JComboBox<>();
         updateUserJButton = new javax.swing.JButton();
+        userCompetencePanel = new GUI.CompetencePanel(connection);
         removeUserJButton = new javax.swing.JButton();
         usersTableJScrollPane = new javax.swing.JScrollPane();
         usersTableJTable = new javax.swing.JTable();
@@ -83,13 +362,7 @@ public class AdminGUI extends javax.swing.JFrame {
         SMPJLabel = new javax.swing.JLabel();
         SMPJTextField = new javax.swing.JTextField();
         updateProcedureJButton = new javax.swing.JButton();
-        ProcedureCompetencesJPanel = new javax.swing.JPanel();
-        procedureCompetencesJScrollPane = new javax.swing.JScrollPane();
-        procedureCompetencesJList = new javax.swing.JList<>();
-        removeProcedureCompetencesJButton = new javax.swing.JButton();
-        addProcedureCompetencesJPanel = new javax.swing.JPanel();
-        addProcedureCompetencesJButton = new javax.swing.JButton();
-        addProcedureCompetencesJComboBox = new javax.swing.JComboBox<>();
+        procedureCompetencePanel = new GUI.CompetencePanel(connection);
         removeProcedureJButton = new javax.swing.JButton();
         proceduresTableJScrollPane = new javax.swing.JScrollPane();
         proceduresTableJTable = new javax.swing.JTable();
@@ -153,6 +426,11 @@ public class AdminGUI extends javax.swing.JFrame {
         usersJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshUsersJButton.setText("Refresh List");
+        refreshUsersJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshUsersListJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout usersTopJPanelLayout = new javax.swing.GroupLayout(usersTopJPanel);
         usersTopJPanel.setLayout(usersTopJPanelLayout);
@@ -160,7 +438,7 @@ public class AdminGUI extends javax.swing.JFrame {
             usersTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(usersTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshUsersJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         usersTopJPanelLayout.setVerticalGroup(
             usersTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,73 +481,18 @@ public class AdminGUI extends javax.swing.JFrame {
 
         usernameJTextField.setEnabled(false);
 
-        userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maintainer", "Planer", "System Administrator" }));
+        userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maintainer", "Planner", "System Administrator" }));
         userRoleJComboBox.setEnabled(false);
-
-        maintainerCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Maintainer Competences"));
-        maintainerCompetencesJPanel.setEnabled(false);
-
-        maintainerCompetencesJList.setEnabled(false);
-        maintainerCompetencesJScrollPane.setViewportView(maintainerCompetencesJList);
-
-        removeMaintainerCompetencesJButton.setText("Remove Selected");
-        removeMaintainerCompetencesJButton.setEnabled(false);
-
-        addMaintainerCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Competences"));
-        addMaintainerCompetencesJPanel.setEnabled(false);
-
-        addMaintainerCompetencesJButton.setText("Add ");
-        addMaintainerCompetencesJButton.setEnabled(false);
-
-        addMaintainerCompetencesJComboBox.setEnabled(false);
-
-        javax.swing.GroupLayout addMaintainerCompetencesJPanelLayout = new javax.swing.GroupLayout(addMaintainerCompetencesJPanel);
-        addMaintainerCompetencesJPanel.setLayout(addMaintainerCompetencesJPanelLayout);
-        addMaintainerCompetencesJPanelLayout.setHorizontalGroup(
-            addMaintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addMaintainerCompetencesJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addMaintainerCompetencesJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addMaintainerCompetencesJButton)
-                .addContainerGap())
-        );
-        addMaintainerCompetencesJPanelLayout.setVerticalGroup(
-            addMaintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addMaintainerCompetencesJPanelLayout.createSequentialGroup()
-                .addGroup(addMaintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addMaintainerCompetencesJButton)
-                    .addComponent(addMaintainerCompetencesJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout maintainerCompetencesJPanelLayout = new javax.swing.GroupLayout(maintainerCompetencesJPanel);
-        maintainerCompetencesJPanel.setLayout(maintainerCompetencesJPanelLayout);
-        maintainerCompetencesJPanelLayout.setHorizontalGroup(
-            maintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(maintainerCompetencesJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(maintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(maintainerCompetencesJScrollPane)
-                    .addGroup(maintainerCompetencesJPanelLayout.createSequentialGroup()
-                        .addComponent(removeMaintainerCompetencesJButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(addMaintainerCompetencesJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        maintainerCompetencesJPanelLayout.setVerticalGroup(
-            maintainerCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(maintainerCompetencesJPanelLayout.createSequentialGroup()
-                .addComponent(maintainerCompetencesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(removeMaintainerCompetencesJButton)
-                .addGap(18, 18, 18)
-                .addComponent(addMaintainerCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        userRoleJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userRoleJComboBoxActionPerformed(evt);
+            }
+        });
 
         updateUserJButton.setText("Update User");
         updateUserJButton.setEnabled(false);
+
+        userCompetencePanel.setEnabled(false);
 
         javax.swing.GroupLayout editUsersJPanelLayout = new javax.swing.GroupLayout(editUsersJPanel);
         editUsersJPanel.setLayout(editUsersJPanelLayout);
@@ -294,16 +517,18 @@ public class AdminGUI extends javax.swing.JFrame {
                         .addGroup(editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(editUsersJPanelLayout.createSequentialGroup()
                                 .addComponent(userRoleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 78, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(usernameJTextField)))
                     .addGroup(editUsersJPanelLayout.createSequentialGroup()
                         .addComponent(changePasswordJButton)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(maintainerCompetencesJPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editUsersJPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(updateUserJButton)))
                 .addContainerGap())
+            .addGroup(editUsersJPanelLayout.createSequentialGroup()
+                .addComponent(userCompetencePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         editUsersJPanelLayout.setVerticalGroup(
             editUsersJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,8 +552,8 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(changePasswordJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(maintainerCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(userCompetencePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
                 .addComponent(updateUserJButton)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
@@ -401,6 +626,11 @@ public class AdminGUI extends javax.swing.JFrame {
         proceduresJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshProceduresJButton.setText("Refresh List");
+        refreshProceduresJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshProceduresJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout proceduresTopJPanelLayout = new javax.swing.GroupLayout(proceduresTopJPanel);
         proceduresTopJPanel.setLayout(proceduresTopJPanelLayout);
@@ -408,7 +638,7 @@ public class AdminGUI extends javax.swing.JFrame {
             proceduresTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proceduresTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshProceduresJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         proceduresTopJPanelLayout.setVerticalGroup(
             proceduresTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,67 +673,7 @@ public class AdminGUI extends javax.swing.JFrame {
         updateProcedureJButton.setText("Update Procedure");
         updateProcedureJButton.setEnabled(false);
 
-        ProcedureCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Competences"));
-        ProcedureCompetencesJPanel.setEnabled(false);
-
-        procedureCompetencesJList.setEnabled(false);
-        procedureCompetencesJScrollPane.setViewportView(procedureCompetencesJList);
-
-        removeProcedureCompetencesJButton.setText("Remove Selected");
-        removeProcedureCompetencesJButton.setEnabled(false);
-
-        addProcedureCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Competences"));
-        addProcedureCompetencesJPanel.setEnabled(false);
-
-        addProcedureCompetencesJButton.setText("Add ");
-        addProcedureCompetencesJButton.setEnabled(false);
-
-        addProcedureCompetencesJComboBox.setEnabled(false);
-
-        javax.swing.GroupLayout addProcedureCompetencesJPanelLayout = new javax.swing.GroupLayout(addProcedureCompetencesJPanel);
-        addProcedureCompetencesJPanel.setLayout(addProcedureCompetencesJPanelLayout);
-        addProcedureCompetencesJPanelLayout.setHorizontalGroup(
-            addProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addProcedureCompetencesJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addProcedureCompetencesJButton)
-                .addContainerGap())
-        );
-        addProcedureCompetencesJPanelLayout.setVerticalGroup(
-            addProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addGroup(addProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addProcedureCompetencesJButton)
-                    .addComponent(addProcedureCompetencesJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout ProcedureCompetencesJPanelLayout = new javax.swing.GroupLayout(ProcedureCompetencesJPanel);
-        ProcedureCompetencesJPanel.setLayout(ProcedureCompetencesJPanelLayout);
-        ProcedureCompetencesJPanelLayout.setHorizontalGroup(
-            ProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(procedureCompetencesJScrollPane)
-                    .addGroup(ProcedureCompetencesJPanelLayout.createSequentialGroup()
-                        .addComponent(removeProcedureCompetencesJButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(addProcedureCompetencesJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        ProcedureCompetencesJPanelLayout.setVerticalGroup(
-            ProcedureCompetencesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProcedureCompetencesJPanelLayout.createSequentialGroup()
-                .addComponent(procedureCompetencesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(removeProcedureCompetencesJButton)
-                .addGap(18, 18, 18)
-                .addComponent(addProcedureCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        procedureCompetencePanel.setEnabled(false);
 
         javax.swing.GroupLayout editProceduresJPanelLayout = new javax.swing.GroupLayout(editProceduresJPanel);
         editProceduresJPanel.setLayout(editProceduresJPanelLayout);
@@ -521,10 +691,12 @@ public class AdminGUI extends javax.swing.JFrame {
                             .addComponent(procedureNameJTextField)
                             .addComponent(SMPJTextField)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editProceduresJPanelLayout.createSequentialGroup()
-                        .addGap(0, 182, Short.MAX_VALUE)
-                        .addComponent(updateProcedureJButton))
-                    .addComponent(ProcedureCompetencesJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(updateProcedureJButton)))
                 .addContainerGap())
+            .addGroup(editProceduresJPanelLayout.createSequentialGroup()
+                .addComponent(procedureCompetencePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         editProceduresJPanelLayout.setVerticalGroup(
             editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -536,9 +708,9 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addGroup(editProceduresJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SMPJLabel)
                     .addComponent(SMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ProcedureCompetencesJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(procedureCompetencePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
                 .addComponent(updateProcedureJButton))
         );
 
@@ -578,14 +750,14 @@ public class AdminGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "SMP", "Competences"
+                "Name", "SMP"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -613,7 +785,7 @@ public class AdminGUI extends javax.swing.JFrame {
             competencesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(competencesTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshCompetencesJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         competencesTopJPanelLayout.setVerticalGroup(
             competencesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -749,6 +921,11 @@ public class AdminGUI extends javax.swing.JFrame {
         sitesJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshSitesJButton.setText("Refresh List");
+        refreshSitesJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshSitesJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout sitesTopJPanelLayout = new javax.swing.GroupLayout(sitesTopJPanel);
         sitesTopJPanel.setLayout(sitesTopJPanelLayout);
@@ -756,7 +933,7 @@ public class AdminGUI extends javax.swing.JFrame {
             sitesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sitesTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshSitesJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         sitesTopJPanelLayout.setVerticalGroup(
             sitesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -854,6 +1031,11 @@ public class AdminGUI extends javax.swing.JFrame {
         MaterialJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshMaterialsJButton.setText("Refresh List");
+        refreshMaterialsJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshMaterialsJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout MaterialTopJPanelLayout = new javax.swing.GroupLayout(MaterialTopJPanel);
         MaterialTopJPanel.setLayout(MaterialTopJPanelLayout);
@@ -861,7 +1043,7 @@ public class AdminGUI extends javax.swing.JFrame {
             MaterialTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MaterialTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshMaterialsJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         MaterialTopJPanelLayout.setVerticalGroup(
             MaterialTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -994,6 +1176,11 @@ public class AdminGUI extends javax.swing.JFrame {
         TypeJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshTypesJButton.setText("Refresh List");
+        refreshTypesJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshTypesJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout typesTopJPanelLayout = new javax.swing.GroupLayout(typesTopJPanel);
         typesTopJPanel.setLayout(typesTopJPanelLayout);
@@ -1001,7 +1188,7 @@ public class AdminGUI extends javax.swing.JFrame {
             typesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(typesTopJPanelLayout.createSequentialGroup()
                 .addComponent(refreshTypesJButton)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
         typesTopJPanelLayout.setVerticalGroup(
             typesTopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1115,7 +1302,8 @@ public class AdminGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
     private void typeNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeNameJTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_typeNameJTextFieldActionPerformed
@@ -1140,56 +1328,231 @@ public class AdminGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_userNameJTextFieldActionPerformed
 
+    private void refreshUsersListJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshUsersListJButtonActionPerformed
+        this.refreshUsersList();
+    }//GEN-LAST:event_refreshUsersListJButtonActionPerformed
+
+    private void refreshProceduresJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshProceduresJButtonActionPerformed
+        this.refreshProceduresList();
+    }//GEN-LAST:event_refreshProceduresJButtonActionPerformed
+
     /**
-     * @param args the command line arguments
+     * Enable the competences panel if maintainer is selected in 
+     * the user role combo box
+     * 
+     * @param evt 
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void userRoleJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userRoleJComboBoxActionPerformed
+        if (this.userRoleJComboBox.getSelectedItem().equals("Maintainer")){
+            try {
+                this.userCompetencePanel.activate(new LinkedList<>());
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } else {
+            this.userCompetencePanel.deactivate();
         }
-        //</editor-fold>
+    }//GEN-LAST:event_userRoleJComboBoxActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdminGUI().setVisible(true);
+    private void refreshSitesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSitesJButtonActionPerformed
+        this.refreshSitesList();
+    }//GEN-LAST:event_refreshSitesJButtonActionPerformed
+
+    private void refreshTypesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshTypesJButtonActionPerformed
+        this.refreshTypesList();
+    }//GEN-LAST:event_refreshTypesJButtonActionPerformed
+
+    private void refreshMaterialsJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMaterialsJButtonActionPerformed
+        this.refreshMaterialsList();
+    }//GEN-LAST:event_refreshMaterialsJButtonActionPerformed
+
+    
+    /**
+     * Show the details of the selected user in the side panel
+     * 
+     */
+    private void usersTableJTableActionPerformed() {
+        int selectedUserIndex = usersTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedUserIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editUsersJPanel.isEnabled()){
+            this.editUsersJPanel.setEnabled(true);
+            
+            this.userNameJLabel.setEnabled(true);
+            this.userNameJTextField.setEnabled(true);
+            
+            this.userSurnameJLabel.setEnabled(true);
+            this.userSurnameJTextField.setEnabled(true);
+            
+            this.usernameJLabel.setEnabled(true);
+            this.usernameJTextField.setEnabled(true);
+                   
+            this.userRoleJLabel.setEnabled(true);
+            this.userRoleJComboBox.setEnabled(true);
+        }
+        
+        // fill form whit the data of the selected user
+        this.userNameJTextField.setText(usersList.get(selectedUserIndex).getName());
+
+        this.userSurnameJTextField.setText(usersList.get(selectedUserIndex).getSurname());
+        
+        this.usernameJTextField.setText(usersList.get(selectedUserIndex).getUsername());
+
+        this.userRoleJComboBox.setSelectedItem(usersList.get(selectedUserIndex).getRole());
+        
+        // if the user is a maintainer enable the enable the competences panel
+        if (usersList.get(selectedUserIndex).getRole().equals("Maintainer")){
+            try {
+                //TODO: pass user's competences list instead of null
+                userCompetencePanel.activate(new LinkedList<>());
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
+        } else {
+            userCompetencePanel.deactivate();
+        }
     }
+    
+    
+    /**
+     * Show the details of the selected procedure in the side panel
+     * 
+     */
+    private void proceduresTableJTableActionPerformed() {
+        int selectedProcedureIndex = proceduresTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedProcedureIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editProceduresJPanel.isEnabled()){
+            this.editProceduresJPanel.setEnabled(true);
+            
+            this.procedureNameJLabel.setEnabled(true);
+            this.procedureNameJTextField.setEnabled(true);
+            
+            this.SMPJLabel.setEnabled(true);
+            this.SMPJTextField.setEnabled(true);
+        }
 
+        // fill form whit the data of the selected procedure
+        this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
+
+        this.SMPJTextField.setText(proceduresList.get(selectedProcedureIndex).getSmpName());
+        
+        // fill the competences panel
+        try {
+            //LinkedList<Competence> procedureCompetences = Competence.getCompetences(connection);
+            //procedureCompetences.remove(proceduresList.get(selectedUserIndex).getCompetence());
+            LinkedList<Competence> procedureCompetences = new LinkedList<>();
+            procedureCompetences.add(proceduresList.get(selectedProcedureIndex).getCompetence());
+            procedureCompetencePanel.activate(procedureCompetences);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Show the details of the selected competence in the side panel
+     * 
+     */
+    private void competencesTableJTableActionPerformed() {
+        int selectedCompetenceIndex = competencesTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedCompetenceIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(true);
+            
+            this.competenceIDJLabel.setEnabled(true);
+            
+            this.competenceNameJLabel.setEnabled(true);
+            this.competenceNameJTextField.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.competenceNameJTextField.setText(competencesList.get(selectedCompetenceIndex).getName());
+
+        this.competenceIDJTextField.setText(String.valueOf(competencesList.get(selectedCompetenceIndex).getId()));
+    }
+    
+    /**
+     * Show the details of the selected site in the side panel
+     * 
+     */
+    private void sitesJListeActionPerformed() {
+        
+        // enable side panel if disabled
+        if (!this.editSitesJPanel.isEnabled()){
+            this.editSitesJPanel.setEnabled(true);
+            
+            this.siteNameJLabel.setEnabled(true);
+            this.siteNameJTextField.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.siteNameJTextField.setText(this.sitesJList.getSelectedValue());
+    }
+    
+    /**
+     * Show the details of the selected material in the side panel
+     * 
+     */
+    private void materialsTableJTableActionPerformed() {
+        int selectedMaterialIndex = materialsTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedMaterialIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(true);
+            
+            this.materialNameJLabel.setEnabled(true);
+            this.materialNameJTextField.setEnabled(true);
+            
+            this.materialDescriptionJScrollPane.setEnabled(true);
+            this.materialDescriptionJTextArea.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.materialNameJTextField.setText(materialsList.get(selectedMaterialIndex).getName());
+
+        this.materialDescriptionJTextArea.setText(materialsList.get(selectedMaterialIndex).getDescription());
+    }
+    
+    /**
+     * Show the details of the selected type in the side panel
+     * 
+     */
+    private void typesJListeActionPerformed() {
+        
+        // enable side panel if disabled
+        if (!this.editTypeJPanel.isEnabled()){
+            this.editTypeJPanel.setEnabled(true);
+            
+            this.typeNameJLabel.setEnabled(true);
+            this.typeNameJTextField.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.typeNameJTextField.setText(this.typesJList.getSelectedValue());
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MaterialJPanel;
     private javax.swing.JPanel MaterialTopJPanel;
-    private javax.swing.JPanel ProcedureCompetencesJPanel;
     private javax.swing.JLabel SMPJLabel;
     private javax.swing.JTextField SMPJTextField;
     private javax.swing.JPanel TypeJPanel;
     private javax.swing.JButton addCompetenceJButton;
-    private javax.swing.JButton addMaintainerCompetencesJButton;
-    private javax.swing.JComboBox<String> addMaintainerCompetencesJComboBox;
-    private javax.swing.JPanel addMaintainerCompetencesJPanel;
     private javax.swing.JButton addMaterialJButton;
-    private javax.swing.JButton addProcedureCompetencesJButton;
-    private javax.swing.JComboBox<String> addProcedureCompetencesJComboBox;
-    private javax.swing.JPanel addProcedureCompetencesJPanel;
     private javax.swing.JButton addProcedureJButton;
     private javax.swing.JButton addSiteJButton;
     private javax.swing.JButton addTypeJButton;
@@ -1211,9 +1574,6 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JPanel editSitesJPanel;
     private javax.swing.JPanel editTypeJPanel;
     private javax.swing.JPanel editUsersJPanel;
-    private javax.swing.JList<String> maintainerCompetencesJList;
-    private javax.swing.JPanel maintainerCompetencesJPanel;
-    private javax.swing.JScrollPane maintainerCompetencesJScrollPane;
     private javax.swing.JScrollPane materialDescriptionJScrollPane;
     private javax.swing.JTextArea materialDescriptionJTextArea;
     private javax.swing.JLabel materialNameJLabel;
@@ -1221,8 +1581,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JPanel materialsDetailsJPanel;
     private javax.swing.JScrollPane materialsTableJScrollPane;
     private javax.swing.JTable materialsTableJTable;
-    private javax.swing.JList<String> procedureCompetencesJList;
-    private javax.swing.JScrollPane procedureCompetencesJScrollPane;
+    private GUI.CompetencePanel procedureCompetencePanel;
     private javax.swing.JLabel procedureNameJLabel;
     private javax.swing.JTextField procedureNameJTextField;
     private javax.swing.JPanel proceduresDetailsJPanel;
@@ -1237,9 +1596,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JButton refreshTypesJButton;
     private javax.swing.JButton refreshUsersJButton;
     private javax.swing.JButton removeCompetenceJButton;
-    private javax.swing.JButton removeMaintainerCompetencesJButton;
     private javax.swing.JButton removeMaterialJButton;
-    private javax.swing.JButton removeProcedureCompetencesJButton;
     private javax.swing.JButton removeProcedureJButton;
     private javax.swing.JButton removeSiteJButton;
     private javax.swing.JButton removeTypeJButton;
@@ -1263,6 +1620,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JButton updateSiteJButton;
     private javax.swing.JButton updateTypeJButton;
     private javax.swing.JButton updateUserJButton;
+    private GUI.CompetencePanel userCompetencePanel;
     private javax.swing.JLabel userNameJLabel;
     private javax.swing.JTextField userNameJTextField;
     private javax.swing.JComboBox<String> userRoleJComboBox;
