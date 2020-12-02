@@ -9,9 +9,12 @@ import com.team14.se.maintenanceapp.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
  * @author mario
  */
 public class AdminGUI extends javax.swing.JFrame {
+    
+    private final AdminGUI frame = this;
     
     private User loggedUser;
     private Connection connection;  // DataBase connection
@@ -102,11 +107,16 @@ public class AdminGUI extends javax.swing.JFrame {
         setVisible(true);
     }
     
+    
+    
+    ///////////////////// REFRESH USERS /////////////////////
+    
     /**
      * Update users table from the database
      * 
      */
     private void refreshUsersList(){
+        this.refreshUsersJButton.setEnabled(false);
         this.usersTableJTable.setEnabled(false);
         
         // disable sude form until a new row is selected
@@ -124,37 +134,72 @@ public class AdminGUI extends javax.swing.JFrame {
                    
             this.userRoleJLabel.setEnabled(false);
             this.userRoleJComboBox.setEnabled(false);
-            userCompetencePanel.deactivate();
+            this.userCompetencePanel.deactivate();
         }
         
         // clear table
         DefaultTableModel usersTableModel = (DefaultTableModel) usersTableJTable.getModel();
         usersTableModel.setRowCount(0);
         
-        // update list from database
-        try {
-            this.usersList = User.getUsers(connection);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        // update table whith new data
-        usersList.forEach(user -> {
-            usersTableModel.addRow(new String[]{
-                user.getName(),
-                user.getSurname(), 
-                user.getUsername(),
-                user.getRole()
-            });
-        });
-        this.usersTableJTable.setEnabled(true);
+        new UsersWorker().execute();
     }
+    
+    /**
+     * Worker Thread to update users table from the database
+     * 
+     */
+    class UsersWorker extends SwingWorker<LinkedList<User> , Void> {
+        @Override
+        protected LinkedList<User> doInBackground() throws Exception {
+            try {
+                return User.getUsers(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+            }
+        }
+
+        @Override
+        protected void done() {
+            LinkedList<User> queryList = null;
+            try {
+                queryList = get();
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (queryList == null){
+                JOptionPane.showMessageDialog(frame,
+                    "Errore Connessione Database.",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                usersList = queryList;
+                // update table whith new data
+                DefaultTableModel usersTableModel = (DefaultTableModel) usersTableJTable.getModel();
+                usersList.forEach(user -> {
+                    usersTableModel.addRow(new String[]{
+                        user.getName(),
+                        user.getSurname(), 
+                        user.getUsername(),
+                        user.getRole()
+                    });
+                });
+                usersTableJTable.setEnabled(true);
+            }
+            refreshUsersJButton.setEnabled(true);
+        }
+    }
+    
+    
+    ///////////////////// REFRESH PROCEDURES /////////////////////
     
     /**
      * Update procedures table from the database
      * 
      */
     private void refreshProceduresList(){
+        this.refreshProceduresJButton.setEnabled(false);
         this.proceduresTableJTable.setEnabled(false);
         
         // disable sude form until a new row is selected
@@ -173,24 +218,64 @@ public class AdminGUI extends javax.swing.JFrame {
         DefaultTableModel proceduresTableModel  = (DefaultTableModel) proceduresTableJTable.getModel();
         proceduresTableModel.setRowCount(0);
         
-        // update list from database
-        try {
-            this.proceduresList = Procedure.getProcedures(connection);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        // update table whith new data
-        proceduresList.forEach(procedure -> {
-            proceduresTableModel.addRow(new String[]{
-                procedure.getName(), 
-                procedure.getSmpName()
-            });
-        });
-        this.proceduresTableJTable.setEnabled(true);
+        new ProceduresWorker().execute();
     }
     
+    /**
+     * Worker Thread to update procedure table from the database
+     * 
+     */
+    class ProceduresWorker extends SwingWorker<LinkedList<Procedure> , Void> {
+        @Override
+        protected LinkedList<Procedure> doInBackground() throws Exception {
+            try {
+                return Procedure.getProcedures(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+            }
+        }
+
+        @Override
+        protected void done() {
+            LinkedList<Procedure> queryList = null;
+            try {
+                queryList = get();
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (queryList == null){
+                JOptionPane.showMessageDialog(frame,
+                    "Errore Connessione Database.",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                proceduresList = queryList;
+                // update table whith new data
+                DefaultTableModel proceduresTableModel = (DefaultTableModel) proceduresTableJTable.getModel();
+                // update table whith new data
+                proceduresList.forEach(procedure -> {
+                    proceduresTableModel.addRow(new String[]{
+                        procedure.getName(), 
+                        procedure.getSmpName()
+                    });
+                });
+                proceduresTableJTable.setEnabled(true);
+            }
+            refreshProceduresJButton.setEnabled(true);
+        }
+    }
+    
+    
+    ///////////////////// REFRESH COMPETENCES /////////////////////
+    
+    /**
+     * Update competences table from the database
+     * 
+     */
     private void refreshCompetencesList(){
+        this.refreshCompetencesJButton.setEnabled(false);
         this.competencesTableJTable.setEnabled(false);
         
         if (this.editCompetencesJPanel.isEnabled()){
@@ -206,22 +291,63 @@ public class AdminGUI extends javax.swing.JFrame {
         DefaultTableModel competencesTableModel  = (DefaultTableModel) competencesTableJTable.getModel();
         competencesTableModel.setRowCount(0);
         
-        try {
-            this.competencesList = Competence.getCompetences(connection);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        competencesList.forEach(competence -> {
-            competencesTableModel.addRow(new String[]{
-                String.valueOf(competence.getId()),
-                competence.getName()
-            });
-        });
-        this.competencesTableJTable.setEnabled(true);
+        new CompetencesWorker().execute();
     }
     
+    /**
+     * Worker Thread to update competences table from the database
+     * 
+     */
+    class CompetencesWorker extends SwingWorker<LinkedList<Competence> , Void> {
+        @Override
+        protected LinkedList<Competence> doInBackground() throws Exception {
+            try {
+                return Competence.getCompetences(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+            }
+        }
+
+        @Override
+        protected void done() {
+            LinkedList<Competence> queryList = null;
+            try {
+                queryList = get();
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (queryList == null){
+                JOptionPane.showMessageDialog(frame,
+                    "Errore Connessione Database.",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                competencesList = queryList;
+                // update table whith new data
+                DefaultTableModel competencesTableModel = (DefaultTableModel) competencesTableJTable.getModel();
+                competencesList.forEach(competence -> {
+                    competencesTableModel.addRow(new String[]{
+                        String.valueOf(competence.getId()),
+                        competence.getName()
+                    });
+                });
+                competencesTableJTable.setEnabled(true);
+            }
+            refreshCompetencesJButton.setEnabled(true);
+        }
+    }
+    
+    
+    ///////////////////// REFRESH SITES /////////////////////
+    
+    /**
+     * Update sites list from the database
+     * 
+     */
     private void refreshSitesList(){
+        refreshSitesJButton.setEnabled(false);
         this.sitesJList.setEnabled(false);
         
         if (this.editSitesJPanel.isEnabled()){
@@ -231,23 +357,61 @@ public class AdminGUI extends javax.swing.JFrame {
             this.siteNameJTextField.setEnabled(false);
         }
         
-        DefaultListModel<String> siteslistModel  = new DefaultListModel<>();
-        
-        try {
-            this.sitesList = Site.getSites(connection);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        sitesList.forEach(site -> {
-            siteslistModel.addElement(site.getName());
-        });
-        
-        this.sitesJList.setModel(siteslistModel);
-        this.sitesJList.setEnabled(true);
+        new SitesWorker().execute();
     }
     
+    /**
+     * Worker Thread to sites list table from the database
+     * 
+     */
+    class SitesWorker extends SwingWorker<LinkedList<Site> , Void> {
+        @Override
+        protected LinkedList<Site> doInBackground() throws Exception {
+            try {
+                return Site.getSites(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+            }
+        }
+
+        @Override
+        protected void done() {
+            LinkedList<Site> queryList = null;
+            try {
+                queryList = get();
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (queryList == null){
+                JOptionPane.showMessageDialog(frame,
+                    "Errore Connessione Database.",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                DefaultListModel<String> siteslistModel  = new DefaultListModel<>();
+                sitesList = queryList;
+                sitesList.forEach(site -> {
+                    siteslistModel.addElement(site.getName());
+                });
+
+                sitesJList.setModel(siteslistModel);
+                sitesJList.setEnabled(true);
+            }
+            refreshSitesJButton.setEnabled(true);
+        }
+    }
+    
+    
+    ///////////////////// REFRESH MATERIAL /////////////////////
+    
+    /**
+     * Update materials table from the database
+     * 
+     */
     private void refreshMaterialsList(){
+        this.refreshMaterialsJButton.setEnabled(false);
         this.materialsTableJTable.setEnabled(false);
         
         if (this.editCompetencesJPanel.isEnabled()){
@@ -263,22 +427,62 @@ public class AdminGUI extends javax.swing.JFrame {
         DefaultTableModel materialsTableModel  = (DefaultTableModel) materialsTableJTable.getModel();
         materialsTableModel.setRowCount(0);
         
-        try {
-            this.materialsList = Material.getMaterials(connection);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        materialsList.forEach(material -> {
-            materialsTableModel.addRow(new String[]{
-                material.getName(),
-                material.getDescription()
-            });
-        });
-        this.materialsTableJTable.setEnabled(true);
+        new MaterialsWorker().execute();
     }
     
+     /**
+     * Worker Thread to update materials table from the database
+     * 
+     */
+    class MaterialsWorker extends SwingWorker<LinkedList<Material> , Void> {
+        @Override
+        protected LinkedList<Material> doInBackground() throws Exception {
+            try {
+                return Material.getMaterials(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+            }
+        }
+
+        @Override
+        protected void done() {
+            LinkedList<Material> queryList = null;
+            try {
+                queryList = get();
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (queryList == null){
+                JOptionPane.showMessageDialog(frame,
+                    "Errore Connessione Database.",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                materialsList = queryList;
+                // update table whith new data
+                DefaultTableModel materialsTableModel = (DefaultTableModel) materialsTableJTable.getModel();
+                materialsList.forEach(material -> {
+                    materialsTableModel.addRow(new String[]{
+                        material.getName(),
+                        material.getDescription()
+                    });
+                });
+                materialsTableJTable.setEnabled(true);
+            }
+            refreshMaterialsJButton.setEnabled(true);
+        }
+    }
+    
+    ///////////////////// REFRESH TYPE /////////////////////
+
+    /**
+     * Update types list from the database
+     * 
+     */
     private void refreshTypesList(){
+        this.refreshTypesJButton.setEnabled(false);
         this.typesJList.setEnabled(false);
         
         if (this.editTypeJPanel.isEnabled()){
@@ -288,22 +492,53 @@ public class AdminGUI extends javax.swing.JFrame {
             this.typeNameJTextField.setEnabled(false);
         }
         
-        DefaultListModel<String> typeslistModel  = new DefaultListModel<>();
-        
-        try {
-            this.typesList = Typology.getTypologies(connection);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        typesList.forEach(type -> {
-            typeslistModel.addElement(type.getName());
-        });
-        
-        this.typesJList.setModel(typeslistModel);
-        this.typesJList.setEnabled(true);
+        new TypesWorker().execute();
     }
     
+     /**
+     * Worker Thread to update types list from the database
+     * 
+     */
+    class TypesWorker extends SwingWorker<LinkedList<Typology> , Void> {
+        @Override
+        protected LinkedList<Typology> doInBackground() throws Exception {
+            try {
+                return Typology.getTypologies(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+            }
+        }
+
+        @Override
+        protected void done() {
+            LinkedList<Typology> queryList = null;
+            try {
+                queryList = get();
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (queryList == null){
+                JOptionPane.showMessageDialog(frame,
+                    "Errore Connessione Database.",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                typesList = queryList;
+                DefaultListModel<String> typeslistModel  = new DefaultListModel<>();
+                typesList.forEach(type -> {
+                    typeslistModel.addElement(type.getName());
+                });
+                typesJList.setModel(typeslistModel);
+                typesJList.setEnabled(true);
+            }
+            refreshTypesJButton.setEnabled(true);
+        }
+    }
+    
+    
+    ///////////////////// MAIN /////////////////////
     
     /**
      * @param args the command line arguments
@@ -321,6 +556,9 @@ public class AdminGUI extends javax.swing.JFrame {
         }
     }
 
+    ////////////////////////////////////////////////
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -778,6 +1016,11 @@ public class AdminGUI extends javax.swing.JFrame {
         competencesJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshCompetencesJButton.setText("Refresh List");
+        refreshCompetencesJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshCompetencesJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout competencesTopJPanelLayout = new javax.swing.GroupLayout(competencesTopJPanel);
         competencesTopJPanel.setLayout(competencesTopJPanelLayout);
@@ -1344,11 +1587,7 @@ public class AdminGUI extends javax.swing.JFrame {
      */
     private void userRoleJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userRoleJComboBoxActionPerformed
         if (this.userRoleJComboBox.getSelectedItem().equals("Maintainer")){
-            try {
-                this.userCompetencePanel.activate(new LinkedList<>());
-            } catch (SQLException ex) {
-                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.userCompetencePanel.activate(new LinkedList<>(), competencesList); 
         } else {
             this.userCompetencePanel.deactivate();
         }
@@ -1365,6 +1604,10 @@ public class AdminGUI extends javax.swing.JFrame {
     private void refreshMaterialsJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMaterialsJButtonActionPerformed
         this.refreshMaterialsList();
     }//GEN-LAST:event_refreshMaterialsJButtonActionPerformed
+
+    private void refreshCompetencesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshCompetencesJButtonActionPerformed
+        this.refreshCompetencesList();
+    }//GEN-LAST:event_refreshCompetencesJButtonActionPerformed
 
     
     /**
@@ -1405,12 +1648,8 @@ public class AdminGUI extends javax.swing.JFrame {
         
         // if the user is a maintainer enable the enable the competences panel
         if (usersList.get(selectedUserIndex).getRole().equals("Maintainer")){
-            try {
-                //TODO: pass user's competences list instead of null
-                userCompetencePanel.activate(new LinkedList<>());
-            } catch (SQLException ex) {
-                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            //TODO: pass user's competences list instead of null
+            userCompetencePanel.activate(new LinkedList<>(), competencesList);
         } else {
             userCompetencePanel.deactivate();
         }
@@ -1443,16 +1682,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         this.SMPJTextField.setText(proceduresList.get(selectedProcedureIndex).getSmpName());
         
-        // fill the competences panel
-        try {
-            //LinkedList<Competence> procedureCompetences = Competence.getCompetences(connection);
-            //procedureCompetences.remove(proceduresList.get(selectedUserIndex).getCompetence());
-            LinkedList<Competence> procedureCompetences = new LinkedList<>();
-            procedureCompetences.add(proceduresList.get(selectedProcedureIndex).getCompetence());
-            procedureCompetencePanel.activate(procedureCompetences);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //LinkedList<Competence> procedureCompetences = Competence.getCompetences(connection);
+        //procedureCompetences.remove(proceduresList.get(selectedUserIndex).getCompetence());
+        LinkedList<Competence> procedureCompetences = new LinkedList<>();
+        procedureCompetences.add(proceduresList.get(selectedProcedureIndex).getCompetence());
+        procedureCompetencePanel.activate(procedureCompetences, competencesList);
     }
     
     /**
@@ -1486,6 +1720,8 @@ public class AdminGUI extends javax.swing.JFrame {
      * 
      */
     private void sitesJListeActionPerformed() {
+        
+        if (this.sitesJList.getSelectedValue() == null) return;
         
         // enable side panel if disabled
         if (!this.editSitesJPanel.isEnabled()){
@@ -1531,6 +1767,8 @@ public class AdminGUI extends javax.swing.JFrame {
      * 
      */
     private void typesJListeActionPerformed() {
+        
+        if (this.typesJList.getSelectedValue() == null) return;
         
         // enable side panel if disabled
         if (!this.editTypeJPanel.isEnabled()){

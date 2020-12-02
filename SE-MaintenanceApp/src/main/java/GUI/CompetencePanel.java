@@ -46,13 +46,16 @@ public class CompetencePanel extends javax.swing.JPanel {
         return new LinkedList<>(Arrays.asList((String[])this.competencesListModel.toArray()));
     }
     
-    public void activate(LinkedList<Competence> selectedCompetences) throws SQLException{
+    public void activate(
+            LinkedList<Competence> entityCompetences, 
+            LinkedList<Competence> totalCompetences) {
+        
         this.addCompetencesJComboBox.removeAllItems();
         this.competencesListModel.clear();
         
         setEnabled(true);
-        this.selectedCompetences = selectedCompetences;
-        this.competences = Competence.getCompetences(connection);
+        this.selectedCompetences = entityCompetences;
+        this.competences = totalCompetences;
         
         this.competencesListModel = new DefaultListModel<>();
         
@@ -79,10 +82,7 @@ public class CompetencePanel extends javax.swing.JPanel {
     }
 
     public void deactivate(){
-        this.competencesListModel.clear();
-        this.addCompetencesJComboBox.removeAllItems();
-                
-        setEnabled(false);
+        this.setEnabled(false);
         this.competencesJScrollPane.setEnabled(false);
         this.competencesJList.setEnabled(false);
         
@@ -91,7 +91,6 @@ public class CompetencePanel extends javax.swing.JPanel {
         this.addCompetencesJButton.setEnabled(false);
         this.removeCompetencesJButton.setEnabled(false);
     }
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
