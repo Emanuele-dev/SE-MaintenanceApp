@@ -143,7 +143,7 @@ public class Procedure {
     public void addProcedure(Connection conn, Procedure procedure) throws SQLException{
         String query_insert_procedure="";
         PreparedStatement stmtProcedure;
-        query_insert_procedure = "INSERT INTO procedura (nome, smp, competenza) VALUES (?, ?);";
+        query_insert_procedure = "INSERT INTO procedura (nome, smp, competenza) VALUES (?, ?, ?);";
         
         stmtProcedure = conn.prepareStatement(query_insert_procedure);
         stmtProcedure.setString(1, procedure.getName());

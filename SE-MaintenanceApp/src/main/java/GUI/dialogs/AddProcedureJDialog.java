@@ -177,7 +177,7 @@ public class AddProcedureJDialog extends javax.swing.JDialog {
         } else if (competence == null) {
             Messages.showErrorEmptyfield(this, "competence");
         } else {
-            newProcedure = new Procedure(name, smp, new Competence(name));
+            newProcedure = new Procedure(name, smp, new Competence(competence));
             new AddProcedureWorker().execute();
             return;
         }
