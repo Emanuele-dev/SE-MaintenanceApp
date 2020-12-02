@@ -78,13 +78,13 @@ public class Main { //behave as home: connection created only here
             for(MaintenanceActivity m : maintActivities){
                 System.out.println(m.getName());
             }
-            
-            /*LinkedList<MaintenanceActivity> maintActivitiess = MaintenanceActivity.getMaintenanceActivitiesByWeek(conn, 40);   
+            /*
+            LinkedList<MaintenanceActivity> maintActivitiess = MaintenanceActivity.getMaintenanceActivitiesByWeek(conn, 40);   
             System.out.println("\nMaintenance Activities By week:");
             for(MaintenanceActivity m : maintActivitiess){
                 System.out.println(m.getName());
             }*/
-            
+            /*
             //TEST ADDING
             //Add a note and visualize it
             Note note = new Note(" Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. ");
@@ -123,7 +123,7 @@ public class Main { //behave as home: connection created only here
             for(MaintenanceActivity m : maintActivitiesss){
                 System.out.println(m.getName());
             }
-            
+            */
             
             //TEST UPDATE
             /*User user = new User("Luca", "Dinos","luke","paris2000", true, "Planner");
