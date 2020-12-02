@@ -105,4 +105,19 @@ public class Procedure {
         stmtProcedure.setInt(1, procedure.getId());
         stmtProcedure.executeUpdate();
     }
+    
+    public void updateProcedure(Connection conn, Procedure procedure, int oldId) throws SQLException{
+        String query_insert_procedure="";
+        PreparedStatement stmtProcedure;
+        query_insert_procedure = "UPDATE procedura SET nome = (?), smp = (?), competenza = (?) WHERE id = (?)";
+        
+        stmtProcedure = conn.prepareStatement(query_insert_procedure);
+        stmtProcedure.setString(1, procedure.getName());
+        stmtProcedure.setString(2, procedure.getSmpName());
+        stmtProcedure.setString(3, procedure.getCompetence().getName());
+        stmtProcedure.setInt(4, oldId);
+        stmtProcedure.executeUpdate();
+    }
+    
 }
+

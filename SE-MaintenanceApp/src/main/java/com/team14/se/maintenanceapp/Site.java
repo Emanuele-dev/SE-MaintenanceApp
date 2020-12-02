@@ -62,6 +62,17 @@ public class Site {
         stmtSite.setString(1, site.getName());
         stmtSite.executeUpdate();
     }
+     
+    public void updateSite(Connection conn, Site site, String oldName) throws SQLException{
+        String query_insert_site="";
+        PreparedStatement stmtSite;
+        query_insert_site = "UPDATE sito SET nome = (?) WHERE nome = (?)";
+        stmtSite= conn.prepareStatement(query_insert_site);
+        stmtSite.setString(1, site.getName());
+        stmtSite.setString(2, oldName);
+        stmtSite.executeUpdate();
+        
+    }
 
 
 }

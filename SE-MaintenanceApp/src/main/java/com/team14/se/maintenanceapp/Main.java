@@ -76,9 +76,14 @@ public class Main { //behave as home: connection created only here
             LinkedList<MaintenanceActivity> maintActivities = MaintenanceActivity.getMaintenanceActivities(conn);   
             System.out.println("\nMaintenance Activities:");
             for(MaintenanceActivity m : maintActivities){
-                System.out.println(m.getDescription());
+                System.out.println(m.getName());
             }
-            
+            /*
+            LinkedList<MaintenanceActivity> maintActivitiess = MaintenanceActivity.getMaintenanceActivitiesByWeek(conn, 40);   
+            System.out.println("\nMaintenance Activities By week:");
+            for(MaintenanceActivity m : maintActivitiess){
+                System.out.println(m.getName());
+            }*/
             /*
             //TEST ADDING
             //Add a note and visualize it
@@ -105,8 +110,34 @@ public class Main { //behave as home: connection created only here
             //Add a user and visualize it
             User user = new User("Luca", "Dinos","luke","paris2000", true, "Planner");
             user.addUser(conn, user);
+            
+            Procedure proc = new Procedure("Riscalda","to", competence);
+            proc.addProcedure(conn, proc);
+            
+            //Add a maintenace activity and visualize it
+            MaintenanceActivity maint = new MaintenanceActivity("riscalda", "Prendi la tazza", false, 30, false, 12, proc, site, typology);
+            maint.addMaintenanceActivity(conn, maint);
+            
+            LinkedList<MaintenanceActivity> maintActivitiesss = MaintenanceActivity.getMaintenanceActivities(conn);   
+            System.out.println("\nMaintenance Activities POST:");
+            for(MaintenanceActivity m : maintActivitiesss){
+                System.out.println(m.getName());
+            }
             */
-          
+            
+            //TEST UPDATE
+            /*User user = new User("Luca", "Dinos","luke","paris2000", true, "Planner");
+            user.updateUser(conn, user, "cicP");
+            
+            Typology typology = new Typology("Prova");
+            typology.updateTypology(conn, typology, "Culinaria");
+                   
+            LinkedList<Typology> typologiess = Typology.getTypologies(conn);   
+            System.out.println("\nTypologies updated:");
+            for(Typology t : typologiess){
+                System.out.println(t.getName());
+            }
+            */
              
             
         }catch(SQLException e){

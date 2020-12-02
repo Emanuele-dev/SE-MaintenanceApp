@@ -54,13 +54,23 @@ public class Typology {
     }
     public void removeTypology(Connection conn, Typology typology) throws SQLException{
         String query_insert_typology="";
-        PreparedStatement stmtMaterial;
+        PreparedStatement stmtTypology;
         query_insert_typology = "DELETE FROM tipologia WHERE (nome) = (?);";
         
-        stmtMaterial = conn.prepareStatement(query_insert_typology);
-        stmtMaterial.setString(1, typology.getName());
+        stmtTypology = conn.prepareStatement(query_insert_typology);
+        stmtTypology.setString(1, typology.getName());
         
-        stmtMaterial.executeUpdate();
+        stmtTypology.executeUpdate();
     }
     
+    public void updateTypology(Connection conn, Typology typology, String oldName) throws SQLException{
+        String query_insert_user="";
+        PreparedStatement stmtUser;
+        query_insert_user = "UPDATE tipologia SET nome = (?) WHERE nome = (?)";
+        stmtUser= conn.prepareStatement(query_insert_user);
+        stmtUser.setString(1, typology.getName());
+        stmtUser.setString(2, oldName);
+        stmtUser.executeUpdate();
+        
+    }
 }

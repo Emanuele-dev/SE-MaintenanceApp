@@ -76,4 +76,16 @@ public class Material {
         stmtMaterial.executeUpdate();
     }
     
+    public void updateMaterial(Connection conn, Material material, int oldName) throws SQLException{
+        String query_insert_material="";
+        PreparedStatement stmtMaterial;
+        query_insert_material = "UPDATE materiale SET nome = (?), descrizione = (?) WHERE nome = (?)";
+        stmtMaterial= conn.prepareStatement(query_insert_material);
+        stmtMaterial.setString(1, material.getName());
+        stmtMaterial.setString(2, material.getDescription());
+        stmtMaterial.setInt(3, oldName);
+        stmtMaterial.executeUpdate();
+        
+    }
+    
 }

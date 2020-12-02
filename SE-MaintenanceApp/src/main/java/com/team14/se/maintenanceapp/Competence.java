@@ -84,4 +84,27 @@ public class Competence {
         stmtCompetence.executeUpdate();
     }
     
+    public void updateCompetence(Connection conn, Competence competence, int oldId) throws SQLException{
+        String query_insert_competence="";
+        PreparedStatement stmtCompetence;
+        query_insert_competence = "UPDATE competenza SET nome = (?) WHERE id = (?)";
+        stmtCompetence= conn.prepareStatement(query_insert_competence);
+        stmtCompetence.setString(1, competence.getName());
+        stmtCompetence.setInt(2, oldId);
+        stmtCompetence.executeUpdate();
+        
+    }
+    
+ 
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof Competence) {
+            Competence comp = (Competence)obj;
+            return name==comp.name;
+        }
+        else {
+            return false;
+        }
+    }
+    
 }

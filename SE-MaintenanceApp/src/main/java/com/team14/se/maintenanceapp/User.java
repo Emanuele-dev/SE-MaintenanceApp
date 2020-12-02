@@ -112,4 +112,29 @@ public class User {
         stmtUser.executeUpdate();
         
     }
+    
+    public void updateUser(Connection conn, User user, String oldUsername) throws SQLException{
+        String query_insert_user="";
+        PreparedStatement stmtUser;
+        query_insert_user = "UPDATE utente SET nome = (?),"
+                                        + " cognome = (?)," 
+                                        + " username = (?),"
+                                        + " pass = (?)," 
+                                        + " attivo = (?),"
+                                        + " ruolo = (?) WHERE username = (?)";
+        stmtUser= conn.prepareStatement(query_insert_user);
+        stmtUser.setString(1, user.getName());
+        stmtUser.setString(2, user.getSurname());
+        stmtUser.setString(3, user.getUsername());
+        stmtUser.setString(4, user.getPassword());
+        stmtUser.setBoolean(5, user.getState());
+        stmtUser.setString(6, user.getRole());
+        stmtUser.setString(7, oldUsername);
+        stmtUser.executeUpdate();
+        
+    }
+    
+    
+    
 }
+

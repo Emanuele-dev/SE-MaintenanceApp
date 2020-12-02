@@ -27,7 +27,7 @@ CREATE TABLE UTENTE(
 	attivo BOOLEAN DEFAULT TRUE,
 	ruolo VARCHAR(19) NOT NULL,
 	CONSTRAINT PK_USERNAME PRIMARY KEY(username),
-	CONSTRAINT check_ruolo CHECK(ruolo = 'SystemAdministrator' or ruolo = 'Maintainer' or ruolo = 'Planner')
+	CONSTRAINT check_ruolo_limite CHECK(ruolo = 'SystemAdministrator' or ruolo = 'Maintainer' or ruolo = 'Planner')
 );
 
 CREATE TABLE LOGGING(
@@ -94,6 +94,7 @@ CREATE TABLE NOTA(
 
 CREATE TABLE ATTIVITA_MANUTENZIONE(
 	activity_id SERIAL,
+	nome VARCHAR(30),
 	descrizione VARCHAR(255),							   
 	interrompibile BOOLEAN,
 	intervento_stimato INTEGER NOT NULL,	
