@@ -53,10 +53,6 @@ public class PlannerGUI extends javax.swing.JFrame {
         initValues();
     }
 
-    PlannerGUI(User logUser, Connection conn, LinkedList<MaintenanceActivity> activityList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -263,12 +259,13 @@ public class PlannerGUI extends javax.swing.JFrame {
         detailsJPanelLayout.setVerticalGroup(
             detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detailsJPanelLayout.createSequentialGroup()
-                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(detailsWeekJLabel)
-                    .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(detailsIdJLabel)
-                        .addComponent(detailsIdJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(detailsIdJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(detailsWeekJLabel)
+                        .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(detailsActivityJLabel)
@@ -542,16 +539,22 @@ public class PlannerGUI extends javax.swing.JFrame {
         }else{
             ewo = false;
         }
-        /* Serve costrutttore senza id e senza state) 
-        maintenanceActivity = new MaintenanceActivity(description, interrruptable, ewo, week, procedure, site, typology);
         
-        try {
-            maintenanceActivity.addMaintenanceActivity(connection, maintenanceActivity);
-        } catch (SQLException ex) {
-            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        maintenanceActivity = new MaintenanceActivity(name, description, interrruptable, estimatedTime, ewo, week, new Procedure(procedure, "", new Competence("")), new Site(site), new Typology(typology));
+        int input = JOptionPane.showConfirmDialog(rootPane, 
+                "Are you sure you want to create this activity?",
+                "Select an Option...",JOptionPane.YES_NO_CANCEL_OPTION);
+        if (input == 0){
+            try {
+                maintenanceActivity.addMaintenanceActivity(connection, maintenanceActivity);
+                JOptionPane.showMessageDialog(rootPane, "Activity created successfully"); 
+            } catch (SQLException ex) {
+                Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else{
+            JOptionPane.showMessageDialog(rootPane, "Operation canceled");
         }
         
-        */
         
         
     }//GEN-LAST:event_addJButtonActionPerformed
@@ -573,7 +576,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             ResultSet rs = statement.executeQuery(querySingleActivity);
             
             if(rs.next()){
-                //detailsActivityJTextField.setText(rs.getString("name"));
+                detailsActivityJTextField.setText(rs.getString("nome"));
                 detailsIdJTextField.setText(id);
                 detailsWeekJTextField.setText(String.valueOf(rs.getInt("settimana")));
                 detailsSMPJTextField.setText(rs.getString("smp"));
@@ -737,8 +740,10 @@ public class PlannerGUI extends javax.swing.JFrame {
             activitiesTabelModel.setNumRows(0);
             activitiesTabelModel.fireTableDataChanged();
             activityList.forEach((MaintenanceActivity activity) -> {
-                if(activity.getWeek() == n_week)
-                    activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getWeek()});
+                if(activity.getWeek() == n_week){
+                    System.out.println(activity.getActivityId());
+                    activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getEstimatedIntervention() + " min."});
+                }
             });
             
         } catch (SQLException ex) {
