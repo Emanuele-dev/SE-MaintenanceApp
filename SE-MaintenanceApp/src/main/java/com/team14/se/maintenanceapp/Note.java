@@ -16,35 +16,67 @@ public class Note {
     private int id;
     private String text;
     
+    /**
+     * Constructor Note: create a note with an id and a text
+     * @param id
+     * @param text 
+     */
     public Note(int id, String text) {
         this.id = id;
         this.text = text;
     }
-    
+    /**
+     * Constructor Note: create a note with a text
+     * @param text 
+     */
     public Note(String text) {
         this.text = text;
     }
-    
+    /**
+     * 
+     * @return note id
+     */
     public int getId(){
         return id;
     }
+    /**
+     * 
+     * @return note text
+     */
     public String getText(){
         return text;
     }
+    /**
+     * 
+     * @param id new note id
+     */
     public void setId(int id){
         this.id = id;
-}
+    }
+    /**
+     * 
+     * @param text new note text
+     */
     public void setText(String text){
         this.text = text;
     }
 
+    /**
+     * print note
+     * @return string containing data for a single note
+     */
     @Override
     public String toString() {
         return "Note{" + "id=" + id + ", text=" + text + '}';
     }
     
     
-    
+    /**
+     * Get all the notes in the database 
+     * @param conn connection with the database opened
+     * @return list of notes present
+     * @throws SQLException 
+     */
     //Access to database methods
     //Acquire list of notes
     public static LinkedList<Note> getNotes (Connection conn) throws SQLException{
@@ -58,7 +90,12 @@ public class Note {
         return notes;    
     }
     
-    
+    /**
+     * Add a note in the database 
+     * @param conn connection with the database opened
+     * @param note new note to add
+     * @throws SQLException 
+     */
     public void addNote(Connection conn, Note note) throws SQLException{
         String query_insert_note="";
         PreparedStatement stmtNote;
@@ -70,7 +107,12 @@ public class Note {
         stmtNote.executeUpdate();
     }
     
-    
+    /**
+     * Remove a note from the database
+     * @param conn connection with the database opened
+     * @param note note to remove 
+     * @throws SQLException 
+     */
     public void removeNote(Connection conn, Note note) throws SQLException{
         String query_insert_note="";
         PreparedStatement stmtNote;
@@ -82,6 +124,13 @@ public class Note {
         stmtNote.executeUpdate();
     }
     
+    /**
+     * Update a note in the database
+     * @param conn connection with the database opened
+     * @param note new note informations
+     * @param oldId old note to update
+     * @throws SQLException 
+     */
     public void updateNote(Connection conn, Note note, int oldId) throws SQLException{
         String query_insert_note="";
         PreparedStatement stmtNote;

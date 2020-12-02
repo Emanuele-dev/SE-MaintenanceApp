@@ -17,52 +17,102 @@ public class Procedure {
     private String smpName;
     private Competence competence;
     
-    
+    /**
+     * Constructor Procedure: create a procedure with a name, a competence and a smpName
+     * @param name
+     * @param smpName
+     * @param competence 
+     */
     public Procedure(String name, String smpName, Competence competence){
         this.name = name;
         this.smpName = smpName;
         this.competence = competence;
     }
+    /**
+     * Constructor Procedure: create a procedure with an id, a name, a competence and a smpName
+     * @param id
+     * @param name
+     * @param smpName
+     * @param competence 
+     */
     public Procedure(int id, String name, String smpName, Competence competence){
         this.id = id;
         this.name = name;
         this.smpName = smpName;
         this.competence = competence;
     }
+    /**
+     * 
+     * @return procedure id 
+     */
     public int getId(){
         return id;
     }
+    /**
+     * 
+     * @return procedute name
+     */
     public String getName(){
         return name;
     }
+    /**
+     * 
+     * @return procedure smpName
+     */
     public String getSmpName(){
         return smpName;
     }
+    /**
+     * 
+     * @return competence of the procedure
+     */
     public Competence getCompetence(){
         return competence;
     }
+    /**
+     * 
+     * @param id new procedure id 
+     */
     public void setId(int id){
         this.id = id;
     }
+    /**
+     * 
+     * @param name new procedure name
+     */
     public void setName(String name){
         this.name = name;
     }
+    /**
+     * 
+     * @param smpName new procedure smpName
+     */
     public void setSmpName(String smpName){
         this.smpName = smpName;
     }
-
+    /**
+     * 
+     * @param competence new competence of this procedure
+     */
     public void setCompetence(Competence competence){
         this.competence = competence;
     }
 
+    /**
+     * Print procedure
+     * @return string containing data for a single procedure
+     */
     @Override
     public String toString() {
         return "Procedure{" + "id=" + id + ", name=" + name + ", smpName=" + smpName + ", competence=" + competence + '}';
     }
     
-
-    //Access to database methods
-    //Acquire list of procedures
+    /**
+     * Get all the procedures in the database
+     * @param conn connection with the database opened
+     * @return list of procedures present
+     * @throws SQLException 
+     */
     public static LinkedList<Procedure> getProcedures (Connection conn) throws SQLException{
         int competenceId = 0;
         LinkedList<Procedure> procedures = new LinkedList<>();
@@ -84,6 +134,12 @@ public class Procedure {
         return procedures;    
     }
     
+    /**
+     * Add a procedure in the database 
+     * @param conn connection with the database opened
+     * @param procedure new procedure to add
+     * @throws SQLException 
+     */
     public void addProcedure(Connection conn, Procedure procedure) throws SQLException{
         String query_insert_procedure="";
         PreparedStatement stmtProcedure;
@@ -96,6 +152,12 @@ public class Procedure {
         stmtProcedure.executeUpdate();
     }
     
+    /**
+     * Remove a competence from the database
+     * @param conn connection with the database opened
+     * @param procedure procedure to remove
+     * @throws SQLException 
+     */
     public void removeProcedure(Connection conn, Procedure procedure) throws SQLException{
         String query_insert_procedure="";
         PreparedStatement stmtProcedure;
@@ -105,7 +167,13 @@ public class Procedure {
         stmtProcedure.setInt(1, procedure.getId());
         stmtProcedure.executeUpdate();
     }
-    
+    /**
+     * Update a procedure in the database
+     * @param conn connection with the database opened
+     * @param procedure new procedure informations
+     * @param oldId old procedure to update
+     * @throws SQLException 
+     */
     public void updateProcedure(Connection conn, Procedure procedure, int oldId) throws SQLException{
         String query_insert_procedure="";
         PreparedStatement stmtProcedure;

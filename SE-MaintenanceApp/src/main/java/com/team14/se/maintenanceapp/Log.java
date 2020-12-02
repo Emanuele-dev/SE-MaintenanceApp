@@ -17,42 +17,84 @@ public class Log {
     private String username;
     private Timestamp timestamp; 
     
+    /**
+     * Constructor Log: create a log with the username of the user and a timestamp
+     * @param username username of the user that log in 
+     * @param timestamp date and time in which the user logged in
+     */
     public Log(String username, Timestamp timestamp){
         this.username = username;
         this.timestamp = timestamp;  
     }
-  
+    /**
+     * Constructor Log: create a log with the username of the user and a timestamp
+     * @param id log id 
+     * @param username username of the user that log in 
+     * @param timestamp date and time in which the user logged in
+     */
     public Log(int id, String username, Timestamp timestamp){
         this.id = id;
         this.username = username;
         this.timestamp = timestamp;  
     }
+    /**
+     * 
+     * @return log id
+     */
     public int getId(){
         return id;
     }
+    /**
+     * 
+     * @return username of the user logged in
+     */
     public String getUsername(){
         return username;
     }
+    /**
+     * 
+     * @return date and time of the user log in
+     */
     public Timestamp getTimestamp(){
         return timestamp;
     }
+    /**
+     * 
+     * @param id new id
+     */
     public void setId(int id){
-        this.id = id;
+        this.id = id; 
     }
-    public void setUsername(String name){
+    /**
+     * 
+     * @param username new username for the user
+     */
+    public void setUsername(String username){
         this.username = username;
     }
+    /**
+     * 
+     * @param timestamp new date and time of the user log in
+     */
     public void setTimestamp(Timestamp timestamp){
         this.timestamp = timestamp; 
     }
-
+    
+    /**
+     * Print log
+     * @return string containing data for a single log
+     */
     @Override
     public String toString() {
         return "Log{" + "id=" + id + ", username=" + username + ", timestamp=" + timestamp + '}';
     }
 
-    //Access to database methods
-    //Acquire list of compentencies
+    /**
+     * Get all the logs in the database
+     * @param conn connection with the database opened
+     * @return list of logs present
+     * @throws SQLException 
+     */
     public static LinkedList<Log> getLogs (Connection conn) throws SQLException{
         LinkedList<Log> logs = new LinkedList<>();
         String query = "SELECT * FROM logging";
@@ -64,6 +106,12 @@ public class Log {
         return logs;    
     }
     
+    /**
+     * Add a log in the database
+     * @param conn connection with the database opened
+     * @param log new log to add
+     * @throws SQLException 
+     */
     public void addLog(Connection conn, Log log) throws SQLException{
         String query_insert_log="";
         PreparedStatement stmtLog;
@@ -75,6 +123,12 @@ public class Log {
         stmtLog.executeUpdate();
     }
     
+    /**
+     * Remove a log from the database
+     * @param conn connection with the database opened
+     * @param log log to remove 
+     * @throws SQLException 
+     */
     public void removeLog(Connection conn, Log log) throws SQLException{
         String query_insert_log="";
         PreparedStatement stmtLog;
@@ -85,6 +139,13 @@ public class Log {
         stmtLog.executeUpdate();
     }
 
+    /**
+     * Update a log in the database 
+     * @param conn connection with the database opened
+     * @param log new log informations
+     * @param oldId old log to update
+     * @throws SQLException 
+     */
     public void updateLog(Connection conn, Log log, int oldId) throws SQLException{
         String query_insert_log="";
         PreparedStatement stmtLog;

@@ -14,24 +14,42 @@ import java.sql.*;
 public class Site {
     private String name;
     
-  
+    /**
+     * Constructor Site: create a site with its name
+     * @param name 
+     */
     public Site(String name){
         this.name = name;
     }
+    /**
+     * 
+     * @return site name
+     */
     public String getName(){
         return name;
     }
+    /**
+     * 
+     * @param name new site name
+     */
     public void setName(String name){
         this.name = name;
     }
-
+    /**
+     * Print site
+     * @return string containing data for a single site
+     */
     @Override
     public String toString() {
         return "Site{" + "name=" + name + '}';
     }
     
-    //Access to database methods
-    //Acquire list of site
+    /**
+     * Get all the sites in the database
+     * @param conn connection with the database opened
+     * @return list of sites present
+     * @throws SQLException 
+     */
     public static LinkedList<Site> getSites (Connection conn) throws SQLException{
         LinkedList<Site> sites = new LinkedList<>();
         String query = "SELECT * FROM sito";
@@ -42,7 +60,12 @@ public class Site {
         }
         return sites;    
     }
-    
+    /**
+     * Add a site in the database
+     * @param conn connection with the database opened
+     * @param site new site to add
+     * @throws SQLException 
+     */
     public void addSite(Connection conn, Site site) throws SQLException{
         String query_insert_site="";
         PreparedStatement stmtSite;
@@ -52,8 +75,13 @@ public class Site {
         stmtSite.setString(1, site.getName());
         stmtSite.executeUpdate();
     }
-    
-     public void removeSite(Connection conn, Site site) throws SQLException{
+    /**
+     * Remove a site from the database
+     * @param conn connection with the database opened
+     * @param site site to remove 
+     * @throws SQLException 
+     */
+    public void removeSite(Connection conn, Site site) throws SQLException{
         String query_insert_site="";
         PreparedStatement stmtSite;
         query_insert_site = "DELETE FROM sito WHERE (nome) = (?);";
@@ -62,7 +90,13 @@ public class Site {
         stmtSite.setString(1, site.getName());
         stmtSite.executeUpdate();
     }
-     
+    /**
+     * Update a site in the database 
+     * @param conn connection with the database opened
+     * @param site new site informations
+     * @param oldName old site to update
+     * @throws SQLException 
+     */
     public void updateSite(Connection conn, Site site, String oldName) throws SQLException{
         String query_insert_site="";
         PreparedStatement stmtSite;

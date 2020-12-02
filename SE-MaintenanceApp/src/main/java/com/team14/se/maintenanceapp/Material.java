@@ -15,33 +15,59 @@ public class Material {
     private String name;
     private String description;
     
-    
+    /**
+     * Constructor Log: create a material with a name and a description
+     * @param name material name
+     * @param description material description
+     */
     public Material(String name, String description) {
         this.name = name;
         this.description = description;
     }
-    
+    /**
+     * 
+     * @return material name
+     */
     public String getName(){
         return name;
     }
+    /**
+     * 
+     * @return description name
+     */
     public String getDescription(){
         return description;
     }
+    /**
+     * 
+     * @param name new material name
+     */
     public void setName(String name){
         this.name = name;
     }
+    /**
+     * 
+     * @param description new description
+     */
     public void setDescription(String description){
         this.description = description;
     }
 
+    /**
+     * Print material 
+     * @return string containing data for a single material
+     */
     @Override
     public String toString() {
         return "Material{" + "name=" + name + ", description=" + description + '}';
     }
     
-    
-    //Access to database methods
-    //Acquire list of material
+    /**
+     * Get all the materials in the database
+     * @param conn connection with the database opened
+     * @return list of materials present 
+     * @throws SQLException 
+     */
     public static LinkedList<Material> getMaterials (Connection conn) throws SQLException{
         LinkedList<Material> materials = new LinkedList<>();
         String query = "SELECT * FROM materiale";
@@ -53,7 +79,12 @@ public class Material {
         return materials;    
     }
     
-     
+    /**
+     * Add a material in the database 
+     * @param conn connection with the database opened
+     * @param material new material informations
+     * @throws SQLException 
+     */
     public void addMaterial(Connection conn, Material material) throws SQLException{
         String query_insert_material="";
         PreparedStatement stmtMaterial;
@@ -65,6 +96,12 @@ public class Material {
         stmtMaterial.executeUpdate();
     }
     
+    /**
+     * Remove a material from the database
+     * @param conn connection with the database opened
+     * @param material material to remove
+     * @throws SQLException 
+     */
     public void removeMaterial(Connection conn, Material material) throws SQLException{
         String query_insert_material="";
         PreparedStatement stmtMaterial;
@@ -75,7 +112,13 @@ public class Material {
         
         stmtMaterial.executeUpdate();
     }
-    
+    /**
+     * Update a material in the database
+     * @param conn connection with the database opened
+     * @param material new material informations
+     * @param oldName old material to update 
+     * @throws SQLException 
+     */
     public void updateMaterial(Connection conn, Material material, int oldName) throws SQLException{
         String query_insert_material="";
         PreparedStatement stmtMaterial;

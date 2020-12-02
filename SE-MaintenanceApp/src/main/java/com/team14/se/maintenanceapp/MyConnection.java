@@ -14,11 +14,23 @@ public class MyConnection {
     private final String password;
     private Connection conn = null;
 
+    /**
+     * Constructor MyConnection: crea a connection with url, username and password
+     * @param url url of the database
+     * @param username username to access the database
+     * @param password password to access the database 
+     */
     public MyConnection(String url, String username, String password){
         this.url = url;
         this.username = username;
         this.password = password;
     }
+    /**
+     * Return the connection established 
+     * @return connection created
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
     public Connection getConnection() throws SQLException, ClassNotFoundException{
         if(conn == null){
             Class.forName("org.postgresql.Driver");
@@ -26,7 +38,11 @@ public class MyConnection {
         }
         return conn;
     }
-    
+    /**
+     * Close the connection to the database
+     * @param conn connection to the database to close 
+     * @throws SQLException 
+     */
     public void closeConnection(Connection conn) throws SQLException{
         conn.close();
     }
