@@ -14,24 +14,42 @@ import java.sql.*;
 public class Typology {
     private String name;
     
+    /**
+     * Constructor Typology: create a typology with its name
+     * @param name 
+     */
     public Typology(String name){
         this.name = name;
     }
+    /**
+     * 
+     * @return typology name
+     */
     public String getName(){
         return name;
     }
+    /**
+     * 
+     * @param name new typology name 
+     */
     public void setName(String name){
         this.name = name;
     }
-
+    /**
+     * Print typology
+     * @return string containing data for a single typology
+     */
     @Override
     public String toString() {
         return "Typology{" + "name=" + name + '}';
     }
     
-    
-    //Access to database methods
-    //Acquire list of typologies
+    /**
+     * Get all the typologies in the database
+     * @param conn connection with the database opened
+     * @return list of typologies present
+     * @throws SQLException 
+     */
     public static LinkedList<Typology> getTypologies (Connection conn) throws SQLException{
         LinkedList<Typology> typologies = new LinkedList<>();
         String query = "SELECT * FROM tipologia";
@@ -43,6 +61,12 @@ public class Typology {
         return typologies;    
     }
     
+    /**
+     * Add a typology in the database
+     * @param conn connection with the database opened
+     * @param typology new typology to add
+     * @throws SQLException 
+     */
     public void addTypology(Connection conn, Typology typology) throws SQLException{
         String query_insert_typology="";
         PreparedStatement stmtTypology;
@@ -52,6 +76,12 @@ public class Typology {
         stmtTypology.setString(1, typology.getName());
         stmtTypology.executeUpdate();
     }
+    /**
+     * Remove a typology from the database
+     * @param conn connection with the database opened
+     * @param typology typology to remove 
+     * @throws SQLException 
+     */
     public void removeTypology(Connection conn, Typology typology) throws SQLException{
         String query_insert_typology="";
         PreparedStatement stmtTypology;
@@ -62,7 +92,13 @@ public class Typology {
         
         stmtTypology.executeUpdate();
     }
-    
+    /**
+     * Update a typology in the database 
+     * @param conn connection with the database opened
+     * @param typology new typolofy informations
+     * @param oldName old typolofy to update
+     * @throws SQLException 
+     */
     public void updateTypology(Connection conn, Typology typology, String oldName) throws SQLException{
         String query_insert_user="";
         PreparedStatement stmtUser;
