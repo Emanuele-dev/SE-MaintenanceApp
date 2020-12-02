@@ -11,47 +11,62 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Main GUI for system administrator
+ * 
  * @author mario
  */
 public class AdminGUI extends javax.swing.JFrame {
     
     private User loggedUser;
-    private Connection connection;
+    private Connection connection;  // DataBase connection
     
-    private LinkedList<User> usersList = null;
-    private LinkedList<Procedure> proceduresList = null;
-    private LinkedList<Competence> competencesList = null;
-    private LinkedList<Site> sitesList = null;
-    private LinkedList<Material> materialsList = null;
-    private LinkedList<Typology> typesList = null;
-    
-    //private DefaultTableModel usersTableModel = null;
+    // database data lists
+    private LinkedList<User> usersList;
+    private LinkedList<Procedure> proceduresList;
+    private LinkedList<Competence> competencesList;
+    private LinkedList<Site> sitesList;
+    private LinkedList<Material> materialsList;
+    private LinkedList<Typology> typesList;
     
     /**
      * Creates new form AdminGUI
      */
     public AdminGUI() {
+        this.typesList = null;
+        this.materialsList = null;
+        this.sitesList = null;
+        this.competencesList = null;
+        this.proceduresList = null;
+        this.usersList = null;
+        
         initComponents();
     }
     
     /**
-     * Creates new form AdminGUI
+     * Creates new form AdminGUI for specific user and database connection
      * 
      * @param loggedUser the logged user
      * @param connection the database connection
      */
     public AdminGUI(User loggedUser, Connection connection) {
+        this.typesList = null;
+        this.materialsList = null;
+        this.sitesList = null;
+        this.competencesList = null;
+        this.proceduresList = null;
+        this.usersList = null;
+        
         this.loggedUser = loggedUser;
         this.connection = connection;
+        
         initComponents();
         
-       
+       //set event listner for data tables and lists
         usersTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             usersTableJTableActionPerformed();
         });
@@ -59,21 +74,30 @@ public class AdminGUI extends javax.swing.JFrame {
         proceduresTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             proceduresTableJTableActionPerformed();
         });
-
         
-        refreshUsersList();
-        refreshProceduresList();
-        //this.competencesList = Competence.getCompetences(connection);
-        //this.sitesList = Site.getSites(connection);
-        //this.materialsList = Material.getMaterials(connection);
-        //this.typesList = Typology.getTypologies(connection);
+        competencesTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            competencesTableJTableActionPerformed();
+        });
+
+        // load data from database
+        this.refreshUsersList();
+        this.refreshProceduresList();
+        this.refreshCompetencesList();
+        this.refreshSitesList();
+        this.refreshMaterialsList();
+        this.refreshTypesList();
 
         setVisible(true);
     }
     
+    /**
+     * Update users table from the database
+     * 
+     */
     private void refreshUsersList(){
         this.usersTableJTable.setEnabled(false);
         
+        // disable sude form until a new row is selected
         if (this.editUsersJPanel.isEnabled()){
             this.editUsersJPanel.setEnabled(false);
             
@@ -91,15 +115,18 @@ public class AdminGUI extends javax.swing.JFrame {
             userCompetencePanel.deactivate();
         }
         
+        // clear table
         DefaultTableModel usersTableModel = (DefaultTableModel) usersTableJTable.getModel();
         usersTableModel.setRowCount(0);
         
+        // update list from database
         try {
             this.usersList = User.getUsers(connection);
         } catch (SQLException ex) {
             Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        // update table whith new data
         usersList.forEach(user -> {
             usersTableModel.addRow(new String[]{
                 user.getName(),
@@ -111,9 +138,14 @@ public class AdminGUI extends javax.swing.JFrame {
         this.usersTableJTable.setEnabled(true);
     }
     
+    /**
+     * Update procedures table from the database
+     * 
+     */
     private void refreshProceduresList(){
         this.proceduresTableJTable.setEnabled(false);
         
+        // disable sude form until a new row is selected
         if (this.editProceduresJPanel.isEnabled()){
             this.editProceduresJPanel.setEnabled(false);
             
@@ -125,15 +157,18 @@ public class AdminGUI extends javax.swing.JFrame {
             procedureCompetencePanel.deactivate();
         }
         
+        // clear table
         DefaultTableModel proceduresTableModel  = (DefaultTableModel) proceduresTableJTable.getModel();
         proceduresTableModel.setRowCount(0);
         
+        // update list from database
         try {
             this.proceduresList = Procedure.getProcedures(connection);
         } catch (SQLException ex) {
             Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        // update table whith new data
         proceduresList.forEach(procedure -> {
             proceduresTableModel.addRow(new String[]{
                 procedure.getName(), 
@@ -142,87 +177,138 @@ public class AdminGUI extends javax.swing.JFrame {
         });
         this.proceduresTableJTable.setEnabled(true);
     }
-
     
-
-    private void usersTableJTableActionPerformed() {
-        int selectedUserIndex = usersTableJTable.getSelectedRow();
+    private void refreshCompetencesList(){
+        this.competencesTableJTable.setEnabled(false);
         
-        if (selectedUserIndex == -1) return;
-        
-        if (!this.editUsersJPanel.isEnabled()){
-            this.editUsersJPanel.setEnabled(true);
+        if (this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(false);
             
-            this.userNameJLabel.setEnabled(true);
-            this.userNameJTextField.setEnabled(true);
+            this.competenceNameJLabel.setEnabled(false);
+            this.competenceNameJTextField.setEnabled(false);
             
-            this.userSurnameJLabel.setEnabled(true);
-            this.userSurnameJTextField.setEnabled(true);
-            
-            this.usernameJLabel.setEnabled(true);
-            this.usernameJTextField.setEnabled(true);
-                   
-            this.userRoleJLabel.setEnabled(true);
-            this.userRoleJComboBox.setEnabled(true);
+            this.competenceIDJLabel.setEnabled(false);
+            this.competenceIDJTextField.setEnabled(false);
         }
-
-        this.userNameJTextField.setText(usersList.get(selectedUserIndex).getName());
-
-        this.userSurnameJTextField.setText(usersList.get(selectedUserIndex).getSurname());
         
-        this.usernameJTextField.setText(usersList.get(selectedUserIndex).getUsername());
-
-        this.userRoleJComboBox.setSelectedItem(usersList.get(selectedUserIndex).getRole());
-        
-        if (usersList.get(selectedUserIndex).getRole().equals("Maintainer")){
-            try {
-                //TODO: pass user's competences list instead of null
-                userCompetencePanel.activate(new LinkedList<Competence>());
-            } catch (SQLException ex) {
-                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            userCompetencePanel.deactivate();
-        }
-    }
-    
-    
-        private void proceduresTableJTableActionPerformed() {
-        int selectedProcedureIndex = proceduresTableJTable.getSelectedRow();
-        
-        if (selectedProcedureIndex == -1) return;
-        
-        if (!this.editProceduresJPanel.isEnabled()){
-            this.editProceduresJPanel.setEnabled(true);
-            
-            this.procedureNameJLabel.setEnabled(true);
-            this.procedureNameJTextField.setEnabled(true);
-            
-            this.SMPJLabel.setEnabled(true);
-            this.SMPJTextField.setEnabled(true);
-        }
-
-        this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
-
-        this.SMPJTextField.setText(proceduresList.get(selectedProcedureIndex).getSmpName());
-        
+        DefaultTableModel competencesTableModel  = (DefaultTableModel) competencesTableJTable.getModel();
+        competencesTableModel.setRowCount(0);
         
         try {
-            //LinkedList<Competence> procedureCompetences = Competence.getCompetences(connection);
-            //procedureCompetences.remove(proceduresList.get(selectedUserIndex).getCompetence());
-            LinkedList<Competence> procedureCompetences = new LinkedList<Competence>();
-            procedureCompetences.add(proceduresList.get(selectedProcedureIndex).getCompetence());
-            procedureCompetencePanel.activate(procedureCompetences);
+            this.competencesList = Competence.getCompetences(connection);
         } catch (SQLException ex) {
             Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        competencesList.forEach(competence -> {
+            competencesTableModel.addRow(new String[]{
+                String.valueOf(competence.getId()),
+                competence.getName()
+            });
+        });
+        this.competencesTableJTable.setEnabled(true);
+    }
+    
+    private void refreshSitesList(){
+        this.sitesJList.setEnabled(false);
+        
+        if (this.editSitesJPanel.isEnabled()){
+            this.editSitesJPanel.setEnabled(false);
+            
+            this.siteNameJLabel.setEnabled(false);
+            this.siteNameJTextField.setEnabled(false);
+        }
+        
+        DefaultListModel<String> siteslistModel  = new DefaultListModel<>();
+        
+        try {
+            this.sitesList = Site.getSites(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        sitesList.forEach(site -> {
+            siteslistModel.addElement(site.getName());
+        });
+        
+        this.sitesJList.setModel(siteslistModel);
+        this.sitesJList.setEnabled(true);
+    }
+    
+    private void refreshMaterialsList(){
+        this.materialsTableJTable.setEnabled(false);
+        
+        if (this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(false);
+            
+            this.materialNameJLabel.setEnabled(false);
+            this.materialNameJTextField.setEnabled(false);
+            
+            this.materialDescriptionJScrollPane.setEnabled(false);
+            this.materialDescriptionJTextArea.setEnabled(false);
+        }
+        
+        DefaultTableModel materialsTableModel  = (DefaultTableModel) materialsTableJTable.getModel();
+        materialsTableModel.setRowCount(0);
+        
+        try {
+            this.materialsList = Material.getMaterials(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        materialsList.forEach(material -> {
+            materialsTableModel.addRow(new String[]{
+                material.getName(),
+                material.getDescription()
+            });
+        });
+        this.materialsTableJTable.setEnabled(true);
+    }
+    
+    private void refreshTypesList(){
+        this.typesJList.setEnabled(false);
+        
+        if (this.editTypeJPanel.isEnabled()){
+            this.editTypeJPanel.setEnabled(false);
+            
+            this.typeNameJLabel.setEnabled(false);
+            this.typeNameJTextField.setEnabled(false);
+        }
+        
+        DefaultListModel<String> typeslistModel  = new DefaultListModel<>();
+        
+        try {
+            this.typesList = Typology.getTypologies(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        typesList.forEach(type -> {
+            typeslistModel.addElement(type.getName());
+        });
+        
+        this.typesJList.setModel(typeslistModel);
+        this.typesJList.setEnabled(true);
     }
     
     
-    
-    
-    
-    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        try{
+            Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "postgres", "postgressse2020").getConnection();
+            System.out.println("Connession to " + conn + " successfully created");
+            
+            java.awt.EventQueue.invokeLater(() -> {
+                AdminGUI adminGUI = new AdminGUI(null, conn);
+            });
+        }catch(SQLException | ClassNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -385,6 +471,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maintainer", "Planner", "System Administrator" }));
         userRoleJComboBox.setEnabled(false);
+        userRoleJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userRoleJComboBoxActionPerformed(evt);
+            }
+        });
 
         updateUserJButton.setText("Update User");
         updateUserJButton.setEnabled(false);
@@ -816,6 +907,11 @@ public class AdminGUI extends javax.swing.JFrame {
         sitesJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshSitesJButton.setText("Refresh List");
+        refreshSitesJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshSitesJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout sitesTopJPanelLayout = new javax.swing.GroupLayout(sitesTopJPanel);
         sitesTopJPanel.setLayout(sitesTopJPanelLayout);
@@ -921,6 +1017,11 @@ public class AdminGUI extends javax.swing.JFrame {
         MaterialJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshMaterialsJButton.setText("Refresh List");
+        refreshMaterialsJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshMaterialsJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout MaterialTopJPanelLayout = new javax.swing.GroupLayout(MaterialTopJPanel);
         MaterialTopJPanel.setLayout(MaterialTopJPanelLayout);
@@ -1061,6 +1162,11 @@ public class AdminGUI extends javax.swing.JFrame {
         TypeJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshTypesJButton.setText("Refresh List");
+        refreshTypesJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshTypesJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout typesTopJPanelLayout = new javax.swing.GroupLayout(typesTopJPanel);
         typesTopJPanel.setLayout(typesTopJPanelLayout);
@@ -1216,6 +1322,152 @@ public class AdminGUI extends javax.swing.JFrame {
         this.refreshProceduresList();
     }//GEN-LAST:event_refreshProceduresJButtonActionPerformed
 
+    /**
+     * Enable the competences panel if maintainer is selected in 
+     * the user role combo box
+     * 
+     * @param evt 
+     */
+    private void userRoleJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userRoleJComboBoxActionPerformed
+        if (this.userRoleJComboBox.getSelectedItem().equals("Maintainer")){
+            try {
+                this.userCompetencePanel.activate(new LinkedList<>());
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            this.userCompetencePanel.deactivate();
+        }
+    }//GEN-LAST:event_userRoleJComboBoxActionPerformed
+
+    private void refreshSitesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSitesJButtonActionPerformed
+        this.refreshSitesList();
+    }//GEN-LAST:event_refreshSitesJButtonActionPerformed
+
+    private void refreshTypesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshTypesJButtonActionPerformed
+        this.refreshTypesList();
+    }//GEN-LAST:event_refreshTypesJButtonActionPerformed
+
+    private void refreshMaterialsJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMaterialsJButtonActionPerformed
+        this.refreshMaterialsList();
+    }//GEN-LAST:event_refreshMaterialsJButtonActionPerformed
+
+    
+    /**
+     * Show the details of the selected user in the side panel
+     * 
+     */
+    private void usersTableJTableActionPerformed() {
+        int selectedUserIndex = usersTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedUserIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editUsersJPanel.isEnabled()){
+            this.editUsersJPanel.setEnabled(true);
+            
+            this.userNameJLabel.setEnabled(true);
+            this.userNameJTextField.setEnabled(true);
+            
+            this.userSurnameJLabel.setEnabled(true);
+            this.userSurnameJTextField.setEnabled(true);
+            
+            this.usernameJLabel.setEnabled(true);
+            this.usernameJTextField.setEnabled(true);
+                   
+            this.userRoleJLabel.setEnabled(true);
+            this.userRoleJComboBox.setEnabled(true);
+        }
+        
+        // fill form whit the data of the selected user
+        this.userNameJTextField.setText(usersList.get(selectedUserIndex).getName());
+
+        this.userSurnameJTextField.setText(usersList.get(selectedUserIndex).getSurname());
+        
+        this.usernameJTextField.setText(usersList.get(selectedUserIndex).getUsername());
+
+        this.userRoleJComboBox.setSelectedItem(usersList.get(selectedUserIndex).getRole());
+        
+        // if the user is a maintainer enable the enable the competences panel
+        if (usersList.get(selectedUserIndex).getRole().equals("Maintainer")){
+            try {
+                //TODO: pass user's competences list instead of null
+                userCompetencePanel.activate(new LinkedList<>());
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            userCompetencePanel.deactivate();
+        }
+    }
+    
+    
+    /**
+     * Show the details of the selected user in the side panel
+     * 
+     */
+    private void proceduresTableJTableActionPerformed() {
+        int selectedProcedureIndex = proceduresTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedProcedureIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editProceduresJPanel.isEnabled()){
+            this.editProceduresJPanel.setEnabled(true);
+            
+            this.procedureNameJLabel.setEnabled(true);
+            this.procedureNameJTextField.setEnabled(true);
+            
+            this.SMPJLabel.setEnabled(true);
+            this.SMPJTextField.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected procedure
+        this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
+
+        this.SMPJTextField.setText(proceduresList.get(selectedProcedureIndex).getSmpName());
+        
+        // fill the competences panel
+        try {
+            //LinkedList<Competence> procedureCompetences = Competence.getCompetences(connection);
+            //procedureCompetences.remove(proceduresList.get(selectedUserIndex).getCompetence());
+            LinkedList<Competence> procedureCompetences = new LinkedList<>();
+            procedureCompetences.add(proceduresList.get(selectedProcedureIndex).getCompetence());
+            procedureCompetencePanel.activate(procedureCompetences);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Show the details of the selected user in the side panel
+     * 
+     */
+    private void competencesTableJTableActionPerformed() {
+        int selectedCompetenceIndex = competencesTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedCompetenceIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(true);
+            
+            this.competenceIDJLabel.setEnabled(true);
+            
+            this.competenceNameJLabel.setEnabled(true);
+            this.competenceNameJTextField.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.competenceNameJTextField.setText(competencesList.get(selectedCompetenceIndex).getName());
+
+        this.competenceIDJTextField.setText(String.valueOf(competencesList.get(selectedCompetenceIndex).getId()));
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MaterialJPanel;
     private javax.swing.JPanel MaterialTopJPanel;
