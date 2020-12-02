@@ -742,7 +742,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             activityList.forEach((MaintenanceActivity activity) -> {
                 if(activity.getWeek() == n_week){
                     System.out.println(activity.getActivityId());
-                    activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getEstimatedIntervention() + " min"});
+                    activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getEstimatedIntervention() + " min."});
                 }
             });
             
