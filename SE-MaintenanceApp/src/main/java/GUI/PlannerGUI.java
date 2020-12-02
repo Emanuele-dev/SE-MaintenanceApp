@@ -5,13 +5,23 @@
  */
 package GUI;
 
-import com.team14.se.maintenanceapp.MaintenanceActivity;
+import com.team14.se.maintenanceapp.*;
 import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -40,7 +50,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         this.loggedUser = loggedUser;
         this.connection = connection;
         initComponents();
-        initTable(0);
+        initValues();
     }
 
     PlannerGUI(User logUser, Connection conn, LinkedList<MaintenanceActivity> activityList) {
@@ -80,6 +90,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         forwardJButton = new javax.swing.JButton();
         assignJLabel = new javax.swing.JLabel();
         assignJComboBox = new javax.swing.JComboBox<>();
+        detailsIdJLabel = new javax.swing.JLabel();
+        detailsIdJTextField = new javax.swing.JTextField();
         activitiesTableJScrollPane = new javax.swing.JScrollPane();
         activitiesJTable = new javax.swing.JTable();
         addJPanel = new javax.swing.JPanel();
@@ -155,6 +167,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         detailsSMPJLabel.setText("SMP");
 
         detailsWeekJTextField.setText("--");
+        detailsWeekJTextField.setDisabledTextColor(new java.awt.Color(89, 89, 89));
         detailsWeekJTextField.setEnabled(false);
         detailsWeekJTextField.setFocusable(false);
 
@@ -163,6 +176,11 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         detailsSMPJTextField.setEnabled(false);
         detailsSMPJTextField.setFocusable(false);
+        detailsSMPJTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                detailsSMPJTextFieldActionPerformed(evt);
+            }
+        });
 
         detailsDescriptionJScrollPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Description"));
 
@@ -181,13 +199,26 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         detailsNotesJTextArea.setColumns(20);
         detailsNotesJTextArea.setRows(5);
+        detailsNotesJTextArea.setText("Notes will be implemented in sprint 2");
         detailsNotesJTextArea.setEnabled(false);
         detailsNotesJTextArea.setFocusable(false);
         detailsNotesJScrollPane.setViewportView(detailsNotesJTextArea);
 
         forwardJButton.setText("Forward");
+        forwardJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forwardJButtonActionPerformed(evt);
+            }
+        });
 
         assignJLabel.setText("Assigned to");
+
+        detailsIdJLabel.setText("Id activity");
+
+        detailsIdJTextField.setText("--");
+        detailsIdJTextField.setDisabledTextColor(new java.awt.Color(89, 89, 89));
+        detailsIdJTextField.setEnabled(false);
+        detailsIdJTextField.setFocusable(false);
 
         javax.swing.GroupLayout detailsJPanelLayout = new javax.swing.GroupLayout(detailsJPanel);
         detailsJPanel.setLayout(detailsJPanelLayout);
@@ -202,22 +233,26 @@ public class PlannerGUI extends javax.swing.JFrame {
                     .addGroup(detailsJPanelLayout.createSequentialGroup()
                         .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(detailsDescriptionJScrollPanel)
-                            .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(detailsJPanelLayout.createSequentialGroup()
-                                    .addComponent(detailsWeekJLabel)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
-                                        .addComponent(detailsSMPJLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
-                                        .addComponent(detailsActivityJLabel)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                                .addComponent(detailsSMPJLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(detailsSkillsJScrollPane)
-                            .addComponent(detailsNotesJScrollPane))
+                            .addComponent(detailsNotesJScrollPane)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(detailsActivityJLabel)
+                                    .addGroup(detailsJPanelLayout.createSequentialGroup()
+                                        .addComponent(detailsWeekJLabel)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(detailsJPanelLayout.createSequentialGroup()
+                                        .addComponent(detailsIdJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(detailsIdJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(detailsJPanelLayout.createSequentialGroup()
                         .addComponent(assignJLabel)
@@ -230,7 +265,10 @@ public class PlannerGUI extends javax.swing.JFrame {
             .addGroup(detailsJPanelLayout.createSequentialGroup()
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(detailsWeekJLabel)
-                    .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(detailsIdJLabel)
+                        .addComponent(detailsIdJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(detailsActivityJLabel)
@@ -249,7 +287,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(assignJLabel)
                     .addComponent(assignJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(forwardJButton)
                 .addContainerGap())
         );
@@ -282,6 +320,11 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         activitiesJTable.getTableHeader().setReorderingAllowed(false);
+        activitiesJTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                activitiesJTableMouseClicked(evt);
+            }
+        });
         activitiesTableJScrollPane.setViewportView(activitiesJTable);
 
         assignTabJPanel.add(activitiesTableJScrollPane, java.awt.BorderLayout.CENTER);
@@ -309,6 +352,11 @@ public class PlannerGUI extends javax.swing.JFrame {
         descriptionJScrollPane.setViewportView(descriptionJTextArea);
 
         addJButton.setText("Add");
+        addJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addJButtonActionPerformed(evt);
+            }
+        });
 
         interruptJLabel.setText("Interruptable");
 
@@ -325,6 +373,11 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         eowButtonGroup.add(ewoYesJRadioButton);
         ewoYesJRadioButton.setText("Yes");
+        ewoYesJRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ewoYesJRadioButtonActionPerformed(evt);
+            }
+        });
 
         eowButtonGroup.add(ewoNoJRadioButton);
         ewoNoJRadioButton.setSelected(true);
@@ -430,16 +483,16 @@ public class PlannerGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(mainJTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(mainJTabbedPane)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -447,9 +500,146 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         int week_n = (int) weekNumberJSpinner.getValue();
-        System.out.println(week_n);
         initTable(week_n);
+        detailsNotesJTextArea.setEnabled(false);   
+        detailsWeekJTextField.setText("--");
+        detailsSMPJTextField.setText("");
+        detailsActivityJTextField.setText("");
+        detailsDescriptionJTextArea.setText("");
+        detailsIdJTextField.setText("");
+        detailsSkillsJList.removeAll();
     }//GEN-LAST:event_refreshJButtonActionPerformed
+
+    private String getButtonText(ButtonGroup buttonGroup){
+        String value = null;
+       for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                value = button.getText();
+            }
+        }
+       return value;
+    }
+    
+    private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
+        MaintenanceActivity maintenanceActivity;
+        String description = descriptionJTextArea.getText();
+        String name = nameJTextField.getText();
+        String typology = String.valueOf(typeJComboBox.getSelectedItem());
+        String procedure = String.valueOf(procedureJComboBox.getSelectedItem());
+        String site = String.valueOf(siteJComboBox.getSelectedItem());
+        int week = (int)weekJSpinner.getValue();
+        int estimatedTime = (int) estimatedTimeJSpinner.getValue();
+        boolean interrruptable;
+        if(getButtonText(interrruptableButtonGroup).equals("Yes")){
+            interrruptable = true;
+        }else{
+            interrruptable = false;
+        }
+        boolean ewo;
+        if(getButtonText(eowButtonGroup).equals("Yes")){
+            ewo = true;
+        }else{
+            ewo = false;
+        }
+        /* Serve costrutttore senza id e senza state) 
+        maintenanceActivity = new MaintenanceActivity(description, interrruptable, ewo, week, procedure, site, typology);
+        
+        try {
+            maintenanceActivity.addMaintenanceActivity(connection, maintenanceActivity);
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        */
+        
+        
+    }//GEN-LAST:event_addJButtonActionPerformed
+   
+    private void ewoYesJRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ewoYesJRadioButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ewoYesJRadioButtonActionPerformed
+
+    private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
+        JTable source = (JTable)evt.getSource();
+            int row = source.rowAtPoint( evt.getPoint() );
+            String id=source.getModel().getValueAt(row, 0)+"";
+        /* statement for 1 maint activity */
+        try {
+            Statement statement = connection.createStatement();
+            String querySingleActivity = "SELECT * FROM ATTIVITA_MANUTENZIONE, PROCEDURA "
+                    + "WHERE ATTIVITA_MANUTENZIONE.procedura = PROCEDURA.nome "
+                    + "AND activity_id ="+id+";";
+            ResultSet rs = statement.executeQuery(querySingleActivity);
+            
+            if(rs.next()){
+                //detailsActivityJTextField.setText(rs.getString("name"));
+                detailsIdJTextField.setText(id);
+                detailsWeekJTextField.setText(String.valueOf(rs.getInt("settimana")));
+                detailsSMPJTextField.setText(rs.getString("smp"));
+                detailsDescriptionJTextArea.setText(rs.getString("descrizione"));
+                DefaultListModel listModel = new DefaultListModel();
+                listModel.addElement(rs.getString("competenza"));
+                detailsSkillsJList.setModel(listModel);
+                detailsNotesJTextArea.setEnabled(true);
+                assignJComboBox.setEnabled(true);
+                forwardJButton.setEnabled(true);
+            }
+            PreparedStatement statementForCheck ;
+
+            String queryCheckIsAssigned = "SELECT * FROM ESECUZIONE WHERE activity_id ='"+id+"';";
+            statementForCheck = connection.prepareStatement(queryCheckIsAssigned);
+            ResultSet rsCheck = statementForCheck.executeQuery();
+            if(rsCheck.next()){
+                forwardJButton.setEnabled(false);
+                detailsDescriptionJTextArea.setText(detailsDescriptionJTextArea.getText() + "\n \n -Activity Already assigned");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+    }//GEN-LAST:event_activitiesJTableMouseClicked
+
+    private void detailsSMPJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsSMPJTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_detailsSMPJTextFieldActionPerformed
+
+    private void forwardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardJButtonActionPerformed
+        if(detailsWeekJTextField.getText().equals("--")){
+            JOptionPane.showMessageDialog(rootPane,"Please, select an activity to assign to the maintenance", "Error: No activity selected", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            String activityId = detailsIdJTextField.getText();
+            String usernameMaintainer = String.valueOf(assignJComboBox.getSelectedItem()).split(":")[0];
+            
+            int input = JOptionPane.showConfirmDialog(rootPane, 
+                "Are you sure to assign activity "+activityId + " to : " + usernameMaintainer +"?",
+                "Select an Option...",JOptionPane.YES_NO_CANCEL_OPTION);
+            
+            if (input==0){
+                try {
+                    PreparedStatement statementForAssign;
+                    String queryForAssign = "INSERT INTO ESECUZIONE(activity_id,maintainer) VALUES (?,?);";
+                    statementForAssign = connection.prepareStatement(queryForAssign);
+                    statementForAssign.setInt(1,Integer.parseInt(activityId));
+                    statementForAssign.setString(2, usernameMaintainer);
+                    statementForAssign.executeUpdate();
+                    JOptionPane.showMessageDialog(rootPane, "Task assigned correctly");
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else{
+               JOptionPane.showMessageDialog(rootPane, "Assignment canceled"); 
+            }
+      
+            
+            
+        }
+        //Statement statement = connection.createStatement();
+        
+    }//GEN-LAST:event_forwardJButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -501,6 +691,8 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JTextField detailsActivityJTextField;
     private javax.swing.JScrollPane detailsDescriptionJScrollPanel;
     private javax.swing.JTextArea detailsDescriptionJTextArea;
+    private javax.swing.JLabel detailsIdJLabel;
+    private javax.swing.JTextField detailsIdJTextField;
     private javax.swing.JPanel detailsJPanel;
     private javax.swing.JScrollPane detailsNotesJScrollPane;
     private javax.swing.JTextArea detailsNotesJTextArea;
@@ -542,9 +734,68 @@ public class PlannerGUI extends javax.swing.JFrame {
         try {
             LinkedList<MaintenanceActivity> activityList = MaintenanceActivity.getMaintenanceActivities(connection);
             DefaultTableModel activitiesTabelModel = (DefaultTableModel) activitiesJTable.getModel();
+            activitiesTabelModel.setNumRows(0);
+            activitiesTabelModel.fireTableDataChanged();
             activityList.forEach((MaintenanceActivity activity) -> {
                 if(activity.getWeek() == n_week)
                     activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getWeek()});
+            });
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void initValues() {
+        initTable(0);
+        initTypeComboBox();
+        initProcedureComboBox();
+        initSiteComboBox();
+        initAssigneComboBox();
+    }
+
+    private void initTypeComboBox() {
+        try {
+            LinkedList<Typology> typologyList = Typology.getTypologies(connection);
+            typologyList.forEach(typology -> {
+                typeJComboBox.addItem(typology.getName());
+            });
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void initProcedureComboBox() {
+        try {
+            LinkedList<Procedure> procedureList = Procedure.getProcedures(connection);
+            procedureList.forEach(procedure -> {
+                procedureJComboBox.addItem(procedure.getName());
+            });
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void initSiteComboBox() {
+        try {
+            LinkedList<Site> siteyList = Site.getSites(connection);
+            siteyList.forEach(site -> {
+                siteJComboBox.addItem(site.getName());
+            });
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void initAssigneComboBox() {
+         try {
+            LinkedList<User> userList = User.getUsers(connection);
+            userList.forEach(user -> {
+                if(user.getRole().equals("Maintainer"))
+                    assignJComboBox.addItem(user.getUsername() +": "+ user.getName() + " " + user.getSurname());
             });
             
         } catch (SQLException ex) {
