@@ -27,18 +27,16 @@ public class MaintenanceActivity {
     private Material material;
     private ArrayList<User> users; //Maintainers
     
-    public MaintenanceActivity(int activityId, String name, String description, 
-            boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
+    public MaintenanceActivity(String name, String description, 
+            boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
             Procedure procedure, Site site, Typology typology){
         
-        this.activityId = activityId;
         this.name = name;
         this.description = description;
         this.interruptible = interruptible;
         this.estimatedIntervention = estimatedIntervention;
         this.ewo = ewo;
         this.week = week;
-        this.state = state;
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
@@ -182,14 +180,13 @@ public class MaintenanceActivity {
                     new Competence(competenceId, competenceName));
             
             maintenaceActivities.add(
-                    new MaintenanceActivity(rst.getInt("activity_id"),
+                    new MaintenanceActivity(
                     rst.getString("nome"), 
                     rst.getString("descrizione"), 
                     rst.getBoolean("interrompibile"), 
                     rst.getInt("intervento_stimato"), 
                     rst.getBoolean("ewo"), 
                     rst.getInt("settimana"), 
-                    rst.getBoolean("completa"), 
                     procedure, 
                     new Site(rst.getString("sito")), 
                     new Typology(rst.getString("tipologia"))));
@@ -197,7 +194,6 @@ public class MaintenanceActivity {
         return maintenaceActivities;
     }
     
-   
     //Acquire list of Maintenance Activities
     public static LinkedList<MaintenanceActivity> getMaintenanceActivities (Connection conn) throws SQLException{
         String query = "SELECT * FROM attivita_manutenzione";
@@ -215,22 +211,20 @@ public class MaintenanceActivity {
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
         query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
-                + "(activity_id, nome, descrizione, interrompibile, intervento_stimato,"
-                + " ewo, settimana,procedura, sito, tipologia, completa) "
+                + "(nome, descrizione, interrompibile, intervento_stimato,"
+                + " ewo, settimana,procedura, sito, tipologia) "
                 + "VALUES (?, ?, ?, ?, ?,?, ?, ?, ?);";
         
         stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
-        stmtMainActivity.setInt(1, maintActivity.getActivityId());
-        stmtMainActivity.setString(2, maintActivity.getName());
-        stmtMainActivity.setString(3, maintActivity.getDescription());
-        stmtMainActivity.setBoolean(4, maintActivity.getInterruptable());
-        stmtMainActivity.setInt(5, maintActivity.getEstimatedIntervention());
-        stmtMainActivity.setBoolean(6, maintActivity.getEwo());
-        stmtMainActivity.setInt(7, maintActivity.getWeek());
-        stmtMainActivity.setString(8, maintActivity.getProcedure().getName());
-        stmtMainActivity.setString(9, maintActivity.getSite().getName());
-        stmtMainActivity.setString(10, maintActivity.getTypology().getName());
-        stmtMainActivity.setBoolean(11, maintActivity.getState());
+        stmtMainActivity.setString(1, maintActivity.getName());
+        stmtMainActivity.setString(2, maintActivity.getDescription());
+        stmtMainActivity.setBoolean(3, maintActivity.getInterruptable());
+        stmtMainActivity.setInt(4, maintActivity.getEstimatedIntervention());
+        stmtMainActivity.setBoolean(5, maintActivity.getEwo());
+        stmtMainActivity.setInt(6, maintActivity.getWeek());
+        stmtMainActivity.setString(7, maintActivity.getProcedure().getName());
+        stmtMainActivity.setString(8, maintActivity.getSite().getName());
+        stmtMainActivity.setString(9, maintActivity.getTypology().getName());
         stmtMainActivity.executeUpdate();
     }
     public void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
