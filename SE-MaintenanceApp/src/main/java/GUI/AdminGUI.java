@@ -67,16 +67,28 @@ public class AdminGUI extends javax.swing.JFrame {
         initComponents();
         
        //set event listner for data tables and lists
-        usersTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+        this.usersTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             usersTableJTableActionPerformed();
         });
         
-        proceduresTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+        this.proceduresTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             proceduresTableJTableActionPerformed();
         });
         
-        competencesTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+        this.competencesTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             competencesTableJTableActionPerformed();
+        });
+        
+        this.sitesJList.addListSelectionListener((ListSelectionEvent e) -> {
+            sitesJListeActionPerformed();
+        });
+        
+        this.materialsTableJTable.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            materialsTableJTableActionPerformed();
+        });
+        
+        this.typesJList.addListSelectionListener((ListSelectionEvent e) -> {
+            typesJListeActionPerformed();
         });
 
         // load data from database
@@ -660,6 +672,8 @@ public class AdminGUI extends javax.swing.JFrame {
 
         updateProcedureJButton.setText("Update Procedure");
         updateProcedureJButton.setEnabled(false);
+
+        procedureCompetencePanel.setEnabled(false);
 
         javax.swing.GroupLayout editProceduresJPanelLayout = new javax.swing.GroupLayout(editProceduresJPanel);
         editProceduresJPanel.setLayout(editProceduresJPanelLayout);
@@ -1404,7 +1418,7 @@ public class AdminGUI extends javax.swing.JFrame {
     
     
     /**
-     * Show the details of the selected user in the side panel
+     * Show the details of the selected procedure in the side panel
      * 
      */
     private void proceduresTableJTableActionPerformed() {
@@ -1442,7 +1456,7 @@ public class AdminGUI extends javax.swing.JFrame {
     }
     
     /**
-     * Show the details of the selected user in the side panel
+     * Show the details of the selected competence in the side panel
      * 
      */
     private void competencesTableJTableActionPerformed() {
@@ -1465,6 +1479,69 @@ public class AdminGUI extends javax.swing.JFrame {
         this.competenceNameJTextField.setText(competencesList.get(selectedCompetenceIndex).getName());
 
         this.competenceIDJTextField.setText(String.valueOf(competencesList.get(selectedCompetenceIndex).getId()));
+    }
+    
+    /**
+     * Show the details of the selected site in the side panel
+     * 
+     */
+    private void sitesJListeActionPerformed() {
+        
+        // enable side panel if disabled
+        if (!this.editSitesJPanel.isEnabled()){
+            this.editSitesJPanel.setEnabled(true);
+            
+            this.siteNameJLabel.setEnabled(true);
+            this.siteNameJTextField.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.siteNameJTextField.setText(this.sitesJList.getSelectedValue());
+    }
+    
+    /**
+     * Show the details of the selected material in the side panel
+     * 
+     */
+    private void materialsTableJTableActionPerformed() {
+        int selectedMaterialIndex = materialsTableJTable.getSelectedRow();
+        
+        // return if no row selected
+        if (selectedMaterialIndex == -1) return;
+        
+        // enable side panel if disabled
+        if (!this.editCompetencesJPanel.isEnabled()){
+            this.editCompetencesJPanel.setEnabled(true);
+            
+            this.materialNameJLabel.setEnabled(true);
+            this.materialNameJTextField.setEnabled(true);
+            
+            this.materialDescriptionJScrollPane.setEnabled(true);
+            this.materialDescriptionJTextArea.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.materialNameJTextField.setText(materialsList.get(selectedMaterialIndex).getName());
+
+        this.materialDescriptionJTextArea.setText(materialsList.get(selectedMaterialIndex).getDescription());
+    }
+    
+    /**
+     * Show the details of the selected type in the side panel
+     * 
+     */
+    private void typesJListeActionPerformed() {
+        
+        // enable side panel if disabled
+        if (!this.editTypeJPanel.isEnabled()){
+            this.editTypeJPanel.setEnabled(true);
+            
+            this.typeNameJLabel.setEnabled(true);
+            this.typeNameJTextField.setEnabled(true);
+        }
+
+        // fill form whit the data of the selected competence
+        this.typeNameJTextField.setText(this.typesJList.getSelectedValue());
     }
     
     
