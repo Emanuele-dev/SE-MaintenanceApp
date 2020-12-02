@@ -5,6 +5,12 @@
  */
 package GUI;
 
+import GUI.dialogs.AddCompetenceJDialog;
+import GUI.dialogs.AddMaterialJDialog;
+import GUI.dialogs.AddProcedureJDialog;
+import GUI.dialogs.AddSiteJDialog;
+import GUI.dialogs.AddTypeJDialog;
+import GUI.dialogs.AddUserJDialog;
 import com.team14.se.maintenanceapp.*;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -134,7 +140,7 @@ public class AdminGUI extends javax.swing.JFrame {
                    
             this.userRoleJLabel.setEnabled(false);
             this.userRoleJComboBox.setEnabled(false);
-            this.userCompetencePanel.deactivate();
+            this.userCompetencePanel.setEnabled(false);
         }
         
         // clear table
@@ -211,7 +217,7 @@ public class AdminGUI extends javax.swing.JFrame {
             
             this.SMPJLabel.setEnabled(false);
             this.SMPJTextField.setEnabled(false);
-            procedureCompetencePanel.deactivate();
+            procedureCompetencePanel.setEnabled(false);
         }
         
         // clear table
@@ -585,7 +591,7 @@ public class AdminGUI extends javax.swing.JFrame {
         usernameJTextField = new javax.swing.JTextField();
         userRoleJComboBox = new javax.swing.JComboBox<>();
         updateUserJButton = new javax.swing.JButton();
-        userCompetencePanel = new GUI.CompetencePanel(connection);
+        userCompetencePanel = new GUI.CompetencePanel();
         removeUserJButton = new javax.swing.JButton();
         usersTableJScrollPane = new javax.swing.JScrollPane();
         usersTableJTable = new javax.swing.JTable();
@@ -600,7 +606,7 @@ public class AdminGUI extends javax.swing.JFrame {
         SMPJLabel = new javax.swing.JLabel();
         SMPJTextField = new javax.swing.JTextField();
         updateProcedureJButton = new javax.swing.JButton();
-        procedureCompetencePanel = new GUI.CompetencePanel(connection);
+        procedureCompetencePanel = new GUI.CompetencePanel();
         removeProcedureJButton = new javax.swing.JButton();
         proceduresTableJScrollPane = new javax.swing.JScrollPane();
         proceduresTableJTable = new javax.swing.JTable();
@@ -689,6 +695,11 @@ public class AdminGUI extends javax.swing.JFrame {
         usersJPanel.add(usersTopJPanel, java.awt.BorderLayout.PAGE_START);
 
         addUserJButton.setText("Add New User");
+        addUserJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addUserJButtonActionPerformed(evt);
+            }
+        });
 
         editUsersJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected User"));
         editUsersJPanel.setEnabled(false);
@@ -719,7 +730,7 @@ public class AdminGUI extends javax.swing.JFrame {
 
         usernameJTextField.setEnabled(false);
 
-        userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maintainer", "Planner", "System Administrator" }));
+        userRoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maintainer", "Planner", "SystemAdministrator" }));
         userRoleJComboBox.setEnabled(false);
         userRoleJComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -889,6 +900,11 @@ public class AdminGUI extends javax.swing.JFrame {
         proceduresJPanel.add(proceduresTopJPanel, java.awt.BorderLayout.PAGE_START);
 
         addProcedureJButton.setText("Add New Procedure");
+        addProcedureJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProcedureJButtonActionPerformed(evt);
+            }
+        });
 
         editProceduresJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Procedure"));
         editProceduresJPanel.setEnabled(false);
@@ -1041,6 +1057,11 @@ public class AdminGUI extends javax.swing.JFrame {
         competencesJPanel.add(competencesTopJPanel, java.awt.BorderLayout.PAGE_START);
 
         addCompetenceJButton.setText("Add New Competence");
+        addCompetenceJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCompetenceJButtonActionPerformed(evt);
+            }
+        });
 
         editCompetencesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Competence"));
         editCompetencesJPanel.setEnabled(false);
@@ -1189,6 +1210,11 @@ public class AdminGUI extends javax.swing.JFrame {
         sitesJPanel.add(sitesTopJPanel, java.awt.BorderLayout.PAGE_START);
 
         addSiteJButton.setText("Add New Site");
+        addSiteJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSiteJButtonActionPerformed(evt);
+            }
+        });
 
         editSitesJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Site"));
         editSitesJPanel.setEnabled(false);
@@ -1299,6 +1325,11 @@ public class AdminGUI extends javax.swing.JFrame {
         MaterialJPanel.add(MaterialTopJPanel, java.awt.BorderLayout.PAGE_START);
 
         addMaterialJButton.setText("Add New Material");
+        addMaterialJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMaterialJButtonActionPerformed(evt);
+            }
+        });
 
         editMaterialJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Material"));
         editMaterialJPanel.setEnabled(false);
@@ -1444,6 +1475,11 @@ public class AdminGUI extends javax.swing.JFrame {
         TypeJPanel.add(typesTopJPanel, java.awt.BorderLayout.PAGE_START);
 
         addTypeJButton.setText("Add New Type");
+        addTypeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTypeJButtonActionPerformed(evt);
+            }
+        });
 
         editTypeJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit Selected Type"));
         editTypeJPanel.setEnabled(false);
@@ -1589,7 +1625,7 @@ public class AdminGUI extends javax.swing.JFrame {
         if (this.userRoleJComboBox.getSelectedItem().equals("Maintainer")){
             this.userCompetencePanel.activate(new LinkedList<>(), competencesList); 
         } else {
-            this.userCompetencePanel.deactivate();
+            this.userCompetencePanel.setEnabled(false);
         }
     }//GEN-LAST:event_userRoleJComboBoxActionPerformed
 
@@ -1608,6 +1644,42 @@ public class AdminGUI extends javax.swing.JFrame {
     private void refreshCompetencesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshCompetencesJButtonActionPerformed
         this.refreshCompetencesList();
     }//GEN-LAST:event_refreshCompetencesJButtonActionPerformed
+
+    private void addUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserJButtonActionPerformed
+        AddUserJDialog addUserJDialog = new AddUserJDialog(frame, true, connection, competencesList);
+        addUserJDialog.setVisible(true);
+        this.refreshUsersList();;
+    }//GEN-LAST:event_addUserJButtonActionPerformed
+
+    private void addProcedureJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProcedureJButtonActionPerformed
+        AddProcedureJDialog addUprocedureJDialog = new AddProcedureJDialog(frame, true, connection, competencesList);
+        addUprocedureJDialog.setVisible(true);
+        this.refreshProceduresList();
+    }//GEN-LAST:event_addProcedureJButtonActionPerformed
+
+    private void addCompetenceJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCompetenceJButtonActionPerformed
+        AddCompetenceJDialog addCompetenceJDialog = new AddCompetenceJDialog(frame, true, connection);
+        addCompetenceJDialog.setVisible(true);
+        this.refreshCompetencesList();
+    }//GEN-LAST:event_addCompetenceJButtonActionPerformed
+
+    private void addSiteJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSiteJButtonActionPerformed
+        AddSiteJDialog addSiteJDialog = new AddSiteJDialog(frame, true, connection);
+        addSiteJDialog.setVisible(true);
+        this.refreshSitesList();
+    }//GEN-LAST:event_addSiteJButtonActionPerformed
+
+    private void addMaterialJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMaterialJButtonActionPerformed
+        AddMaterialJDialog addMaterialJDialog = new AddMaterialJDialog(frame, true, connection);
+        addMaterialJDialog.setVisible(true);
+        this.refreshMaterialsList();
+    }//GEN-LAST:event_addMaterialJButtonActionPerformed
+
+    private void addTypeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTypeJButtonActionPerformed
+        AddTypeJDialog addTypeJDialog = new AddTypeJDialog(frame, true, connection);
+        addTypeJDialog.setVisible(true);
+        this.refreshTypesList();
+    }//GEN-LAST:event_addTypeJButtonActionPerformed
 
     
     /**
@@ -1651,7 +1723,7 @@ public class AdminGUI extends javax.swing.JFrame {
             //TODO: pass user's competences list instead of null
             userCompetencePanel.activate(new LinkedList<>(), competencesList);
         } else {
-            userCompetencePanel.deactivate();
+            userCompetencePanel.setEnabled(false);
         }
     }
     

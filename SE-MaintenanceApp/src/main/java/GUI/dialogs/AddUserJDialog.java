@@ -5,16 +5,28 @@
  */
 package GUI.dialogs;
 
+import GUI.Messages;
 import com.team14.se.maintenanceapp.Competence;
+import com.team14.se.maintenanceapp.User;
+import java.awt.Component;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 /**
  *
  * @author mario
  */
 public class AddUserJDialog extends javax.swing.JDialog {
     
+    private final AddUserJDialog frame = this;
+    
     private Connection connection;
+    private User newUser;
 
     /**
      * Creates new form AddUserJDialog
@@ -24,6 +36,7 @@ public class AddUserJDialog extends javax.swing.JDialog {
      */
     public AddUserJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.newUser = null;
         initComponents();
     }
     
@@ -41,6 +54,7 @@ public class AddUserJDialog extends javax.swing.JDialog {
             LinkedList<Competence> competencesList) {
         
         super(parent, modal);
+        this.newUser = null;
         
         this.connection = connection;
         
@@ -70,6 +84,8 @@ public class AddUserJDialog extends javax.swing.JDialog {
         jPasswordField2 = new javax.swing.JPasswordField();
         addUserJButton = new javax.swing.JButton();
         cancelJButton = new javax.swing.JButton();
+        roleJLabel = new javax.swing.JLabel();
+        roleJComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add New User");
@@ -99,6 +115,15 @@ public class AddUserJDialog extends javax.swing.JDialog {
             }
         });
 
+        roleJLabel.setText("Role");
+
+        roleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maintainer", "Planner", "SystemAdministrator" }));
+        roleJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roleJComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,15 +142,17 @@ public class AddUserJDialog extends javax.swing.JDialog {
                             .addComponent(passwordJLabel)
                             .addComponent(usernameJLabel)
                             .addComponent(surnameJLabel)
-                            .addComponent(nameJLabel))
+                            .addComponent(nameJLabel)
+                            .addComponent(roleJLabel))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nameJTextField)
                             .addComponent(surnameJTextField)
                             .addComponent(usernameJTextField)
                             .addComponent(jPasswordField1)
-                            .addComponent(jPasswordField2))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                            .addComponent(jPasswordField2)
+                            .addComponent(roleJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,8 +178,12 @@ public class AddUserJDialog extends javax.swing.JDialog {
                     .addComponent(password2JLabel)
                     .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(roleJLabel)
+                    .addComponent(roleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(competencePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addUserJButton)
                     .addComponent(cancelJButton))
@@ -165,10 +196,89 @@ public class AddUserJDialog extends javax.swing.JDialog {
     private void cancelJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelJButtonActionPerformed
-
+ 
     private void addUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserJButtonActionPerformed
-        // TODO add your handling code here:
+        for(Component component:this.getContentPane().getComponents()){
+            component.setEnabled(false);
+        }
+        
+        String name = this.nameJTextField.getText();
+        String surname = this.surnameJTextField.getText();
+        String username = this.usernameJTextField.getText();
+        String password1 = new String(this.jPasswordField1.getPassword());
+        String password2 = new String(this.jPasswordField2.getPassword());
+        String role = (String)roleJComboBox.getSelectedItem();
+        
+        if (name.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Name");
+        } else if (surname.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Surname");
+        } else if (username.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Username");
+        } else if (password1.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Passord");
+        } else if (password2.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Password 2");
+        } else if (!password1.equals(password2)) {
+            JOptionPane.showMessageDialog(this,
+            "Passwords not equals",
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        } else {
+            newUser = new User(name, surname, username, password1, true, role);
+            new AddUserWorker().execute();
+            return;
+        }
+        
+        for(Component component:this.getContentPane().getComponents()){
+            component.setEnabled(true);
+        }
     }//GEN-LAST:event_addUserJButtonActionPerformed
+
+    class AddUserWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                newUser.addUser(connection, newUser);
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "User Created!");
+                    if (newUser.getRole().equals("Maintainer")){
+                        JOptionPane.showMessageDialog(frame, "Competences managment not implementad yet");
+                    }
+                    frame.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    for(Component component:frame.getContentPane().getComponents()){
+                        component.setEnabled(true);
+                    }
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private void roleJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleJComboBoxActionPerformed
+        if (this.roleJComboBox.getSelectedItem().equals("Maintainer")){
+            this.competencePanel.setEnabled(true);
+        } else {
+            this.competencePanel.setEnabled(false);
+        }
+    }//GEN-LAST:event_roleJComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,6 +332,8 @@ public class AddUserJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField nameJTextField;
     private javax.swing.JLabel password2JLabel;
     private javax.swing.JLabel passwordJLabel;
+    private javax.swing.JComboBox<String> roleJComboBox;
+    private javax.swing.JLabel roleJLabel;
     private javax.swing.JLabel surnameJLabel;
     private javax.swing.JTextField surnameJTextField;
     private javax.swing.JLabel usernameJLabel;
