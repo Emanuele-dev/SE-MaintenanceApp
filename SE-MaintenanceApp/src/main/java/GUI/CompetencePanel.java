@@ -6,35 +6,27 @@
 package GUI;
 
 import com.team14.se.maintenanceapp.Competence;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
 
 /**
- *
+ * Custom panel to add or remove competence to an entity
+ * 
  * @author mario
  */
 public class CompetencePanel extends javax.swing.JPanel {
     
     private LinkedList<Competence> competences;
     private LinkedList<Competence> selectedCompetences = null;
-    private Connection connection;
     private DefaultListModel<String> competencesListModel;
 
     /**
-     * Creates new form CompetencePanel
+     * Creates new CompetencePanel
      */
     public CompetencePanel() {
         this.competencesListModel = new DefaultListModel<>();
-        initComponents();
-    }
-    
-    public CompetencePanel(Connection connection) {
-        this.competencesListModel = new DefaultListModel<>();
-        this.connection = connection;
         initComponents();
         
         this.competencesJList.addListSelectionListener((ListSelectionEvent event) -> { 
@@ -42,17 +34,39 @@ public class CompetencePanel extends javax.swing.JPanel {
         });
     }
     
+    /**
+     * Return the list of the names of the selected competencies
+     * 
+     * @return the list of the names of the selected competencies
+     */
     public LinkedList<String> getSelectedCompetences() {
-        return new LinkedList<>(Arrays.asList((String[])this.competencesListModel.toArray()));
+        LinkedList<String> list = new LinkedList<>();
+        
+        for (int i = 0; i < this.competencesJList.getModel().getSize(); i++) {
+             list.add(String.valueOf(this.competencesJList.getModel().getElementAt(i)));
+        }
+        
+        return list;
     }
     
-    public void activate(LinkedList<Competence> selectedCompetences) throws SQLException{
+    /**
+     * Activate the pane and fill the list with the entityCompetences
+     * and the combo box with the totalCompetencies minus the entityCompetences.
+     * Reset the components if already initialized.
+     * 
+     * @param entityCompetences the competencies associated to the entry
+     * @param totalCompetences  the total competencies available
+     */
+    public void activate(
+            LinkedList<Competence> entityCompetences, 
+            LinkedList<Competence> totalCompetences) {
+        
         this.addCompetencesJComboBox.removeAllItems();
         this.competencesListModel.clear();
         
-        setEnabled(true);
-        this.selectedCompetences = selectedCompetences;
-        this.competences = Competence.getCompetences(connection);
+        super.setEnabled(true);
+        this.selectedCompetences = entityCompetences;
+        this.competences = totalCompetences;
         
         this.competencesListModel = new DefaultListModel<>();
         
@@ -77,21 +91,41 @@ public class CompetencePanel extends javax.swing.JPanel {
             this.addCompetencesJButton.setEnabled(true);
         }
     }
-
-    public void deactivate(){
-        this.competencesListModel.clear();
-        this.addCompetencesJComboBox.removeAllItems();
-                
-        setEnabled(false);
-        this.competencesJScrollPane.setEnabled(false);
-        this.competencesJList.setEnabled(false);
-        
-        this.addCompetencesJPanel.setEnabled(false);
-        this.addCompetencesJComboBox.setEnabled(false);
-        this.addCompetencesJButton.setEnabled(false);
-        this.removeCompetencesJButton.setEnabled(false);
-    }
     
+    /**
+     * Enable or disable the panel and its components 
+     * depending on the value of the parameter status.
+     * 
+     * @param status If true, this component is enabled;
+     * otherwise this component is disabled
+     */
+    @Override
+    public void setEnabled(boolean status){
+        if (status){
+            super.setEnabled(true);
+            this.competencesJScrollPane.setEnabled(true);
+            this.competencesJList.setEnabled(true);
+
+            this.addCompetencesJPanel.setEnabled(true);
+            this.addCompetencesJComboBox.setEnabled(true);
+
+            if (this.addCompetencesJComboBox.getItemCount() > 0){
+                this.addCompetencesJButton.setEnabled(true);
+            }
+            if (this.competencesJList.getModel().getSize() > 0){
+                this.removeCompetencesJButton.setEnabled(true);
+            }
+        } else {
+            super.setEnabled(false);
+            this.competencesJScrollPane.setEnabled(false);
+            this.competencesJList.setEnabled(false);
+
+            this.addCompetencesJPanel.setEnabled(false);
+            this.addCompetencesJComboBox.setEnabled(false);
+            this.addCompetencesJButton.setEnabled(false);
+            this.removeCompetencesJButton.setEnabled(false);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -186,6 +220,11 @@ public class CompetencePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Move a competence from combo box to the list
+     * 
+     * @param evt not used
+     */
     private void addCompetencesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCompetencesJButtonActionPerformed
         this.competencesListModel.addElement(this.addCompetencesJComboBox.getSelectedItem().toString());
         this.addCompetencesJComboBox.removeItem(this.addCompetencesJComboBox.getSelectedItem());
@@ -195,6 +234,11 @@ public class CompetencePanel extends javax.swing.JPanel {
         this.removeCompetencesJButton.setEnabled(false);
     }//GEN-LAST:event_addCompetencesJButtonActionPerformed
 
+    /**
+     * Move a competence from list to the combo box
+     * 
+     * @param evt not used
+     */
     private void removeCompetencesJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCompetencesJButtonActionPerformed
         this.addCompetencesJComboBox.addItem(this.competencesJList.getSelectedValue());
         this.competencesListModel.removeElement(this.competencesJList.getSelectedValue());

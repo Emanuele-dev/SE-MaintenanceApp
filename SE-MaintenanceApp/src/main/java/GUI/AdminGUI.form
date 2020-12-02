@@ -137,6 +137,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add New User"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addUserJButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="editUsersJPanel">
                   <Properties>
@@ -285,7 +288,7 @@
                           <StringArray count="3">
                             <StringItem index="0" value="Maintainer"/>
                             <StringItem index="1" value="Planner"/>
-                            <StringItem index="2" value="System Administrator"/>
+                            <StringItem index="2" value="SystemAdministrator"/>
                           </StringArray>
                         </Property>
                         <Property name="enabled" type="boolean" value="false"/>
@@ -307,9 +310,6 @@
                       <Properties>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new GUI.CompetencePanel(connection)"/>
-                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -468,6 +468,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add New Procedure"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addProcedureJButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="editProceduresJPanel">
                   <Properties>
@@ -565,9 +568,6 @@
                       <Properties>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new GUI.CompetencePanel(connection)"/>
-                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -668,6 +668,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Refresh List"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshCompetencesJButtonActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -711,6 +714,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add New Competence"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addCompetenceJButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="editCompetencesJPanel">
                   <Properties>
@@ -946,6 +952,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add New Site"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addSiteJButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="editSitesJPanel">
                   <Properties>
@@ -1141,6 +1150,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add New Material"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addMaterialJButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="editMaterialJPanel">
                   <Properties>
@@ -1377,6 +1389,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add New Type"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addTypeJButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="editTypeJPanel">
                   <Properties>
