@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 package GUI;
+import com.team14.se.maintenanceapp.MaintenanceActivity;
 import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -162,6 +164,19 @@ public class Login extends javax.swing.JFrame {
                 logUser = new User(name, surname, username, password, true, role);
                 /* Need update Class User to continue*/
                 this.dispose();
+                                if(role.equals("System Administrator")){
+                    AdminGUI sysGui = new AdminGUI(logUser, conn);
+                    sysGui.setVisible(true);
+                }
+                if(role.equals("Planner")){
+                    LinkedList<MaintenanceActivity> activityList = MaintenanceActivity.getMaintenanceActivities(conn);
+                    PlannerGUI plannerGui = new PlannerGUI(logUser, conn, activityList);
+                    plannerGui.setVisible(true);
+                }
+                if(role.equals("Maintainer")){
+                    MaintainerGUI maintainerGUI = new MaintainerGUI(logUser, conn);
+                    maintainerGUI.setVisible(true);
+                }
                 // Then save in DB the access
                 stmt.executeQuery(logsaveQuery);
             }      
