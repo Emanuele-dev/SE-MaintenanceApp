@@ -239,7 +239,7 @@ public class AddUserJDialog extends javax.swing.JDialog {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                newUser.addUser(connection, newUser);
+                User.addUser(connection, newUser);
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);

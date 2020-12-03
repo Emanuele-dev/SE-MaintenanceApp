@@ -150,7 +150,7 @@ public class AddTypeJDialog extends javax.swing.JDialog {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                newType.addTypology(connection, newType);
+                Typology.addTypology(connection, newType);
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddCompetenceJDialog.class.getName()).log(Level.SEVERE, null, ex);

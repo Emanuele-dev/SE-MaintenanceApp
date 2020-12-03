@@ -165,7 +165,7 @@ public class AddMaterialJDialog extends javax.swing.JDialog {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                newMaterial.addMaterial(connection, newMaterial);
+                Material.addMaterial(connection, newMaterial);
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddCompetenceJDialog.class.getName()).log(Level.SEVERE, null, ex);

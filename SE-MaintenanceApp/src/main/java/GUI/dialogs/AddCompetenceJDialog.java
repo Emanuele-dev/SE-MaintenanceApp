@@ -152,7 +152,7 @@ public class AddCompetenceJDialog extends javax.swing.JDialog {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                newCompetence.addCompetence(connection, newCompetence);
+                Competence.addCompetence(connection, newCompetence);
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddCompetenceJDialog.class.getName()).log(Level.SEVERE, null, ex);

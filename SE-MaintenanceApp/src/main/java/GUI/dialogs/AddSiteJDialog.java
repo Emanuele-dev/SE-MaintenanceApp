@@ -145,7 +145,7 @@ public class AddSiteJDialog extends javax.swing.JDialog {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                newSite.addSite(connection, newSite);
+                Site.addSite(connection, newSite);
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddCompetenceJDialog.class.getName()).log(Level.SEVERE, null, ex);

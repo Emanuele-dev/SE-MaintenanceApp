@@ -191,7 +191,7 @@ public class AddProcedureJDialog extends javax.swing.JDialog {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                newProcedure.addProcedure(connection, newProcedure);
+                Procedure.addProcedure(connection, newProcedure);
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
