@@ -101,7 +101,10 @@ public class Log {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            logs.add(new Log(rst.getInt("id"), rst.getString("username"), rst.getTimestamp("log_time")));
+            if ((rst.getInt("id") != 1) & (rst.getString("username") != null) & (rst.getTimestamp("log_time") != null)){ //aavoid to return null row
+                logs.add(new Log(rst.getInt("id"), rst.getString("username"), rst.getTimestamp("log_time")));
+            }
+            
         }
         return logs;    
     }
