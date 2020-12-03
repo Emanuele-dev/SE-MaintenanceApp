@@ -1920,9 +1920,54 @@ public class AdminGUI extends javax.swing.JFrame {
     ///////////////////// DELETE MATERIAL /////////////////////
     
     private void removeMaterialJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeMaterialJButtonActionPerformed
-        // TODO add your handling code here:
+        this.removeMaterialJButton.setEnabled(false);
+        this.materialsTableJTable.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + materialsList.get(materialsTableJTable.getSelectedRow()).getName() 
+                        + "?", 
+                "Delete Material", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteTypeWorker().execute();
+        } else {
+            this.removeMaterialJButton.setEnabled(true);
+            this.materialsTableJTable.setEnabled(true);
+        }
     }//GEN-LAST:event_removeMaterialJButtonActionPerformed
 
+    private class DeleteTypeWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Material materialToremove = materialsList.get(materialsTableJTable.getSelectedRow());
+                materialToremove.removeMaterial(connection, materialToremove);
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Material Deleted!");
+                    refreshMaterialsList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeCompetenceJButton.setEnabled(true);
+                    competencesTableJTable.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     ///////////////////// DELETE SITE /////////////////////
     
@@ -2088,7 +2133,10 @@ public class AdminGUI extends javax.swing.JFrame {
         int selectedMaterialIndex = materialsTableJTable.getSelectedRow();
         
         // return if no row selected
-        if (selectedMaterialIndex == -1) return;
+        if (selectedMaterialIndex == -1) {
+            this.removeMaterialJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editCompetencesJPanel.isEnabled()){
@@ -2100,6 +2148,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.materialDescriptionJScrollPane.setEnabled(true);
             this.materialDescriptionJTextArea.setEnabled(true);
         }
+        this.removeMaterialJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.materialNameJTextField.setText(materialsList.get(selectedMaterialIndex).getName());
