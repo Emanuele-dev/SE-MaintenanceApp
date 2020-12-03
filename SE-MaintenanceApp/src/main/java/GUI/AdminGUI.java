@@ -12,6 +12,7 @@ import GUI.dialogs.AddSiteJDialog;
 import GUI.dialogs.AddTypeJDialog;
 import GUI.dialogs.AddUserJDialog;
 import com.team14.se.maintenanceapp.*;
+import java.awt.Component;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -809,6 +810,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeUserJButton.setText("Remove Selected User");
         removeUserJButton.setEnabled(false);
+        removeUserJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeUserJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout usersDetailsJPanelLayout = new javax.swing.GroupLayout(usersDetailsJPanel);
         usersDetailsJPanel.setLayout(usersDetailsJPanelLayout);
@@ -1681,6 +1687,55 @@ public class AdminGUI extends javax.swing.JFrame {
         this.refreshTypesList();
     }//GEN-LAST:event_addTypeJButtonActionPerformed
 
+    private void removeUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserJButtonActionPerformed
+        this.removeUserJButton.setEnabled(false);
+        this.usersTableJTable.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete" 
+                        + usersList.get(usersTableJTable.getSelectedRow()).getUsername() 
+                        + "?", 
+                "Delete User", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteUserWorker().execute();
+        } else {
+            this.removeUserJButton.setEnabled(true);
+            this.usersTableJTable.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeUserJButtonActionPerformed
+
+    class DeleteUserWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                usersList.get(usersTableJTable.getSelectedRow()).removeUser(connection, usersList.get(usersTableJTable.getSelectedRow()));
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "User Deleted!");
+                    refreshUsersList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeUserJButton.setEnabled(true);
+                    usersTableJTable.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     
     /**
      * Show the details of the selected user in the side panel
@@ -1690,7 +1745,10 @@ public class AdminGUI extends javax.swing.JFrame {
         int selectedUserIndex = usersTableJTable.getSelectedRow();
         
         // return if no row selected
-        if (selectedUserIndex == -1) return;
+        if (selectedUserIndex == -1) {
+            this.removeUserJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editUsersJPanel.isEnabled()){
@@ -1707,6 +1765,12 @@ public class AdminGUI extends javax.swing.JFrame {
                    
             this.userRoleJLabel.setEnabled(true);
             this.userRoleJComboBox.setEnabled(true);
+        }
+        
+        if (usersList.get(selectedUserIndex).getUsername().equals(loggedUser.getUsername())){
+            this.removeUserJButton.setEnabled(false);
+        } else {
+            this.removeUserJButton.setEnabled(true);
         }
         
         // fill form whit the data of the selected user
@@ -1748,6 +1812,8 @@ public class AdminGUI extends javax.swing.JFrame {
             this.SMPJLabel.setEnabled(true);
             this.SMPJTextField.setEnabled(true);
         }
+        
+        this.removeProcedureJButton.setEnabled(true);
 
         // fill form whit the data of the selected procedure
         this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
