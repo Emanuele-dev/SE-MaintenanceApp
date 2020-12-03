@@ -809,6 +809,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeUserJButton.setText("Remove Selected User");
         removeUserJButton.setEnabled(false);
+        removeUserJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeUserJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout usersDetailsJPanelLayout = new javax.swing.GroupLayout(usersDetailsJPanel);
         usersDetailsJPanel.setLayout(usersDetailsJPanelLayout);
@@ -970,6 +975,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeProcedureJButton.setText("Remove Selected Procedure");
         removeProcedureJButton.setEnabled(false);
+        removeProcedureJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeProcedureJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout proceduresDetailsJPanelLayout = new javax.swing.GroupLayout(proceduresDetailsJPanel);
         proceduresDetailsJPanel.setLayout(proceduresDetailsJPanelLayout);
@@ -1123,6 +1133,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeCompetenceJButton.setText("Remove Selected Competence");
         removeCompetenceJButton.setEnabled(false);
+        removeCompetenceJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeCompetenceJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout competencesDetailsJPanelLayout = new javax.swing.GroupLayout(competencesDetailsJPanel);
         competencesDetailsJPanel.setLayout(competencesDetailsJPanelLayout);
@@ -1262,6 +1277,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeSiteJButton.setText("Remove Selected Site");
         removeSiteJButton.setEnabled(false);
+        removeSiteJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeSiteJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout sitesDetailsJPanelLayout = new javax.swing.GroupLayout(sitesDetailsJPanel);
         sitesDetailsJPanel.setLayout(sitesDetailsJPanelLayout);
@@ -1388,6 +1408,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeMaterialJButton.setText("Remove Selected Material");
         removeMaterialJButton.setEnabled(false);
+        removeMaterialJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeMaterialJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout materialsDetailsJPanelLayout = new javax.swing.GroupLayout(materialsDetailsJPanel);
         materialsDetailsJPanel.setLayout(materialsDetailsJPanelLayout);
@@ -1527,6 +1552,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeTypeJButton.setText("Remove Selected Type");
         removeTypeJButton.setEnabled(false);
+        removeTypeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeTypeJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout typesDetailsjPanelLayout = new javax.swing.GroupLayout(typesDetailsjPanel);
         typesDetailsjPanel.setLayout(typesDetailsjPanelLayout);
@@ -1682,6 +1712,317 @@ public class AdminGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_addTypeJButtonActionPerformed
 
     
+    ///////////////////// DELETE USERS /////////////////////
+    
+    private void removeUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserJButtonActionPerformed
+        this.removeUserJButton.setEnabled(false);
+        this.usersTableJTable.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + usersList.get(usersTableJTable.getSelectedRow()).getUsername() 
+                        + "?", 
+                "Delete User", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteUserWorker().execute();
+        } else {
+            this.removeUserJButton.setEnabled(true);
+            this.usersTableJTable.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeUserJButtonActionPerformed
+
+    private class DeleteUserWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                usersList.get(usersTableJTable.getSelectedRow()).removeUser(connection, usersList.get(usersTableJTable.getSelectedRow()));
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "User Deleted!");
+                    refreshUsersList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeUserJButton.setEnabled(true);
+                    usersTableJTable.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    
+    ///////////////////// DELETE PROCEDURE /////////////////////
+    
+    private void removeProcedureJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeProcedureJButtonActionPerformed
+        this.removeProcedureJButton.setEnabled(false);
+        this.proceduresTableJTable.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + proceduresList.get(proceduresTableJTable.getSelectedRow()).getName() 
+                        + "?", 
+                "Delete Procedure", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteProcedureWorker().execute();
+        } else {
+            this.removeProcedureJButton.setEnabled(true);
+            this.proceduresTableJTable.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeProcedureJButtonActionPerformed
+
+    private class DeleteProcedureWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Procedure procedureToremove = proceduresList.get(proceduresTableJTable.getSelectedRow());
+                procedureToremove.removeProcedure(connection, procedureToremove);
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Procedure Deleted!");
+                    refreshProceduresList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeProcedureJButton.setEnabled(true);
+                    proceduresTableJTable.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    ///////////////////// DELETE COMPETENCE /////////////////////
+    
+    private void removeCompetenceJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCompetenceJButtonActionPerformed
+        this.removeCompetenceJButton.setEnabled(false);
+        this.competencesTableJTable.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + competencesList.get(competencesTableJTable.getSelectedRow()).getName() 
+                        + "?", 
+                "Delete Competence", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteCompetenceWorker().execute();
+        } else {
+            this.removeCompetenceJButton.setEnabled(true);
+            this.competencesTableJTable.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeCompetenceJButtonActionPerformed
+
+    private class DeleteCompetenceWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Competence competenceToremove = competencesList.get(competencesTableJTable.getSelectedRow());
+                competenceToremove.removeCompetence(connection, competenceToremove);
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Competence Deleted!");
+                    refreshCompetencesList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeCompetenceJButton.setEnabled(true);
+                    competencesTableJTable.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    ///////////////////// DELETE SITE /////////////////////
+    
+    private void removeSiteJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSiteJButtonActionPerformed
+        this.removeSiteJButton.setEnabled(false);
+        this.sitesJList.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + this.sitesJList.getSelectedValue()
+                        + "?", 
+                "Delete Site", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteSiteWorker().execute();
+        } else {
+            this.removeSiteJButton.setEnabled(true);
+            this.sitesJList.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeSiteJButtonActionPerformed
+
+    private class DeleteSiteWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                new Site(sitesJList.getSelectedValue()).removeSite(connection, new Site(sitesJList.getSelectedValue()));
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Site Deleted!");
+                    refreshSitesList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeSiteJButton.setEnabled(true);
+                    sitesJList.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    ///////////////////// DELETE MATERIAL /////////////////////
+    
+    private void removeMaterialJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeMaterialJButtonActionPerformed
+        this.removeMaterialJButton.setEnabled(false);
+        this.materialsTableJTable.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + materialsList.get(materialsTableJTable.getSelectedRow()).getName() 
+                        + "?", 
+                "Delete Material", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteMaterialWorker().execute();
+        } else {
+            this.removeMaterialJButton.setEnabled(true);
+            this.materialsTableJTable.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeMaterialJButtonActionPerformed
+
+    private class DeleteMaterialWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Material materialToremove = materialsList.get(materialsTableJTable.getSelectedRow());
+                materialToremove.removeMaterial(connection, materialToremove);
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Material Deleted!");
+                    refreshMaterialsList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeMaterialJButton.setEnabled(true);
+                    materialsTableJTable.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    ///////////////////// DELETE SITE /////////////////////
+    
+    private void removeTypeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeTypeJButtonActionPerformed
+        this.removeTypeJButton.setEnabled(false);
+        this.typesJList.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + this.typesJList.getSelectedValue()
+                        + "?", 
+                "Delete Type", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteTypeWorker().execute();
+        } else {
+            this.removeTypeJButton.setEnabled(true);
+            this.typesJList.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeTypeJButtonActionPerformed
+
+    private class DeleteTypeWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                new Typology(typesJList.getSelectedValue()).removeTypology(connection, new Typology(typesJList.getSelectedValue()));
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Type Deleted!");
+                    refreshTypesList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeTypeJButton.setEnabled(true);
+                    typesJList.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    ///////////////////// TABLES ACTION /////////////////////
+    
     /**
      * Show the details of the selected user in the side panel
      * 
@@ -1690,7 +2031,10 @@ public class AdminGUI extends javax.swing.JFrame {
         int selectedUserIndex = usersTableJTable.getSelectedRow();
         
         // return if no row selected
-        if (selectedUserIndex == -1) return;
+        if (selectedUserIndex == -1) {
+            this.removeUserJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editUsersJPanel.isEnabled()){
@@ -1707,6 +2051,12 @@ public class AdminGUI extends javax.swing.JFrame {
                    
             this.userRoleJLabel.setEnabled(true);
             this.userRoleJComboBox.setEnabled(true);
+        }
+        
+        if (usersList.get(selectedUserIndex).getUsername().equals(loggedUser.getUsername())){
+            this.removeUserJButton.setEnabled(false);
+        } else {
+            this.removeUserJButton.setEnabled(true);
         }
         
         // fill form whit the data of the selected user
@@ -1736,7 +2086,10 @@ public class AdminGUI extends javax.swing.JFrame {
         int selectedProcedureIndex = proceduresTableJTable.getSelectedRow();
         
         // return if no row selected
-        if (selectedProcedureIndex == -1) return;
+        if (selectedProcedureIndex == -1) {
+            this.removeProcedureJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editProceduresJPanel.isEnabled()){
@@ -1748,6 +2101,8 @@ public class AdminGUI extends javax.swing.JFrame {
             this.SMPJLabel.setEnabled(true);
             this.SMPJTextField.setEnabled(true);
         }
+        
+        this.removeProcedureJButton.setEnabled(true);
 
         // fill form whit the data of the selected procedure
         this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
@@ -1769,7 +2124,10 @@ public class AdminGUI extends javax.swing.JFrame {
         int selectedCompetenceIndex = competencesTableJTable.getSelectedRow();
         
         // return if no row selected
-        if (selectedCompetenceIndex == -1) return;
+        if (selectedCompetenceIndex == -1) {
+            this.removeCompetenceJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editCompetencesJPanel.isEnabled()){
@@ -1780,6 +2138,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.competenceNameJLabel.setEnabled(true);
             this.competenceNameJTextField.setEnabled(true);
         }
+        this.removeCompetenceJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.competenceNameJTextField.setText(competencesList.get(selectedCompetenceIndex).getName());
@@ -1793,7 +2152,10 @@ public class AdminGUI extends javax.swing.JFrame {
      */
     private void sitesJListeActionPerformed() {
         
-        if (this.sitesJList.getSelectedValue() == null) return;
+        if (this.sitesJList.getSelectedValue() == null) {
+            this.removeSiteJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editSitesJPanel.isEnabled()){
@@ -1802,6 +2164,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.siteNameJLabel.setEnabled(true);
             this.siteNameJTextField.setEnabled(true);
         }
+        this.removeSiteJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.siteNameJTextField.setText(this.sitesJList.getSelectedValue());
@@ -1815,7 +2178,10 @@ public class AdminGUI extends javax.swing.JFrame {
         int selectedMaterialIndex = materialsTableJTable.getSelectedRow();
         
         // return if no row selected
-        if (selectedMaterialIndex == -1) return;
+        if (selectedMaterialIndex == -1) {
+            this.removeMaterialJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editCompetencesJPanel.isEnabled()){
@@ -1827,6 +2193,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.materialDescriptionJScrollPane.setEnabled(true);
             this.materialDescriptionJTextArea.setEnabled(true);
         }
+        this.removeMaterialJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.materialNameJTextField.setText(materialsList.get(selectedMaterialIndex).getName());
@@ -1840,7 +2207,10 @@ public class AdminGUI extends javax.swing.JFrame {
      */
     private void typesJListeActionPerformed() {
         
-        if (this.typesJList.getSelectedValue() == null) return;
+        if (this.typesJList.getSelectedValue() == null){
+            this.removeTypeJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editTypeJPanel.isEnabled()){
@@ -1849,6 +2219,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.typeNameJLabel.setEnabled(true);
             this.typeNameJTextField.setEnabled(true);
         }
+        this.removeTypeJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.typeNameJTextField.setText(this.typesJList.getSelectedValue());
