@@ -11,9 +11,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -232,6 +235,11 @@ public class MaintainerGUI extends javax.swing.JFrame {
             }
         });
         activitiesJTable.getTableHeader().setReorderingAllowed(false);
+        activitiesJTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                activitiesJTableMouseClicked(evt);
+            }
+        });
         activitiesJScrollPane.setViewportView(activitiesJTable);
 
         mainJPanel.add(activitiesJScrollPane, java.awt.BorderLayout.CENTER);
@@ -264,6 +272,34 @@ public class MaintainerGUI extends javax.swing.JFrame {
         int week_n = (int) weekJSpinner.getValue();
         initTable(week_n);
     }//GEN-LAST:event_refreshJButtonActionPerformed
+
+    private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
+        JTable source = (JTable)evt.getSource();
+        int row = source.rowAtPoint( evt.getPoint() );
+        String id=source.getModel().getValueAt(row, 0)+"";
+        /* statement for 1 maint activity */
+        try {
+            Statement statement = connection.createStatement();
+            String querySingleActivity = "SELECT * FROM ATTIVITA_MANUTENZIONE, PROCEDURA "
+                    + "WHERE ATTIVITA_MANUTENZIONE.procedura = PROCEDURA.nome "
+                    + "AND activity_id ="+id+";";
+            ResultSet rs = statement.executeQuery(querySingleActivity);
+            
+            if(rs.next()){
+                detailsActivityJTextField.setText(rs.getString("nome"));
+                detailsWeekJTextField.setText(String.valueOf(rs.getInt("settimana")));
+                detailsSMPJTextField.setText(rs.getString("smp"));
+                detailsDescriptionJTextArea.setText(rs.getString("descrizione"));
+                DefaultListModel listModel = new DefaultListModel();
+                listModel.addElement(rs.getString("competenza"));
+                detailsSkillsJList.setModel(listModel);
+                detailsNotesJTextArea.setEnabled(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+    }//GEN-LAST:event_activitiesJTableMouseClicked
     
     private void initTable(int n_week) {
         try {
@@ -292,6 +328,7 @@ public class MaintainerGUI extends javax.swing.JFrame {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+           
     /**
      * @param args the command line arguments
      */
