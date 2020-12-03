@@ -5,8 +5,16 @@
  */
 package GUI;
 
+import com.team14.se.maintenanceapp.MaintenanceActivity;
 import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -71,6 +79,11 @@ public class MaintainerGUI extends javax.swing.JFrame {
         mainJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshJButton.setText("Refresh List");
+        refreshJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshJButtonActionPerformed(evt);
+            }
+        });
 
         weekNumberJLabel.setText("Week N.");
 
@@ -247,6 +260,38 @@ public class MaintainerGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
+        int week_n = (int) weekJSpinner.getValue();
+        initTable(week_n);
+    }//GEN-LAST:event_refreshJButtonActionPerformed
+    
+    private void initTable(int n_week) {
+        try {
+            LinkedList<MaintenanceActivity> activityList = MaintenanceActivity.getMaintenanceActivities(connection);
+            DefaultTableModel activitiesTabelModel = (DefaultTableModel) activitiesJTable.getModel();
+            activitiesTabelModel.setNumRows(0);
+            activitiesTabelModel.fireTableDataChanged();
+            activityList.forEach((MaintenanceActivity activity) -> {
+                if(activity.getWeek() == n_week){
+                    String queryCheckIfAssigned = "SELECT * FROM ESECUZIONE WHERE activity_id ='"+activity.getActivityId()+"'"
+                            + "AND maintainer='"+loggedUser.getUsername()+"';";
+                    try {
+                        PreparedStatement statementForCheck = connection.prepareStatement(queryCheckIfAssigned);
+                        ResultSet rsCheck = statementForCheck.executeQuery();
+                        if(rsCheck.next()){
+                            activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getEstimatedIntervention() + " min."});
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MaintainerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    
+                }
+            });
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -312,3 +357,4 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel weekNumberJLabel;
     // End of variables declaration//GEN-END:variables
 }
+
