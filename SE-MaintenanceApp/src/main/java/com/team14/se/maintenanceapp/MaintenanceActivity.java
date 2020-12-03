@@ -27,6 +27,18 @@ public class MaintenanceActivity {
     private Material material;
     private ArrayList<User> users; //Maintainers
     
+    /**
+     * Constructor Maintenance activity: create a maintenance activity 
+     * @param name name of the activity
+     * @param description description of the activity
+     * @param interruptible flag that indicates if the activity can be interrupted
+     * @param estimatedIntervention estimated duration of the intervention in minute
+     * @param ewo flag that indicates if the activity is an Emergency Work Order
+     * @param week week in wich the activity must be performed
+     * @param procedure procedure that the activity must follow
+     * @param site area in which the activity must take place
+     * @param typology typology of the activity to perform
+     */
     public MaintenanceActivity(String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
             Procedure procedure, Site site, Typology typology){
@@ -42,6 +54,19 @@ public class MaintenanceActivity {
         this.typology = typology;
     }
     
+    /**
+     * Constructor Maintenance activity: create a maintenance activity 
+     * @param activityId id of the activity
+     * @param name name of the activity
+     * @param description description of the activity
+     * @param interruptible flag that indicates if the activity can be interrupted
+     * @param estimatedIntervention estimated duration of the intervention in minute
+     * @param ewo flag that indicates if the activity is an Emergency Work Order
+     * @param week week in wich the activity must be performed
+     * @param procedure procedure that the activity must follow
+     * @param site area in which the activity must take place
+     * @param typology typology of the activity to perform
+     */
     public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
             Procedure procedure, Site site, Typology typology){
@@ -57,6 +82,22 @@ public class MaintenanceActivity {
         this.typology = typology;
     }
     
+    /**
+     * Constructor Maintenance activity: create a maintenance activity 
+     * @param activityId id of the activity
+     * @param name name of the activity
+     * @param description description of the activity
+     * @param interruptible flag that indicates if the activity can be interrupted
+     * @param estimatedIntervention estimated duration of the intervention in minute
+     * @param ewo flag that indicates if the activity is an Emergency Work Order
+     * @param week week in wich the activity must be performed
+     * @param state flag to indicate if the activity is completed or not
+     * @param procedure procedure that the activity must follow
+     * @param site area in which the activity must take place
+     * @param typology typology of the activity to perform
+     * @param material material to use during the activity
+     * @param users users assigned to this activity
+     */
     public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
             Procedure procedure, Site site, Typology typology, 
@@ -76,94 +117,208 @@ public class MaintenanceActivity {
         this.material = material;
         this.users = users;  
     }
+    
+    /**
+     * 
+     * @return activity id
+     */
     public int getActivityId(){
         return activityId;
     }
+    /**
+     * 
+     * @return activity name
+     */
     public String getName(){
         return name;
     }
+    /**
+     * 
+     * @return activity description
+     */
     public String getDescription(){
         return description;
     }
+    /**
+     * 
+     * @return activity interruptable flag
+     */ 
     public boolean getInterruptable(){
         return interruptible;
     }
+    /**
+     * 
+     * @return activity estimated intervention time
+     */
     public int getEstimatedIntervention(){
         return estimatedIntervention;
     }
+    /**
+     * 
+     * @return activity ewo flag
+     */
     public boolean getEwo(){
         return ewo;
     }
+    /**
+     * 
+     * @return activity week
+     */
     public int getWeek(){
         return week;
     }
+    /**
+     * 
+     * @return activity state
+     */
     public boolean getState(){
         return state;
     }
+    /**
+     * 
+     * @return activity procedure
+     */
     public Procedure getProcedure(){
         return procedure;
     }
+    /**
+     * 
+     * @return activity site
+     */
     public Site getSite(){
         return site;
     }
+    /**
+     * 
+     * @return typology of the activity
+     */
     public Typology getTypology(){
         return typology;
     }
+    /**
+     * 
+     * @return material to use during the activity
+     */
     public Material getMaterial(){
         return material;
     }
+    /**
+     * 
+     * @return users assigned to the activity
+     */
     public ArrayList getUsers(){
         return users;
     }
     
-    
+    /**
+     * 
+     * @param activityId new activity id
+     */
     public void setActivityId(int activityId){
         this.activityId = activityId;
     }
+    /**
+     * 
+     * @param name new name
+     */
     public void setName(String name){
         this.name = name;
     }
+    /**
+     * 
+     * @param description new description
+     */
     public void setDescription(String description){
          this.description = description;
     }
+    /**
+     * 
+     * @param interruptible new interruptible flag
+     */
     public void setInterruptable(boolean interruptible){
         this.interruptible = interruptible;
     }
+    /**
+     * 
+     * @param estimatedIntervention new stimated intervention time
+     */
     public void setEstimatedIntervention(int estimatedIntervention){
         this.estimatedIntervention = estimatedIntervention;
     }
+    /**
+     * 
+     * @param ewo new ewo flag
+     */
     public void setEwo(boolean ewo){
         this.ewo = ewo;
     }
+    /**
+     * 
+     * @param week new activity week
+     */
     public void setWeek(int week){
         this.week = week;
     }
+    /**
+     * 
+     * @param state new activity state
+     */
     public void setState(boolean state){
         this.state = state;
     }
+    /**
+     * 
+     * @param procedure new activity procedure
+     */
     public void setProcedure(Procedure procedure){
         this.procedure = procedure;
     }
+    /**
+     * 
+     * @param site new activity state
+     */
     public void setSite(Site site){
         this.site = site;
     }
+    /**
+     * 
+     * @param typology new activity typology
+     */
     public void setTypology(Typology typology){
         this.typology = typology;
     }
+    /**
+     * 
+     * @param material new activity material
+     */
     public void setMaterial(Material material){
         this.material = material;
     }
+    /**
+     * 
+     * @param users new users assigned to the activity
+     */
     public void setUsers(ArrayList users){
         this.users = users;
     }
 
+    /**
+     * Print maintenance activity
+     * @return string containing data for a single maintenance activity
+     */
     @Override
     public String toString() {
         return "MaintenanceActivity{" + "activityId=" + activityId + ", name=" + name + ", description=" + description + ", interruptible=" + interruptible + ", estimatedIntervention=" + estimatedIntervention + ", ewo=" + ewo + ", week=" + week + ", state=" + state + ", procedure=" + procedure + ", site=" + site + ", typology=" + typology + ", material=" + material + ", users=" + users + '}';
     }
 
     
-    //Access to database methods
+    /**
+     * Access to the database to exeute queries
+     * @param conn connection to the database opened
+     * @param query query to perform on maintenance activities
+     * @return list of maintenance activities 
+     * @throws SQLException 
+     */
     public static LinkedList<MaintenanceActivity> resultQueryGetActivities(Connection conn, String query) throws SQLException{
         int competenceId = 0;
         int procedureId = 0;
@@ -209,19 +364,36 @@ public class MaintenanceActivity {
         return maintenaceActivities;
     }
     
-    //Acquire list of Maintenance Activities
+    /**
+     * Get all the Maintenance Activities from the database
+     * @param conn connection to the database opened
+     * @return list of maintenance activities
+     * @throws SQLException 
+     */
     public static LinkedList<MaintenanceActivity> getMaintenanceActivities (Connection conn) throws SQLException{
         String query = "SELECT * FROM attivita_manutenzione";
         return resultQueryGetActivities(conn, query);
     }
     
     
-    //Acquire list of Maintenance Activities in a particular week
+    /**
+     * Get all the Maintenance Activities in a particular week from the database
+     * @param conn connection to the database opened
+     * @param week_number week in which the activities are performed
+     * @return list of maintenance activities
+     * @throws SQLException 
+     */
     public static LinkedList<MaintenanceActivity> getMaintenanceActivitiesByWeek (Connection conn, int week_number) throws SQLException{
         String query = "SELECT * FROM attivita_manutenzione WHERE settimana = " + week_number;
         return resultQueryGetActivities(conn, query);
     }
     
+    /**
+     * Add a maintenance activity in the database 
+     * @param conn connection to the database opened
+     * @param maintActivity maintenance activity to add
+     * @throws SQLException 
+     */
     public void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
@@ -242,6 +414,13 @@ public class MaintenanceActivity {
         stmtMainActivity.setString(9, maintActivity.getTypology().getName());
         stmtMainActivity.executeUpdate();
     }
+    
+    /**
+     * Remove a competence from the database
+     * @param conn connection to the database opened
+     * @param maintActivity maintenance activity to remove
+     * @throws SQLException 
+     */
     public void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
@@ -252,6 +431,14 @@ public class MaintenanceActivity {
         stmtMainActivity.executeUpdate();
     }
     
+    
+    /**
+     * Update a competence in the database
+     * @param conn connection to the database opened
+     * @param maintActivity new activity informations
+     * @param oldActivityId old activity to update
+     * @throws SQLException 
+     */
     public void updateMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity, int oldActivityId) throws SQLException{
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
