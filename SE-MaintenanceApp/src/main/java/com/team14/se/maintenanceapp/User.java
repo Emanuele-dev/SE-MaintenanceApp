@@ -153,7 +153,7 @@ public class User {
      * @param user new user to add
      * @throws SQLException 
      */
-    public void addUser(Connection conn, User user) throws SQLException{
+    public static void addUser(Connection conn, User user) throws SQLException{
         String query_insert_user="";
         PreparedStatement stmtUser;
         query_insert_user = "INSERT INTO utente (nome, cognome, username, pass, attivo, ruolo) VALUES (?, ?, ?, ?, ?, ?);";
@@ -175,13 +175,13 @@ public class User {
      * @param user user to remove 
      * @throws SQLException 
      */
-    public void removeUser(Connection conn, User user) throws SQLException{
+    public static void removeUser(Connection conn, User user) throws SQLException{
         String query_insert_user="";
         PreparedStatement stmtUser;
-        query_insert_user = "DELETE FROM utente WHERE nome) = (?);";
+        query_insert_user = "DELETE FROM utente WHERE username = (?);";
         
         stmtUser= conn.prepareStatement(query_insert_user);
-        stmtUser.setString(1, user.getName());
+        stmtUser.setString(1, user.getUsername());
         
         stmtUser.executeUpdate();
         
@@ -190,11 +190,11 @@ public class User {
     /**
      * Update a user in the database 
      * @param conn connection with the database opened
-     * @param user new user informations
+     * @param user new user information
      * @param oldUsername old username to update
      * @throws SQLException 
      */
-    public void updateUser(Connection conn, User user, String oldUsername) throws SQLException{
+    public static void updateUser(Connection conn, User user, String oldUsername) throws SQLException{
         String query_insert_user="";
         PreparedStatement stmtUser;
         query_insert_user = "UPDATE utente SET nome = (?),"
