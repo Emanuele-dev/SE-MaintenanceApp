@@ -976,6 +976,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         removeProcedureJButton.setText("Remove Selected Procedure");
         removeProcedureJButton.setEnabled(false);
+        removeProcedureJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeProcedureJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout proceduresDetailsJPanelLayout = new javax.swing.GroupLayout(proceduresDetailsJPanel);
         proceduresDetailsJPanel.setLayout(proceduresDetailsJPanelLayout);
@@ -1691,7 +1696,7 @@ public class AdminGUI extends javax.swing.JFrame {
         this.removeUserJButton.setEnabled(false);
         this.usersTableJTable.setEnabled(false);
         if (JOptionPane.showConfirmDialog(this, 
-                "Do you want to delete" 
+                "Do you want to delete " 
                         + usersList.get(usersTableJTable.getSelectedRow()).getUsername() 
                         + "?", 
                 "Delete User", 
@@ -1729,6 +1734,57 @@ public class AdminGUI extends javax.swing.JFrame {
                         JOptionPane.ERROR_MESSAGE);
                     removeUserJButton.setEnabled(true);
                     usersTableJTable.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    
+    private void removeProcedureJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeProcedureJButtonActionPerformed
+        this.removeProcedureJButton.setEnabled(false);
+        this.proceduresTableJTable.setEnabled(false);
+        if (JOptionPane.showConfirmDialog(this, 
+                "Do you want to delete " 
+                        + proceduresList.get(proceduresTableJTable.getSelectedRow()).getName() 
+                        + "?", 
+                "Delete Procedure", 
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new DeleteProcedureWorker().execute();
+        } else {
+            this.removeProcedureJButton.setEnabled(true);
+            this.proceduresTableJTable.setEnabled(true);
+        }
+    }//GEN-LAST:event_removeProcedureJButtonActionPerformed
+
+    class DeleteProcedureWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Procedure procedureToremove = proceduresList.get(proceduresTableJTable.getSelectedRow());
+                procedureToremove.removeProcedure(connection, procedureToremove);
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Procedure Deleted!");
+                    refreshProceduresList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    removeProcedureJButton.setEnabled(true);
+                    proceduresTableJTable.setEnabled(true);
                 }
             } catch (InterruptedException | ExecutionException ex) {
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
@@ -1800,7 +1856,10 @@ public class AdminGUI extends javax.swing.JFrame {
         int selectedProcedureIndex = proceduresTableJTable.getSelectedRow();
         
         // return if no row selected
-        if (selectedProcedureIndex == -1) return;
+        if (selectedProcedureIndex == -1) {
+            this.removeProcedureJButton.setEnabled(false);
+            return;
+        }
         
         // enable side panel if disabled
         if (!this.editProceduresJPanel.isEnabled()){
