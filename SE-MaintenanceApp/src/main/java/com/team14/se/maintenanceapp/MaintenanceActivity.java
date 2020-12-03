@@ -34,7 +34,7 @@ public class MaintenanceActivity {
      * @param interruptible flag that indicates if the activity can be interrupted
      * @param estimatedIntervention estimated duration of the intervention in minute
      * @param ewo flag that indicates if the activity is an Emergency Work Order
-     * @param week week in wich the activity must be performed
+     * @param week week in which the activity must be performed
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
@@ -62,7 +62,7 @@ public class MaintenanceActivity {
      * @param interruptible flag that indicates if the activity can be interrupted
      * @param estimatedIntervention estimated duration of the intervention in minute
      * @param ewo flag that indicates if the activity is an Emergency Work Order
-     * @param week week in wich the activity must be performed
+     * @param week week in which the activity must be performed
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
@@ -90,7 +90,7 @@ public class MaintenanceActivity {
      * @param interruptible flag that indicates if the activity can be interrupted
      * @param estimatedIntervention estimated duration of the intervention in minute
      * @param ewo flag that indicates if the activity is an Emergency Work Order
-     * @param week week in wich the activity must be performed
+     * @param week week in which the activity must be performed
      * @param state flag to indicate if the activity is completed or not
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
@@ -240,7 +240,7 @@ public class MaintenanceActivity {
     }
     /**
      * 
-     * @param estimatedIntervention new stimated intervention time
+     * @param estimatedIntervention new estimated intervention time
      */
     public void setEstimatedIntervention(int estimatedIntervention){
         this.estimatedIntervention = estimatedIntervention;
@@ -313,7 +313,7 @@ public class MaintenanceActivity {
 
     
     /**
-     * Access to the database to exeute queries
+     * Access to the database to execute queries
      * @param conn connection to the database opened
      * @param query query to perform on maintenance activities
      * @return list of maintenance activities 
@@ -394,7 +394,7 @@ public class MaintenanceActivity {
      * @param maintActivity maintenance activity to add
      * @throws SQLException 
      */
-    public void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
+    public static void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
         query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
@@ -421,7 +421,7 @@ public class MaintenanceActivity {
      * @param maintActivity maintenance activity to remove
      * @throws SQLException 
      */
-    public void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
+    public static void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
         query_insert_maintActivity = "DELETE FROM attivita_manutenzione WHERE (activity_id) = (?)";
@@ -435,11 +435,11 @@ public class MaintenanceActivity {
     /**
      * Update a competence in the database
      * @param conn connection to the database opened
-     * @param maintActivity new activity informations
+     * @param maintActivity new activity information
      * @param oldActivityId old activity to update
      * @throws SQLException 
      */
-    public void updateMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity, int oldActivityId) throws SQLException{
+    public static void updateMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity, int oldActivityId) throws SQLException{
         String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
         query_insert_maintActivity = "UPDATE attivita_manutenzione SET nome = (?), "
