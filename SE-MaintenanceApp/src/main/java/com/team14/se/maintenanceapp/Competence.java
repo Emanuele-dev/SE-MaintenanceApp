@@ -118,7 +118,7 @@ public class Competence {
      * @param competence new competence to add
      * @throws SQLException 
      */
-    public void addCompetence(Connection conn, Competence competence) throws SQLException{
+    public static void addCompetence(Connection conn, Competence competence) throws SQLException{
         String query_insert_competence="";
         PreparedStatement stmtCompetence;
         query_insert_competence = "INSERT INTO competenza (nome) VALUES (?);";
@@ -134,7 +134,7 @@ public class Competence {
      * @param competence competence to remove
      * @throws SQLException 
      */
-    public void removeCompetence(Connection conn, Competence competence) throws SQLException{
+    public static void removeCompetence(Connection conn, Competence competence) throws SQLException{
         String query_insert_competence="";
         PreparedStatement stmtCompetence;
         query_insert_competence = "DELETE FROM competenza WHERE (id) = (?)";
@@ -147,11 +147,11 @@ public class Competence {
     /**
      * Update a competence in the database
      * @param conn connection with the database opened
-     * @param competence new competence informations
+     * @param competence new competence information
      * @param oldId old competence to update
      * @throws SQLException 
      */
-    public void updateCompetence(Connection conn, Competence competence, int oldId) throws SQLException{
+    public static void updateCompetence(Connection conn, Competence competence, int oldId) throws SQLException{
         String query_insert_competence="";
         PreparedStatement stmtCompetence;
         query_insert_competence = "UPDATE competenza SET nome = (?) WHERE id = (?)";
@@ -171,7 +171,7 @@ public class Competence {
     public boolean equals(Object obj){
         if (obj instanceof Competence) {
             Competence comp = (Competence)obj;
-            return name==comp.name;
+            return this.name.equals(comp.getName());
         }
         else {
             return false;

@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -546,7 +545,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 "Select an Option...",JOptionPane.YES_NO_CANCEL_OPTION);
         if (input == 0){
             try {
-                maintenanceActivity.addMaintenanceActivity(connection, maintenanceActivity);
+                MaintenanceActivity.addMaintenanceActivity(connection, maintenanceActivity);
                 JOptionPane.showMessageDialog(rootPane, "Activity created successfully"); 
             } catch (SQLException ex) {
                 Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);

@@ -82,10 +82,10 @@ public class Material {
     /**
      * Add a material in the database 
      * @param conn connection with the database opened
-     * @param material new material informations
+     * @param material new material information
      * @throws SQLException 
      */
-    public void addMaterial(Connection conn, Material material) throws SQLException{
+    public static void addMaterial(Connection conn, Material material) throws SQLException{
         String query_insert_material="";
         PreparedStatement stmtMaterial;
         query_insert_material = "INSERT INTO materiale (nome, descrizione) VALUES (?, ?);";
@@ -102,7 +102,7 @@ public class Material {
      * @param material material to remove
      * @throws SQLException 
      */
-    public void removeMaterial(Connection conn, Material material) throws SQLException{
+    public static void removeMaterial(Connection conn, Material material) throws SQLException{
         String query_insert_material="";
         PreparedStatement stmtMaterial;
         query_insert_material = "DELETE FROM materiale WHERE (nome) = (?);";
@@ -115,11 +115,11 @@ public class Material {
     /**
      * Update a material in the database
      * @param conn connection with the database opened
-     * @param material new material informations
+     * @param material new material information
      * @param oldName old material to update 
      * @throws SQLException 
      */
-    public void updateMaterial(Connection conn, Material material, int oldName) throws SQLException{
+    public static void updateMaterial(Connection conn, Material material, int oldName) throws SQLException{
         String query_insert_material="";
         PreparedStatement stmtMaterial;
         query_insert_material = "UPDATE materiale SET nome = (?), descrizione = (?) WHERE nome = (?)";

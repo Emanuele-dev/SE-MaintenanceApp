@@ -67,7 +67,7 @@ public class Typology {
      * @param typology new typology to add
      * @throws SQLException 
      */
-    public void addTypology(Connection conn, Typology typology) throws SQLException{
+    public static void addTypology(Connection conn, Typology typology) throws SQLException{
         String query_insert_typology="";
         PreparedStatement stmtTypology;
         query_insert_typology = "INSERT INTO tipologia (nome) VALUES (?);";
@@ -82,7 +82,7 @@ public class Typology {
      * @param typology typology to remove 
      * @throws SQLException 
      */
-    public void removeTypology(Connection conn, Typology typology) throws SQLException{
+    public static void removeTypology(Connection conn, Typology typology) throws SQLException{
         String query_insert_typology="";
         PreparedStatement stmtTypology;
         query_insert_typology = "DELETE FROM tipologia WHERE (nome) = (?);";
@@ -95,11 +95,11 @@ public class Typology {
     /**
      * Update a typology in the database 
      * @param conn connection with the database opened
-     * @param typology new typolofy informations
-     * @param oldName old typolofy to update
+     * @param typology new typology information
+     * @param oldName old typology to update
      * @throws SQLException 
      */
-    public void updateTypology(Connection conn, Typology typology, String oldName) throws SQLException{
+    public static void updateTypology(Connection conn, Typology typology, String oldName) throws SQLException{
         String query_insert_user="";
         PreparedStatement stmtUser;
         query_insert_user = "UPDATE tipologia SET nome = (?) WHERE nome = (?)";

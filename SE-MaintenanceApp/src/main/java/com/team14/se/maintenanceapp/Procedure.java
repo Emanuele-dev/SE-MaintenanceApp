@@ -140,7 +140,7 @@ public class Procedure {
      * @param procedure new procedure to add
      * @throws SQLException 
      */
-    public void addProcedure(Connection conn, Procedure procedure) throws SQLException{
+    public static void addProcedure(Connection conn, Procedure procedure) throws SQLException{
         String query_insert_procedure="";
         PreparedStatement stmtProcedure;
         query_insert_procedure = "INSERT INTO procedura (nome, smp, competenza) VALUES (?, ?, ?);";
@@ -158,7 +158,7 @@ public class Procedure {
      * @param procedure procedure to remove
      * @throws SQLException 
      */
-    public void removeProcedure(Connection conn, Procedure procedure) throws SQLException{
+    public static void removeProcedure(Connection conn, Procedure procedure) throws SQLException{
         String query_insert_procedure="";
         PreparedStatement stmtProcedure;
         query_insert_procedure = "DELETE FROM procedura WHERE (id) = (?)";
@@ -170,11 +170,11 @@ public class Procedure {
     /**
      * Update a procedure in the database
      * @param conn connection with the database opened
-     * @param procedure new procedure informations
+     * @param procedure new procedure information
      * @param oldId old procedure to update
      * @throws SQLException 
      */
-    public void updateProcedure(Connection conn, Procedure procedure, int oldId) throws SQLException{
+    public static void updateProcedure(Connection conn, Procedure procedure, int oldId) throws SQLException{
         String query_insert_procedure="";
         PreparedStatement stmtProcedure;
         query_insert_procedure = "UPDATE procedura SET nome = (?), smp = (?), competenza = (?) WHERE id = (?)";
