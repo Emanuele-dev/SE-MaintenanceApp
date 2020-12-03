@@ -96,7 +96,7 @@ public class Note {
      * @param note new note to add
      * @throws SQLException 
      */
-    public void addNote(Connection conn, Note note) throws SQLException{
+    public static void addNote(Connection conn, Note note) throws SQLException{
         String query_insert_note="";
         PreparedStatement stmtNote;
         query_insert_note = "INSERT INTO nota (testo) VALUES (?);";
@@ -113,7 +113,7 @@ public class Note {
      * @param note note to remove 
      * @throws SQLException 
      */
-    public void removeNote(Connection conn, Note note) throws SQLException{
+    public static void removeNote(Connection conn, Note note) throws SQLException{
         String query_insert_note="";
         PreparedStatement stmtNote;
         query_insert_note = "DELETE FROM nota WHERE (id) = (?);";
@@ -127,11 +127,11 @@ public class Note {
     /**
      * Update a note in the database
      * @param conn connection with the database opened
-     * @param note new note informations
+     * @param note new note information
      * @param oldId old note to update
      * @throws SQLException 
      */
-    public void updateNote(Connection conn, Note note, int oldId) throws SQLException{
+    public static void updateNote(Connection conn, Note note, int oldId) throws SQLException{
         String query_insert_note="";
         PreparedStatement stmtNote;
         query_insert_note = "UPDATE nota SET testo = (?) WHERE id = (?)";
