@@ -271,6 +271,12 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         int week_n = (int) weekJSpinner.getValue();
         initTable(week_n);
+        detailsNotesJTextArea.setEnabled(false);   
+        detailsWeekJTextField.setText("--");
+        detailsSMPJTextField.setText("");
+        detailsActivityJTextField.setText("");
+        detailsDescriptionJTextArea.setText("");
+        detailsSkillsJList.removeAll();
     }//GEN-LAST:event_refreshJButtonActionPerformed
 
     private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
