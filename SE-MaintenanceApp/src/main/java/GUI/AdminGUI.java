@@ -544,27 +544,6 @@ public class AdminGUI extends javax.swing.JFrame {
     }
     
     
-    ///////////////////// MAIN /////////////////////
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        try{
-            Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "postgres", "postgressse2020").getConnection();
-            System.out.println("Connession to " + conn + " successfully created");
-            
-            java.awt.EventQueue.invokeLater(() -> {
-                AdminGUI adminGUI = new AdminGUI(null, conn);
-            });
-        }catch(SQLException | ClassNotFoundException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    ////////////////////////////////////////////////
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1734,7 +1713,7 @@ public class AdminGUI extends javax.swing.JFrame {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                usersList.get(usersTableJTable.getSelectedRow()).removeUser(connection, usersList.get(usersTableJTable.getSelectedRow()));
+                User.removeUser(connection, usersList.get(usersTableJTable.getSelectedRow()));
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1786,8 +1765,7 @@ public class AdminGUI extends javax.swing.JFrame {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                Procedure procedureToremove = proceduresList.get(proceduresTableJTable.getSelectedRow());
-                procedureToremove.removeProcedure(connection, procedureToremove);
+                Procedure.removeProcedure(connection, proceduresList.get(proceduresTableJTable.getSelectedRow()));
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1838,8 +1816,7 @@ public class AdminGUI extends javax.swing.JFrame {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                Competence competenceToremove = competencesList.get(competencesTableJTable.getSelectedRow());
-                competenceToremove.removeCompetence(connection, competenceToremove);
+                Competence.removeCompetence(connection, competencesList.get(competencesTableJTable.getSelectedRow()));
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1889,7 +1866,7 @@ public class AdminGUI extends javax.swing.JFrame {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                new Site(sitesJList.getSelectedValue()).removeSite(connection, new Site(sitesJList.getSelectedValue()));
+                Site.removeSite(connection, new Site(sitesJList.getSelectedValue()));
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1940,8 +1917,7 @@ public class AdminGUI extends javax.swing.JFrame {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                Material materialToremove = materialsList.get(materialsTableJTable.getSelectedRow());
-                materialToremove.removeMaterial(connection, materialToremove);
+                Material.removeMaterial(connection, materialsList.get(materialsTableJTable.getSelectedRow()));
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1992,7 +1968,7 @@ public class AdminGUI extends javax.swing.JFrame {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                new Typology(typesJList.getSelectedValue()).removeTypology(connection, new Typology(typesJList.getSelectedValue()));
+                Typology.removeTypology(connection, new Typology(typesJList.getSelectedValue()));
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
