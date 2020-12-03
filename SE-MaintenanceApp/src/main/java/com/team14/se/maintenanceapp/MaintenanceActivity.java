@@ -43,6 +43,21 @@ public class MaintenanceActivity {
     }
     
     public MaintenanceActivity(int activityId, String name, String description, 
+            boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
+            Procedure procedure, Site site, Typology typology){
+        this.activityId = activityId;
+        this.name = name;
+        this.description = description;
+        this.interruptible = interruptible;
+        this.estimatedIntervention = estimatedIntervention;
+        this.ewo = ewo;
+        this.week = week;
+        this.procedure = procedure;
+        this.site = site;
+        this.typology = typology;
+    }
+    
+    public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
             Procedure procedure, Site site, Typology typology, 
             Material material, ArrayList<User> users){
@@ -180,7 +195,7 @@ public class MaintenanceActivity {
                     new Competence(competenceId, competenceName));
             
             maintenaceActivities.add(
-                    new MaintenanceActivity(
+                    new MaintenanceActivity(rst.getInt("activity_id"),
                     rst.getString("nome"), 
                     rst.getString("descrizione"), 
                     rst.getBoolean("interrompibile"), 
