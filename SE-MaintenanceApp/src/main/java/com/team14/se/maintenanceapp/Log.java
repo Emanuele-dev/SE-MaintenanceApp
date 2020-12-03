@@ -112,7 +112,7 @@ public class Log {
      * @param log new log to add
      * @throws SQLException 
      */
-    public void addLog(Connection conn, Log log) throws SQLException{
+    public static void addLog(Connection conn, Log log) throws SQLException{
         String query_insert_log="";
         PreparedStatement stmtLog;
         query_insert_log = "INSERT INTO logging (username, log_time) VALUES (?, ?);";
@@ -129,7 +129,7 @@ public class Log {
      * @param log log to remove 
      * @throws SQLException 
      */
-    public void removeLog(Connection conn, Log log) throws SQLException{
+    public static void removeLog(Connection conn, Log log) throws SQLException{
         String query_insert_log="";
         PreparedStatement stmtLog;
         query_insert_log = "DELETE FROM logging WHERE (id) = (?)";
@@ -142,11 +142,11 @@ public class Log {
     /**
      * Update a log in the database 
      * @param conn connection with the database opened
-     * @param log new log informations
+     * @param log new log information
      * @param oldId old log to update
      * @throws SQLException 
      */
-    public void updateLog(Connection conn, Log log, int oldId) throws SQLException{
+    public static void updateLog(Connection conn, Log log, int oldId) throws SQLException{
         String query_insert_log="";
         PreparedStatement stmtLog;
         query_insert_log = "UPDATE logging SET username = (?), log_time = (?) WHERE id = (?)";
