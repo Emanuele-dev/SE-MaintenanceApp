@@ -74,7 +74,9 @@ public class Material {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            materials.add(new Material(rst.getString("nome"), rst.getString("descrizione")));
+            if ((rst.getString("nome") != null) & (rst.getString("descrizione") != null)){ //aavoid to return null row
+                materials.add(new Material(rst.getString("nome"), rst.getString("descrizione")));
+            }
         }
         return materials;    
     }

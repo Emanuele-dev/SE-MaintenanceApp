@@ -82,7 +82,7 @@ public class Competence {
      * 
      * @param users list of user who have this competence 
      */
-    public void setAuthors(ArrayList users){
+    public void setUsers(ArrayList users){
         this.users = users;
     }
     
@@ -91,23 +91,25 @@ public class Competence {
      * @return string containing data for a single competence
      */
     @Override
-    public String toString() {
-        return "Competence{" + "id=" + id + ", name=" + name + '}';
+    public String toString (){
+        return "Competence{" + "name=" + name + '}';    
     }
-    
+
     /**
      * Get all the competences in the database
      * @param conn connection with the database opened
-     * @return list of competences present 
+     * @return list of competences present
      * @throws SQLException 
      */
-    public static LinkedList<Competence> getCompetences (Connection conn) throws SQLException{
+    public static LinkedList<Competence> getCompetences(Connection conn) throws SQLException {
         LinkedList<Competence> competences = new LinkedList<>();
         String query = "SELECT * FROM competenza";
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            competences.add(new Competence(rst.getInt("id"), rst.getString("nome")));
+            if ((rst.getInt("id") != 1) & (rst.getString("nome") != null)){ //avoid to return null row
+                competences.add(new Competence(rst.getInt("id"), rst.getString("nome")));
+            }
         }
         return competences;    
     }
