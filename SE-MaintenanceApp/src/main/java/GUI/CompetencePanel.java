@@ -6,7 +6,6 @@
 package GUI;
 
 import com.team14.se.maintenanceapp.Competence;
-import java.util.Arrays;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
@@ -74,11 +73,11 @@ public class CompetencePanel extends javax.swing.JPanel {
             this.competencesListModel.addElement(competence.getName());
         });
         this.competencesJList.setModel(competencesListModel);
-        
-        this.competences.removeAll(this.selectedCompetences);
 
         this.competences.forEach(competence -> {
-            addCompetencesJComboBox.addItem(competence.getName());
+            if (!selectedCompetences.contains(competence)){
+                addCompetencesJComboBox.addItem(competence.getName());
+            }
         });
         
         this.competencesJScrollPane.setEnabled(true);
