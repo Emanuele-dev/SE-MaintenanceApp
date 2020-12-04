@@ -107,7 +107,7 @@ public class Competence {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            if ((rst.getInt("id") != 1) & (rst.getString("nome") != null)){ //avoid to return null row
+            if ((rst.getString("nome") != null)){ //avoid to return null row
                 competences.add(new Competence(rst.getInt("id"), rst.getString("nome")));
             }
         }
