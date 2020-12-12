@@ -320,12 +320,9 @@ public class MaintenanceActivity {
      * @throws SQLException 
      */
     public static LinkedList<MaintenanceActivity> resultQueryGetActivities(Connection conn, String query) throws SQLException{
-        int competenceId = 0;
         int procedureId = 0;
         String procedureSmp = null;
-        String competenceName = null;
-        Procedure procedure;
-        
+        LinkedList<Competence> competences = new LinkedList<>();
         LinkedList<MaintenanceActivity> maintenaceActivities = new LinkedList<>();
         
         PreparedStatement stm = conn.prepareStatement(query);
@@ -337,17 +334,16 @@ public class MaintenanceActivity {
             ResultSet rst2 = stm2.executeQuery();
             while (rst2.next()) {
                 procedureId = rst2.getInt("id");
-                procedureSmp = rst2.getString("smp");
-                competenceName = rst2.getString("competenza"); 
-                String query3 = "SELECT id FROM competenza WHERE nome = '" + competenceName + "'";
+                procedureSmp = rst2.getString("smp"); 
+                String query3 = "SELECT competenza FROM assegnazione WHERE id_procedura = '" + procedureId + "'";
                 PreparedStatement stm3 = conn.prepareStatement(query3);
                 ResultSet rst3 = stm3.executeQuery();
-                while (rst3.next()){
-                    competenceId = rst3.getInt("id");
+                while (rst3.next()) {
+                    if(!rst3.getString("competenza").equals("")){
+                        competences.add(new Competence(rst3.getString("competenza")));
+                    }
                 }
             }
-            procedure = new Procedure(procedureId, procedureName, procedureSmp, 
-                    new Competence(competenceId, competenceName));
             
             maintenaceActivities.add(
                     new MaintenanceActivity(rst.getInt("activity_id"),
@@ -357,10 +353,10 @@ public class MaintenanceActivity {
                     rst.getInt("intervento_stimato"), 
                     rst.getBoolean("ewo"), 
                     rst.getInt("settimana"), 
-                    procedure, 
+                    new Procedure(procedureId, procedureName, procedureSmp, competences), 
                     new Site(rst.getString("sito")), 
                     new Typology(rst.getString("tipologia"))));
-            }
+        }
         return maintenaceActivities;
     }
     
@@ -395,9 +391,8 @@ public class MaintenanceActivity {
      * @throws SQLException 
      */
     public static void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
-        String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
-        query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
+        String query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
                 + "(nome, descrizione, interrompibile, intervento_stimato,"
                 + " ewo, settimana,procedura, sito, tipologia) "
                 + "VALUES (?, ?, ?, ?, ?,?, ?, ?, ?);";
@@ -422,9 +417,8 @@ public class MaintenanceActivity {
      * @throws SQLException 
      */
     public static void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
-        String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
-        query_insert_maintActivity = "DELETE FROM attivita_manutenzione WHERE (activity_id) = (?)";
+        String query_insert_maintActivity = "DELETE FROM attivita_manutenzione WHERE (activity_id) = (?)";
         
         stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
         stmtMainActivity.setInt(1, maintActivity.getActivityId());
@@ -440,9 +434,8 @@ public class MaintenanceActivity {
      * @throws SQLException 
      */
     public static void updateMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity, int oldActivityId) throws SQLException{
-        String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
-        query_insert_maintActivity = "UPDATE attivita_manutenzione SET nome = (?), "
+        String query_insert_maintActivity = "UPDATE attivita_manutenzione SET nome = (?), "
                 + "descrizione = (?), interrompibile = (?), "
                 + "intervento_stimato = (?), ewo = (?),"
                 + "settimana = (?), procedura = (?), "

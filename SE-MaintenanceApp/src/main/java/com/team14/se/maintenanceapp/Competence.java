@@ -13,7 +13,6 @@ import java.sql.*;
 public class Competence {
     private int id; 
     private String name;
-    private ArrayList<User> users; //Maintainers
     
     /**
      * Constructor Compentence: create a competence with its name
@@ -32,18 +31,6 @@ public class Competence {
         this.name = name;
     }
     /**
-     * Construtor Competence: create a competence with an id, a neme and a list
-     * of users 
-     * @param id competence id
-     * @param name competence name
-     * @param users users that could have this competence
-     */
-    public Competence(int id, String name, ArrayList users){
-        this.id = id; 
-        this.name = name;
-        this.users = users;
-    }
-    /**
      * 
      * @return competence id
      */
@@ -57,13 +44,7 @@ public class Competence {
     public String getName(){
         return name;
     }
-    /**
-     * 
-     * @return list of user who have this competence
-     */
-    public ArrayList getUsers(){
-        return users;
-    }
+    
     /**
      * 
      * @param id new id 
@@ -77,13 +58,6 @@ public class Competence {
      */
     public void setName(String name){
         this.name = name;
-    }
-    /**
-     * 
-     * @param users list of user who have this competence 
-     */
-    public void setUsers(ArrayList users){
-        this.users = users;
     }
     
     /**
@@ -121,9 +95,8 @@ public class Competence {
      * @throws SQLException 
      */
     public static void addCompetence(Connection conn, Competence competence) throws SQLException{
-        String query_insert_competence="";
         PreparedStatement stmtCompetence;
-        query_insert_competence = "INSERT INTO competenza (nome) VALUES (?);";
+        String query_insert_competence = "INSERT INTO competenza (nome) VALUES (?);";
         
         stmtCompetence = conn.prepareStatement(query_insert_competence);
         stmtCompetence.setString(1, competence.getName());
@@ -137,9 +110,8 @@ public class Competence {
      * @throws SQLException 
      */
     public static void removeCompetence(Connection conn, Competence competence) throws SQLException{
-        String query_insert_competence="";
         PreparedStatement stmtCompetence;
-        query_insert_competence = "DELETE FROM competenza WHERE (id) = (?)";
+        String query_insert_competence = "DELETE FROM competenza WHERE (id) = (?)";
         
         stmtCompetence = conn.prepareStatement(query_insert_competence);
         stmtCompetence.setInt(1, competence.getId());
@@ -154,9 +126,8 @@ public class Competence {
      * @throws SQLException 
      */
     public static void updateCompetence(Connection conn, Competence competence, int oldId) throws SQLException{
-        String query_insert_competence="";
         PreparedStatement stmtCompetence;
-        query_insert_competence = "UPDATE competenza SET nome = (?) WHERE id = (?)";
+        String query_insert_competence = "UPDATE competenza SET nome = (?) WHERE id = (?)";
         stmtCompetence= conn.prepareStatement(query_insert_competence);
         stmtCompetence.setString(1, competence.getName());
         stmtCompetence.setInt(2, oldId);
@@ -178,6 +149,13 @@ public class Competence {
         else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.name);
+        return hash;
     }
     
 }

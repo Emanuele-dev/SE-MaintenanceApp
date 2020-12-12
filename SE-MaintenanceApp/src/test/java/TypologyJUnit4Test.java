@@ -76,6 +76,7 @@ public class TypologyJUnit4Test {
 
     /**
      * Test of getTypologies method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetTypologies() throws Exception {
@@ -90,34 +91,35 @@ public class TypologyJUnit4Test {
 
     /**
      * Test of addTypology method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddTypology() throws Exception {
         System.out.println("addTypology");
         Connection conn = null;
         Typology typology = null;
-        Typology instance = null;
-        instance.addTypology(conn, typology);
+        Typology.addTypology(conn, typology);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of removeTypology method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveTypology() throws Exception {
         System.out.println("removeTypology");
         Connection conn = null;
         Typology typology = null;
-        Typology instance = null;
-        instance.removeTypology(conn, typology);
+        Typology.removeTypology(conn, typology);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateTypology method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateTypology() throws Exception {
@@ -125,8 +127,7 @@ public class TypologyJUnit4Test {
         Connection conn = null;
         Typology typology = null;
         String oldName = "";
-        Typology instance = null;
-        instance.updateTypology(conn, typology, oldName);
+        Typology.updateTypology(conn, typology, oldName);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

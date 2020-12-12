@@ -68,9 +68,8 @@ public class Typology {
      * @throws SQLException 
      */
     public static void addTypology(Connection conn, Typology typology) throws SQLException{
-        String query_insert_typology="";
         PreparedStatement stmtTypology;
-        query_insert_typology = "INSERT INTO tipologia (nome) VALUES (?);";
+        String query_insert_typology = "INSERT INTO tipologia (nome) VALUES (?);";
         
         stmtTypology = conn.prepareStatement(query_insert_typology);
         stmtTypology.setString(1, typology.getName());
@@ -83,9 +82,8 @@ public class Typology {
      * @throws SQLException 
      */
     public static void removeTypology(Connection conn, Typology typology) throws SQLException{
-        String query_insert_typology="";
         PreparedStatement stmtTypology;
-        query_insert_typology = "DELETE FROM tipologia WHERE (nome) = (?);";
+        String query_insert_typology = "DELETE FROM tipologia WHERE (nome) = (?);";
         
         stmtTypology = conn.prepareStatement(query_insert_typology);
         stmtTypology.setString(1, typology.getName());
@@ -100,9 +98,8 @@ public class Typology {
      * @throws SQLException 
      */
     public static void updateTypology(Connection conn, Typology typology, String oldName) throws SQLException{
-        String query_insert_user="";
         PreparedStatement stmtUser;
-        query_insert_user = "UPDATE tipologia SET nome = (?) WHERE nome = (?)";
+        String query_insert_user = "UPDATE tipologia SET nome = (?) WHERE nome = (?)";
         stmtUser= conn.prepareStatement(query_insert_user);
         stmtUser.setString(1, typology.getName());
         stmtUser.setString(2, oldName);

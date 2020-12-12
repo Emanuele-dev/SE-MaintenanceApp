@@ -178,8 +178,8 @@ public class User {
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
             users.add(new User(rst.getString("nome"), rst.getString("cognome"),
-                    rst.getString("username"), rst.getString("pass"),
-                    rst.getBoolean("attivo"), rst.getString("ruolo")));
+                        rst.getString("username"), rst.getString("pass"),
+                        rst.getBoolean("attivo"), rst.getString("ruolo")));
         }
         return users;    
     }
@@ -197,9 +197,7 @@ public class User {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            if(!rst.getString("competenza").equals("")){ 
-                competences.add(new Competence(rst.getString("competenza")));
-            }
+            competences.add(new Competence(rst.getString("competenza")));
         }
         return competences;
     }

@@ -358,6 +358,7 @@ public class MaintenanceActivityJUnit4Test {
 
     /**
      * Test of resultQueryGetActivities method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testResultQueryGetActivities() throws Exception {
@@ -371,63 +372,62 @@ public class MaintenanceActivityJUnit4Test {
 
     /**
      * Test of getMaintenanceActivities method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetMaintenanceActivities() throws Exception {
         System.out.println("getMaintenanceActivities");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        LinkedList<MaintenanceActivity> expResult = null;
+        LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivities(conn);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of getMaintenanceActivitiesByWeek method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetMaintenanceActivitiesByWeek() throws Exception {
         System.out.println("getMaintenanceActivitiesByWeek");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         int week_number = 0;
-        LinkedList<MaintenanceActivity> expResult = null;
+        LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivitiesByWeek(conn, week_number);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of addMaintenanceActivity method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddMaintenanceActivity() throws Exception {
         System.out.println("addMaintenanceActivity");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         MaintenanceActivity maintActivity = null;
-        MaintenanceActivity instance = null;
-        instance.addMaintenanceActivity(conn, maintActivity);
+        MaintenanceActivity.addMaintenanceActivity(conn, maintActivity);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of removeMaintenanceActivity method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveMaintenanceActivity() throws Exception {
         System.out.println("removeMaintenanceActivity");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         MaintenanceActivity maintActivity = null;
-        MaintenanceActivity instance = null;
-        instance.removeMaintenanceActivity(conn, maintActivity);
+        MaintenanceActivity.removeMaintenanceActivity(conn, maintActivity);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateMaintenanceActivity method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateMaintenanceActivity() throws Exception {
@@ -435,8 +435,7 @@ public class MaintenanceActivityJUnit4Test {
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         MaintenanceActivity maintActivity = null;
         int oldActivityId = 0;
-        MaintenanceActivity instance = null;
-        instance.updateMaintenanceActivity(conn, maintActivity, oldActivityId);
+        MaintenanceActivity.updateMaintenanceActivity(conn, maintActivity, oldActivityId);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

@@ -88,9 +88,8 @@ public class Material {
      * @throws SQLException 
      */
     public static void addMaterial(Connection conn, Material material) throws SQLException{
-        String query_insert_material="";
         PreparedStatement stmtMaterial;
-        query_insert_material = "INSERT INTO materiale (nome, descrizione) VALUES (?, ?);";
+        String query_insert_material = "INSERT INTO materiale (nome, descrizione) VALUES (?, ?);";
         
         stmtMaterial = conn.prepareStatement(query_insert_material);
         stmtMaterial.setString(1, material.getName());
@@ -105,9 +104,8 @@ public class Material {
      * @throws SQLException 
      */
     public static void removeMaterial(Connection conn, Material material) throws SQLException{
-        String query_insert_material="";
         PreparedStatement stmtMaterial;
-        query_insert_material = "DELETE FROM materiale WHERE (nome) = (?);";
+        String query_insert_material = "DELETE FROM materiale WHERE (nome) = (?);";
         
         stmtMaterial = conn.prepareStatement(query_insert_material);
         stmtMaterial.setString(1, material.getName());
@@ -122,9 +120,8 @@ public class Material {
      * @throws SQLException 
      */
     public static void updateMaterial(Connection conn, Material material, int oldName) throws SQLException{
-        String query_insert_material="";
         PreparedStatement stmtMaterial;
-        query_insert_material = "UPDATE materiale SET nome = (?), descrizione = (?) WHERE nome = (?)";
+        String query_insert_material = "UPDATE materiale SET nome = (?), descrizione = (?) WHERE nome = (?)";
         stmtMaterial= conn.prepareStatement(query_insert_material);
         stmtMaterial.setString(1, material.getName());
         stmtMaterial.setString(2, material.getDescription());

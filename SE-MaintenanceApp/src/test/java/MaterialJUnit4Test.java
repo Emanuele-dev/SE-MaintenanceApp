@@ -100,6 +100,7 @@ public class MaterialJUnit4Test {
 
     /**
      * Test of getMaterials method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetMaterials() throws Exception {
@@ -113,34 +114,35 @@ public class MaterialJUnit4Test {
 
     /**
      * Test of addMaterial method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddMaterial() throws Exception {
         System.out.println("addMaterial");
         Connection conn = null;
         Material material = null;
-        Material instance = null;
-        instance.addMaterial(conn, material);
+        Material.addMaterial(conn, material);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of removeMaterial method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveMaterial() throws Exception {
         System.out.println("removeMaterial");
         Connection conn = null;
         Material material = null;
-        Material instance = null;
-        instance.removeMaterial(conn, material);
+        Material.removeMaterial(conn, material);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateMaterial method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateMaterial() throws Exception {
@@ -148,8 +150,7 @@ public class MaterialJUnit4Test {
         Connection conn = null;
         Material material = null;
         int oldName = 0;
-        Material instance = null;
-        instance.updateMaterial(conn, material, oldName);
+        Material.updateMaterial(conn, material, oldName);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

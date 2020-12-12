@@ -116,9 +116,8 @@ public class Log {
      * @throws SQLException 
      */
     public static void addLog(Connection conn, Log log) throws SQLException{
-        String query_insert_log="";
         PreparedStatement stmtLog;
-        query_insert_log = "INSERT INTO logging (username, log_time) VALUES (?, ?);";
+        String query_insert_log = "INSERT INTO logging (username, log_time) VALUES (?, ?);";
         
         stmtLog = conn.prepareStatement(query_insert_log);
         stmtLog.setString(1, log.getUsername());
@@ -133,9 +132,8 @@ public class Log {
      * @throws SQLException 
      */
     public static void removeLog(Connection conn, Log log) throws SQLException{
-        String query_insert_log="";
         PreparedStatement stmtLog;
-        query_insert_log = "DELETE FROM logging WHERE (id) = (?)";
+        String query_insert_log = "DELETE FROM logging WHERE (id) = (?)";
         
         stmtLog = conn.prepareStatement(query_insert_log);
         stmtLog.setInt(1, log.getId());
@@ -150,9 +148,8 @@ public class Log {
      * @throws SQLException 
      */
     public static void updateLog(Connection conn, Log log, int oldId) throws SQLException{
-        String query_insert_log="";
         PreparedStatement stmtLog;
-        query_insert_log = "UPDATE logging SET username = (?), log_time = (?) WHERE id = (?)";
+        String query_insert_log = "UPDATE logging SET username = (?), log_time = (?) WHERE id = (?)";
         stmtLog= conn.prepareStatement(query_insert_log);
         stmtLog.setString(1, log.getUsername());
         stmtLog.setTimestamp(2, log.getTimestamp());

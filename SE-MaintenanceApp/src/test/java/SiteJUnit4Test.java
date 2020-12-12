@@ -76,6 +76,7 @@ public class SiteJUnit4Test {
 
     /**
      * Test of getSites method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetSites() throws Exception {
@@ -90,34 +91,35 @@ public class SiteJUnit4Test {
 
     /**
      * Test of addSite method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddSite() throws Exception {
         System.out.println("addSite");
         Connection conn = null;
         Site site = null;
-        Site instance = null;
-        instance.addSite(conn, site);
+        Site.addSite(conn, site);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of removeSite method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveSite() throws Exception {
         System.out.println("removeSite");
         Connection conn = null;
         Site site = null;
-        Site instance = null;
-        instance.removeSite(conn, site);
+        Site.removeSite(conn, site);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateSite method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateSite() throws Exception {
@@ -125,8 +127,7 @@ public class SiteJUnit4Test {
         Connection conn = null;
         Site site = null;
         String oldName = "";
-        Site instance = null;
-        instance.updateSite(conn, site, oldName);
+        Site.updateSite(conn, site, oldName);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

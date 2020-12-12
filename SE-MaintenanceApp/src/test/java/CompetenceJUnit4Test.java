@@ -69,18 +69,6 @@ public class CompetenceJUnit4Test {
     }
 
     /**
-     * Test of getUsers method, of class Competence.
-     */
-    @org.junit.Test
-    public void testGetUsers() {
-        System.out.println("getUsers");
-        Competence instance = new Competence (0, "", null);
-        ArrayList expResult = null;
-        ArrayList result = instance.getUsers();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of setId method, of class Competence.
      */
     @org.junit.Test
@@ -103,17 +91,6 @@ public class CompetenceJUnit4Test {
     }
 
     /**
-     * Test of setAuthors method, of class Competence.
-     */
-    @org.junit.Test
-    public void testSetUsers() {
-        System.out.println("setAuthors");
-        ArrayList users = null;
-        Competence instance = new Competence (0, "");
-        instance.setUsers(users);
-    }
-
-    /**
      * Test of toString method, of class Competence.
      */
     @org.junit.Test
@@ -127,6 +104,7 @@ public class CompetenceJUnit4Test {
 
     /**
      * Test of getCompetences method, of class Competence.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
     public void testGetCompetences() throws Exception {
@@ -138,45 +116,39 @@ public class CompetenceJUnit4Test {
 
     /**
      * Test of addCompetence method, of class Competence.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
     public void testAddCompetence() throws Exception {
         System.out.println("addCompetence");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Competence competence = new Competence(0, "");
-        Competence instance = new Competence (0, "");
-        instance.addCompetence(conn, competence);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        Competence.addCompetence(conn, competence);
     }
 
     /**
      * Test of removeCompetence method, of class Competence.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
     public void testRemoveCompetence() throws Exception {
         System.out.println("removeCompetence");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Competence competence = new Competence (0, "");
-        Competence instance = new Competence (0, "");
-        instance.removeCompetence(conn, competence);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        Competence.removeCompetence(conn, competence);
     }
 
     /**
      * Test of updateCompetence method, of class Competence.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
     public void testUpdateCompetence() throws Exception {
         System.out.println("updateCompetence");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Competence competence = new Competence (1, "");
         int oldId = 0;
-        Competence instance = new Competence (0, "");
-        instance.updateCompetence(conn, competence, oldId);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        Competence.updateCompetence(conn, competence, oldId);
     }
 
     /**

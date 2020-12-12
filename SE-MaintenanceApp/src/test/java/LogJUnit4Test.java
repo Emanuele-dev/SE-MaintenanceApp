@@ -125,6 +125,7 @@ public class LogJUnit4Test {
 
     /**
      * Test of getLogs method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetLogs() throws Exception {
@@ -137,32 +138,33 @@ public class LogJUnit4Test {
 
     /**
      * Test of addLog method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddLog() throws Exception {
         System.out.println("addLog");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Log log = new Log(" ", null);
-        Log instance = new Log(" ", null);
-        instance.addLog(conn, log);
+        Log.addLog(conn, log);
     }
 
     /**
      * Test of removeLog method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveLog() throws Exception {
         System.out.println("removeLog");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Log log = new Log(" ", null);
-        Log instance = new Log("", null);
-        instance.removeLog(conn, log);
+        Log.removeLog(conn, log);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateLog method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateLog() throws Exception {
@@ -170,8 +172,7 @@ public class LogJUnit4Test {
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Log log = new Log(" ", null);
         int oldId = 0;
-        Log instance = null;
-        instance.updateLog(conn, log, oldId);
+        Log.updateLog(conn, log, oldId);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

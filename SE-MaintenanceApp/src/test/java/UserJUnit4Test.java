@@ -222,12 +222,10 @@ public class UserJUnit4Test {
     @Test
     public void testGetUsers() throws Exception {
         System.out.println("getUsers");
-        Connection conn = null;
-        LinkedList<User> expResult = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        LinkedList<User> expResult = new LinkedList<>();
         LinkedList<User> result = User.getUsers(conn);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
     /**
@@ -250,7 +248,7 @@ public class UserJUnit4Test {
      */
     @Test
     public void testAssignCompetencesToUser()throws Exception{
-        System.out.println("assignCompetenceToprocedure");
+        System.out.println("assignCompetenceToProcedure");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         User user = null;
         LinkedList<Competence> competences = new LinkedList<>();
@@ -264,11 +262,9 @@ public class UserJUnit4Test {
     @Test
     public void testAddUser() throws Exception {
         System.out.println("addUser");
-        Connection conn = null;
-        User user = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        User user = new User("", "", "", "", false, "SystemAdministrator");
         User.addUser(conn, user);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -277,12 +273,10 @@ public class UserJUnit4Test {
      */
     @Test
     public void testRemoveUser() throws Exception {
-        System.out.println("removeUser");
-        Connection conn = null;
+        System.out.println("removeUser");   
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         User user = null;
         User.removeUser(conn, user);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
