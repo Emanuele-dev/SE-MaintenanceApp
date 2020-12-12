@@ -243,6 +243,19 @@ public class UserJUnit4Test {
         LinkedList<Competence> result = User.getUserCompetences(conn, username);
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of assignCompetencesToUser method, of class User.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testAssignCompetencesToUser()throws Exception{
+        System.out.println("assignCompetenceToprocedure");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        User user = null;
+        LinkedList<Competence> competences = new LinkedList<>();
+        User.assignCompetencesToUser(conn, user, competences);
+    }
 
     /**
      * Test of addUser method, of class User.

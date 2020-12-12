@@ -140,7 +140,7 @@ public class Procedure {
      * Get all the competences of a specific procedure
      * @param conn connection with the database opened
      * @param procedureId procedure whose competences you want to know
-     * @return 
+     * @return list of competences assigned to a procedure
      * @throws java.sql.SQLException 
      */
     public static LinkedList<Competence> getprocedureCompetences(Connection conn, int procedureId)throws SQLException{

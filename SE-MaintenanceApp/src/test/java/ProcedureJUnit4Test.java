@@ -173,11 +173,11 @@ public class ProcedureJUnit4Test {
     }
 
     /**
-     * Test of assignCompetencesToProcedure method, of class procedure.
+     * Test of assignCompetencesToProcedure method, of class Procedure.
      * @throws java.lang.Exception
      */
     @Test
-    public void testAssignCompetencesToprocedure()throws Exception{
+    public void testAssignCompetencesToProcedure()throws Exception{
         System.out.println("assignCompetenceToprocedure");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Procedure procedure = null;

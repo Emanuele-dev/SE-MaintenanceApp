@@ -46,6 +46,7 @@ public class User {
      * @param password password of the user
      * @param state indicate if the user is active or not
      * @param role indicate the role of the user in the system
+     * @param competences list of competences of the user
      */
     public User(String nome, String cognome, String username, String password, boolean state, String role, LinkedList<Competence> competences) {
         this.name = nome;
@@ -210,7 +211,7 @@ public class User {
      * @param competences list of competences to assign to the user
      * @throws java.sql.SQLException
      */
-    public static void assignUserCompetences(Connection conn, User user, LinkedList<Competence> competences)throws SQLException{
+    public static void assignCompetencesToUser(Connection conn, User user, LinkedList<Competence> competences)throws SQLException{
         PreparedStatement stmQual;
         String query_insert_qualification = "INSERT INTO qualificazione (maintainer, competenza) VALUES (?, ?)";
         
