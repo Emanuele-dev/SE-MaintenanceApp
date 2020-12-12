@@ -187,7 +187,8 @@ public class User {
      * Get all the competences of a specific user
      * @param conn connection with the database opened
      * @param username user whose skills you want to know
-     * @return 
+     * @return list of competences assigned to the user
+     * @throws java.sql.SQLException 
      */
     public static LinkedList<Competence> getUserCompetences(Connection conn, String username)throws SQLException{
         LinkedList<Competence> competences = new LinkedList<>();
@@ -195,7 +196,7 @@ public class User {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            if(rst.getString("competenza") != ""){ 
+            if(!rst.getString("competenza").equals("")){ 
                 competences.add(new Competence(rst.getString("competenza")));
             }
         }
@@ -229,9 +230,8 @@ public class User {
      * @throws SQLException 
      */
     public static void addUser(Connection conn, User user) throws SQLException{
-        String query_insert_user="";
         PreparedStatement stmtUser;
-        query_insert_user = "INSERT INTO utente (nome, cognome, username, pass, attivo, ruolo) VALUES (?, ?, ?, ?, ?, ?);";
+        String query_insert_user = "INSERT INTO utente (nome, cognome, username, pass, attivo, ruolo) VALUES (?, ?, ?, ?, ?, ?);";
         
         stmtUser = conn.prepareStatement(query_insert_user);
         stmtUser.setString(1, user.getName());
@@ -251,9 +251,8 @@ public class User {
      * @throws SQLException 
      */
     public static void removeUser(Connection conn, User user) throws SQLException{
-        String query_insert_user="";
         PreparedStatement stmtUser;
-        query_insert_user = "DELETE FROM utente WHERE username = (?);";
+        String query_insert_user = "DELETE FROM utente WHERE username = (?);";
         
         stmtUser= conn.prepareStatement(query_insert_user);
         stmtUser.setString(1, user.getUsername());
@@ -270,9 +269,8 @@ public class User {
      * @throws SQLException 
      */
     public static void updateUser(Connection conn, User user, String oldUsername) throws SQLException{
-        String query_insert_user="";
         PreparedStatement stmtUser;
-        query_insert_user = "UPDATE utente SET nome = (?),"
+        String query_insert_user = "UPDATE utente SET nome = (?),"
                                         + " cognome = (?)," 
                                         + " username = (?),"
                                         + " pass = (?)," 
