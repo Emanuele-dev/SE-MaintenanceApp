@@ -24,8 +24,8 @@ public class MaintenanceActivity {
     private Procedure procedure;
     private Site site;
     private Typology typology;
-    private Material material;
     private String note;
+    private LinkedList<Material> materials;
     private ArrayList<User> users; //Maintainers
     
     /**
@@ -100,14 +100,14 @@ public class MaintenanceActivity {
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
-     * @param material material to use during the activity
+     * @param materials list of material to use during the activity
      * @param note note to add to the activity
      * @param users users assigned to this activity
      */
     public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
             Procedure procedure, Site site, Typology typology, 
-            Material material, String note, ArrayList<User> users){
+            LinkedList<Material> materials, String note, ArrayList<User> users){
         
         this.activityId = activityId;
         this.name = name;
@@ -120,7 +120,7 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
-        this.material = material;
+        this.materials = materials;
         this.note = note;
         this.users = users;  
     }
@@ -204,10 +204,10 @@ public class MaintenanceActivity {
     }
     /**
      * 
-     * @return material to use during the activity
+     * @return list of materials to use during the activity
      */
-    public Material getMaterial(){
-        return material;
+    public LinkedList<Material> getMaterials(){
+        return materials;
     }
     /**
      * 
@@ -303,10 +303,10 @@ public class MaintenanceActivity {
     }
     /**
      * 
-     * @param material new activity material
+     * @param materials list of new materials to use during the activity
      */
-    public void setMaterial(Material material){
-        this.material = material;
+    public void setMaterials(LinkedList<Material> materials){
+        this.materials = materials;
     }
     /**
      * 
@@ -329,7 +329,7 @@ public class MaintenanceActivity {
      */
     @Override
     public String toString() {
-        return "MaintenanceActivity{" + "activityId=" + activityId + ", name=" + name + ", description=" + description + ", interruptible=" + interruptible + ", estimatedIntervention=" + estimatedIntervention + ", ewo=" + ewo + ", week=" + week + ", state=" + state + ", procedure=" + procedure + ", site=" + site + ", typology=" + typology + ", material=" + material + ", users=" + users + '}';
+        return "MaintenanceActivity{" + "activityId=" + activityId + ", name=" + name + ", description=" + description + ", interruptible=" + interruptible + ", estimatedIntervention=" + estimatedIntervention + ", ewo=" + ewo + ", week=" + week + ", state=" + state + ", procedure=" + procedure + ", site=" + site + ", typology=" + typology + ", material=" + materials + ", users=" + users + '}';
     }
 
     
@@ -404,6 +404,26 @@ public class MaintenanceActivity {
     public static LinkedList<MaintenanceActivity> getMaintenanceActivitiesByWeek (Connection conn, int week_number) throws SQLException{
         String query = "SELECT * FROM attivita_manutenzione WHERE settimana = " + week_number;
         return resultQueryGetActivities(conn, query);
+    }
+    
+    /**
+     * Get all the material associated to the activity
+     * @param conn connection to the database opened
+     * @param activityId activity whose material you want to know
+     * @return list of all materials used for the specific activity
+     * @throws SQLException 
+     */
+    public static LinkedList<Material> getMaterialsForActivity(Connection conn, int activityId)throws SQLException{
+        LinkedList<Material> materials = new LinkedList<>();
+        String query = "SELECT materiale FROM utilizzo WHERE activity_id = " + activityId + "'";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            if(!rst.getString("materiale").equals("")){ 
+                materials.add(new Material(rst.getString("materiale")));
+            }
+        }
+        return materials;
     }
     
     /**

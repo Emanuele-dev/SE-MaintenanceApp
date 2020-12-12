@@ -168,7 +168,7 @@ public class ProcedureJUnit4Test {
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         int procedureId = 0;
         LinkedList<Competence> expResult = new LinkedList<>();
-        LinkedList<Competence> result = Procedure.getprocedureCompetences(conn, procedureId);
+        LinkedList<Competence> result = Procedure.getProcedureCompetences(conn, procedureId);
         assertEquals(expResult, result);
     }
 

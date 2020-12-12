@@ -16,6 +16,13 @@ public class Material {
     private String description;
     
     /**
+     * Constructor Log: create a material with a name 
+     * @param name material name
+     */
+    public Material(String name) {
+        this.name = name;
+    }
+    /**
      * Constructor Log: create a material with a name and a description
      * @param name material name
      * @param description material description

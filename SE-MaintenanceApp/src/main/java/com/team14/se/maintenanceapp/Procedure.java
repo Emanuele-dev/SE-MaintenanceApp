@@ -15,7 +15,7 @@ public class Procedure {
     private int id;
     private String name;
     private String smpName;
-     private LinkedList<Competence> competences;
+    private LinkedList<Competence> competences;
     
     /**
      * Constructor Procedure: create a procedure with a name, a smpName and a list of competences
@@ -143,7 +143,7 @@ public class Procedure {
      * @return list of competences assigned to a procedure
      * @throws java.sql.SQLException 
      */
-    public static LinkedList<Competence> getprocedureCompetences(Connection conn, int procedureId)throws SQLException{
+    public static LinkedList<Competence> getProcedureCompetences(Connection conn, int procedureId)throws SQLException{
         LinkedList<Competence> competences = new LinkedList<>();
         String query = "SELECT competenza FROM assegnazione WHERE id_procedura = '" + procedureId + "'";
         PreparedStatement stm = conn.prepareStatement(query);
