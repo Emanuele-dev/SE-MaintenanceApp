@@ -15,31 +15,31 @@ public class Procedure {
     private int id;
     private String name;
     private String smpName;
-    private Competence competence;
+     private LinkedList<Competence> competences;
     
     /**
-     * Constructor Procedure: create a procedure with a name, a competence and a smpName
+     * Constructor Procedure: create a procedure with a name, a smpName and a list of competences
      * @param name
      * @param smpName
-     * @param competence 
+     * @param competences 
      */
-    public Procedure(String name, String smpName, Competence competence){
+    public Procedure(String name, String smpName, LinkedList<Competence> competences){
         this.name = name;
         this.smpName = smpName;
-        this.competence = competence;
+        this.competences = competences;
     }
     /**
-     * Constructor Procedure: create a procedure with an id, a name, a competence and a smpName
+     * Constructor Procedure: create a procedure with an id, a name, a smpName and a list of competences
      * @param id
      * @param name
      * @param smpName
-     * @param competence 
+     * @param competences
      */
-    public Procedure(int id, String name, String smpName, Competence competence){
+    public Procedure(int id, String name, String smpName, LinkedList<Competence> competences){
         this.id = id;
         this.name = name;
         this.smpName = smpName;
-        this.competence = competence;
+        this.competences = competences;
     }
     /**
      * 
@@ -64,10 +64,10 @@ public class Procedure {
     }
     /**
      * 
-     * @return competence of the procedure
+     * @return list of competences of the procedure
      */
-    public Competence getCompetence(){
-        return competence;
+    public LinkedList<Competence> getCompetences(){
+        return competences;
     }
     /**
      * 
@@ -92,10 +92,10 @@ public class Procedure {
     }
     /**
      * 
-     * @param competence new competence of this procedure
+     * @param competences new list of competences to assign to this procedure
      */
-    public void setCompetence(Competence competence){
-        this.competence = competence;
+    public void setCompetences(LinkedList<Competence> competences){
+        this.competences = competences;
     }
 
     /**
@@ -104,7 +104,7 @@ public class Procedure {
      */
     @Override
     public String toString() {
-        return "Procedure{" + "id=" + id + ", name=" + name + ", smpName=" + smpName + ", competence=" + competence + '}';
+        return "Procedure{" + "id=" + id + ", name=" + name + ", smpName=" + smpName + ", competences=" + competences + '}';
     }
     
     /**
@@ -114,24 +114,66 @@ public class Procedure {
      * @throws SQLException 
      */
     public static LinkedList<Procedure> getProcedures (Connection conn) throws SQLException{
-        int competenceId = 0;
+        LinkedList<Competence> competences = new LinkedList<>();
         LinkedList<Procedure> procedures = new LinkedList<>();
         String query = "SELECT * FROM procedura";
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            String competenceName = rst.getString("competenza");            
-            String query2 = "SELECT id FROM competenza WHERE nome = '" + competenceName + "'";
-            PreparedStatement stm2 = conn.prepareStatement(query2);
-            ResultSet rst2 = stm2.executeQuery();
-            while (rst2.next()) {
-                competenceId = rst2.getInt("id");
+            if(rst.getInt("id") != 0){
+                int procedureId = rst.getInt("id");
+                String query2 = "SELECT competenza FROM assegnazione WHERE id_procedura = '" + procedureId + "'";
+                PreparedStatement stm2 = conn.prepareStatement(query2);
+                ResultSet rst2 = stm2.executeQuery();
+                while (rst2.next()) {
+                    if(!rst2.getString("competenza").equals("")){
+                        competences.add(new Competence(rst2.getString("competenza")));
+                    }
+                }
+                procedures.add(new Procedure(rst.getInt("id"),rst.getString("nome"), rst.getString("smp"), competences));
             }
-            System.out.println("L'id della competenza è " + competenceId);
-            procedures.add(new Procedure(rst.getInt("id"),rst.getString("nome"), 
-                    rst.getString("smp"), new Competence(competenceId, competenceName)));
+        }
+        return procedures;
+    }
+    
+    /**
+     * Get all the competences of a specific procedure
+     * @param conn connection with the database opened
+     * @param procedureId procedure whose competences you want to know
+     * @return 
+     * @throws java.sql.SQLException 
+     */
+    public static LinkedList<Competence> getprocedureCompetences(Connection conn, int procedureId)throws SQLException{
+        LinkedList<Competence> competences = new LinkedList<>();
+        String query = "SELECT competenza FROM assegnazione WHERE id_procedura = '" + procedureId + "'";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            if(!rst.getString("competenza").equals("")){ 
+                competences.add(new Competence(rst.getString("competenza")));
             }
-        return procedures;    
+        }
+        return competences;
+    }
+    
+    /**
+     * Assign a list of competences to a procedure
+     * @param conn connection with the database opened
+     * @param procedure user whose skills you want to assign
+     * @param competences list of competences to assign to the user
+     * @throws java.sql.SQLException
+     */
+    public static void assignCompetencesToProcedure(Connection conn, Procedure procedure, LinkedList<Competence> competences)throws SQLException{
+        PreparedStatement stmAssign;
+        String query_insert_assignment = "INSERT INTO assegnazione (id_procedura, competenza) VALUES (?, ?)";
+        
+        stmAssign = conn.prepareStatement(query_insert_assignment);
+        
+        for (int i=0; i<competences.size (); i++){
+            stmAssign.setInt(1, procedure.getId());
+            stmAssign.setString(2, competences.get(i).getName());
+            stmAssign.executeUpdate();
+        }
     }
     
     /**
@@ -141,27 +183,24 @@ public class Procedure {
      * @throws SQLException 
      */
     public static void addProcedure(Connection conn, Procedure procedure) throws SQLException{
-        String query_insert_procedure="";
         PreparedStatement stmtProcedure;
-        query_insert_procedure = "INSERT INTO procedura (nome, smp, competenza) VALUES (?, ?, ?);";
+        String query_insert_procedure = "INSERT INTO procedura (nome, smp) VALUES (?, ?);";
         
         stmtProcedure = conn.prepareStatement(query_insert_procedure);
         stmtProcedure.setString(1, procedure.getName());
         stmtProcedure.setString(2, procedure.getSmpName());
-        stmtProcedure.setString(3, procedure.getCompetence().getName());
         stmtProcedure.executeUpdate();
     }
     
     /**
-     * Remove a competence from the database
+     * Remove a procedure from the database
      * @param conn connection with the database opened
      * @param procedure procedure to remove
      * @throws SQLException 
      */
     public static void removeProcedure(Connection conn, Procedure procedure) throws SQLException{
-        String query_insert_procedure="";
         PreparedStatement stmtProcedure;
-        query_insert_procedure = "DELETE FROM procedura WHERE (id) = (?)";
+        String query_insert_procedure = "DELETE FROM procedura WHERE (id) = (?)";
         
         stmtProcedure = conn.prepareStatement(query_insert_procedure);
         stmtProcedure.setInt(1, procedure.getId());
@@ -175,14 +214,12 @@ public class Procedure {
      * @throws SQLException 
      */
     public static void updateProcedure(Connection conn, Procedure procedure, int oldId) throws SQLException{
-        String query_insert_procedure="";
         PreparedStatement stmtProcedure;
-        query_insert_procedure = "UPDATE procedura SET nome = (?), smp = (?), competenza = (?) WHERE id = (?)";
+        String query_insert_procedure = "UPDATE procedura SET nome = (?), smp = (?) WHERE id = (?)";
         
         stmtProcedure = conn.prepareStatement(query_insert_procedure);
         stmtProcedure.setString(1, procedure.getName());
         stmtProcedure.setString(2, procedure.getSmpName());
-        stmtProcedure.setString(3, procedure.getCompetence().getName());
         stmtProcedure.setInt(4, oldId);
         stmtProcedure.executeUpdate();
     }

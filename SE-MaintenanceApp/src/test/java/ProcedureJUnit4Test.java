@@ -5,6 +5,7 @@
  */
 
 import com.team14.se.maintenanceapp.Competence;
+import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.Procedure;
 import java.sql.Connection;
 import java.util.LinkedList;
@@ -77,14 +78,14 @@ public class ProcedureJUnit4Test {
     }
 
     /**
-     * Test of getCompetence method, of class Procedure.
+     * Test of getCompetences method, of class Procedure.
      */
     @Test
-    public void testGetCompetence() {
-        System.out.println("getCompetence");
+    public void testGetCompetences() {
+        System.out.println("getCompetences");
         Procedure instance = new Procedure(0, "", "", null);
-        Competence expResult = null;
-        Competence result = instance.getCompetence();
+        LinkedList<Competence> expResult = null;
+        LinkedList<Competence> result = instance.getCompetences();
         assertEquals(expResult, result);
     }
 
@@ -122,14 +123,14 @@ public class ProcedureJUnit4Test {
     }
 
     /**
-     * Test of setCompetence method, of class Procedure.
+     * Test of setCompetences method, of class Procedure.
      */
     @Test
-    public void testSetCompetence() {
-        System.out.println("setCompetence");
-        Competence competence = null;
+    public void testSetCompetences() {
+        System.out.println("setCompetences");
+        LinkedList<Competence> competences = null;
         Procedure instance = new Procedure(0, "", "", null);
-        instance.setCompetence(competence);
+        instance.setCompetences(competences);
     }
 
     /**
@@ -139,55 +140,82 @@ public class ProcedureJUnit4Test {
     public void testToString() {
         System.out.println("toString");
         Procedure instance = new Procedure(0, "", "", null);
-        String expResult = "Procedure{" + "id=" + instance.getId() + ", name=" + instance.getName() + ", smpName=" + instance.getSmpName() + ", competence=" + instance.getCompetence() + '}';
+        String expResult = "Procedure{" + "id=" + instance.getId() + ", name=" + instance.getName() + ", smpName=" + instance.getSmpName() + ", competence=" + instance.getCompetences() + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
     }
 
     /**
      * Test of getProcedures method, of class Procedure.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetProcedures() throws Exception {
         System.out.println("getProcedures");
-        Connection conn = null;
-        LinkedList<Procedure> expResult = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        LinkedList<Procedure> expResult = new LinkedList<>();
         LinkedList<Procedure> result = Procedure.getProcedures(conn);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+    
+    /**
+     * Test of GetProcedureCompetences method, of class Procedure.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testGetProcedureCompetences()throws Exception{
+        System.out.println("getProcedureCompetences");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        int procedureId = 0;
+        LinkedList<Competence> expResult = new LinkedList<>();
+        LinkedList<Competence> result = Procedure.getprocedureCompetences(conn, procedureId);
+        assertEquals(expResult, result);
     }
 
     /**
+     * Test of assignCompetencesToProcedure method, of class procedure.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testAssignCompetencesToprocedure()throws Exception{
+        System.out.println("assignCompetenceToprocedure");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Procedure procedure = null;
+        LinkedList<Competence> competences = new LinkedList<>();
+        Procedure.assignCompetencesToProcedure(conn, procedure, competences);
+    }
+    
+    /**
      * Test of addProcedure method, of class Procedure.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddProcedure() throws Exception {
         System.out.println("addProcedure");
         Connection conn = null;
         Procedure procedure = null;
-        Procedure instance = null;
-        instance.addProcedure(conn, procedure);
+        Procedure.addProcedure(conn, procedure);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of removeProcedure method, of class Procedure.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveProcedure() throws Exception {
         System.out.println("removeProcedure");
         Connection conn = null;
         Procedure procedure = null;
-        Procedure instance = null;
-        instance.removeProcedure(conn, procedure);
+        Procedure.removeProcedure(conn, procedure);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateProcedure method, of class Procedure.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateProcedure() throws Exception {
@@ -195,8 +223,7 @@ public class ProcedureJUnit4Test {
         Connection conn = null;
         Procedure procedure = null;
         int oldId = 0;
-        Procedure instance = null;
-        instance.updateProcedure(conn, procedure, oldId);
+        Procedure.updateProcedure(conn, procedure, oldId);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

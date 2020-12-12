@@ -5,6 +5,8 @@
  */
 
 import com.team14.se.maintenanceapp.User;
+import com.team14.se.maintenanceapp.Competence;
+import com.team14.se.maintenanceapp.MyConnection;
 import java.sql.Connection;
 import java.util.LinkedList;
 import org.junit.After;
@@ -110,6 +112,18 @@ public class UserJUnit4Test {
         String result = instance.getRole();
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of getCompetences method, of class User.
+     */
+    @Test
+    public void testGetCompetences(){
+        System.out.println("getCompetences");
+        User instance = new User("", "", "", "", false, "", null);
+        LinkedList<Competence> expResult = null;
+        LinkedList<Competence> result = instance.getCompetences();
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of setName method, of class User.
@@ -176,6 +190,18 @@ public class UserJUnit4Test {
         User instance = new User("", "", "", "", false, "");
         instance.setRole(role);
     }
+    
+    /**
+     * Test of setCompetences method, of class User.
+     */
+    @Test
+    public void testSetCompetences(){
+        System.out.println("setCompetences");
+        LinkedList<Competence> competences = null;
+        User instance = new User("", "", "", "", false, "", null);
+        instance.setCompetences(competences);
+        
+    }
 
     /**
      * Test of toString method, of class User.
@@ -191,6 +217,7 @@ public class UserJUnit4Test {
 
     /**
      * Test of getUsers method, of class User.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetUsers() throws Exception {
@@ -202,37 +229,52 @@ public class UserJUnit4Test {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    
+    /**
+     * Test of GetUserCompetences method, of class User.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testGetUserCompetences()throws Exception{
+        System.out.println("getUserCompetences");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        String username = "";
+        LinkedList<Competence> expResult = new LinkedList<>();
+        LinkedList<Competence> result = User.getUserCompetences(conn, username);
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of addUser method, of class User.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddUser() throws Exception {
         System.out.println("addUser");
         Connection conn = null;
         User user = null;
-        User instance = null;
-        instance.addUser(conn, user);
+        User.addUser(conn, user);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of removeUser method, of class User.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveUser() throws Exception {
         System.out.println("removeUser");
         Connection conn = null;
         User user = null;
-        User instance = null;
-        instance.removeUser(conn, user);
+        User.removeUser(conn, user);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateUser method, of class User.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateUser() throws Exception {
@@ -240,8 +282,7 @@ public class UserJUnit4Test {
         Connection conn = null;
         User user = null;
         String oldUsername = "";
-        User instance = null;
-        instance.updateUser(conn, user, oldUsername);
+        User.updateUser(conn, user, oldUsername);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
