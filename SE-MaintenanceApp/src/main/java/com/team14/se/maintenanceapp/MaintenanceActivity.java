@@ -25,6 +25,7 @@ public class MaintenanceActivity {
     private Site site;
     private Typology typology;
     private Material material;
+    private String note;
     private ArrayList<User> users; //Maintainers
     
     /**
@@ -38,10 +39,11 @@ public class MaintenanceActivity {
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
+     * @param note note related to the activity
      */
     public MaintenanceActivity(String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
-            Procedure procedure, Site site, Typology typology){
+            Procedure procedure, Site site, Typology typology, String note){
         
         this.name = name;
         this.description = description;
@@ -52,6 +54,7 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
+        this.note = note;
     }
     
     /**
@@ -66,10 +69,11 @@ public class MaintenanceActivity {
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
+     * @param note note to add to the activity
      */
     public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
-            Procedure procedure, Site site, Typology typology){
+            Procedure procedure, Site site, Typology typology, String note){
         this.activityId = activityId;
         this.name = name;
         this.description = description;
@@ -80,6 +84,7 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
+        this.note = note;
     }
     
     /**
@@ -96,12 +101,13 @@ public class MaintenanceActivity {
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
      * @param material material to use during the activity
+     * @param note note to add to the activity
      * @param users users assigned to this activity
      */
     public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
             Procedure procedure, Site site, Typology typology, 
-            Material material, ArrayList<User> users){
+            Material material, String note, ArrayList<User> users){
         
         this.activityId = activityId;
         this.name = name;
@@ -115,6 +121,7 @@ public class MaintenanceActivity {
         this.site = site;
         this.typology = typology;
         this.material = material;
+        this.note = note;
         this.users = users;  
     }
     
@@ -201,6 +208,13 @@ public class MaintenanceActivity {
      */
     public Material getMaterial(){
         return material;
+    }
+    /**
+     * 
+     * @return note realated to the activity
+     */
+    public String getNote(){
+        return note;
     }
     /**
      * 
@@ -296,6 +310,13 @@ public class MaintenanceActivity {
     }
     /**
      * 
+     * @param note note to add to the activity
+     */
+    public void setNote(String note){
+        this.note = note;
+    }
+    /**
+     * 
      * @param users new users assigned to the activity
      */
     public void setUsers(ArrayList users){
@@ -355,7 +376,8 @@ public class MaintenanceActivity {
                     rst.getInt("settimana"), 
                     new Procedure(procedureId, procedureName, procedureSmp, competences), 
                     new Site(rst.getString("sito")), 
-                    new Typology(rst.getString("tipologia"))));
+                    new Typology(rst.getString("tipologia")),
+                    rst.getString("Nota")));
         }
         return maintenaceActivities;
     }

@@ -29,12 +29,7 @@ public class Main { //behave as home: connection created only here
             for(User u : users){
                 System.out.println(u.getName());
             }
-            // try to show notes in database 
-            LinkedList<Note> notes = Note.getNotes(conn); 
-            System.out.println("\nNotes:");
-            for(Note n : notes){
-                System.out.println(n.getText());
-            }
+            
             // try to show materials in database 
             LinkedList<Material> materials = Material.getMaterials(conn);   
             System.out.println("\nMaterials:");
@@ -86,10 +81,6 @@ public class Main { //behave as home: connection created only here
             }*/
             /*
             //TEST ADDING
-            //Add a note and visualize it
-            Note note = new Note(" Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. ");
-            note.addNote(conn, note);
-            //note.removeNote(conn, note);
             
             //Add a material and visualize it
             Material material = new Material("Legno", "Travi in ciliegio");
