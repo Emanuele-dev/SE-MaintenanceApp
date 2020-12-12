@@ -272,11 +272,11 @@ public class UserJUnit4Test {
      * @throws java.lang.Exception
      */
     @Test
-    public void testRemoveUser() throws Exception {
+    public void testDeactivateUser() throws Exception {
         System.out.println("removeUser");   
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         User user = null;
-        User.removeUser(conn, user);
+        User.deactivateUser(conn, user);
     }
 
     /**

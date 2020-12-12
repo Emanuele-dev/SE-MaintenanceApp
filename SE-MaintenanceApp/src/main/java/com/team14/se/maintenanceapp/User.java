@@ -166,14 +166,14 @@ public class User {
     }
 
     /**
-     * Get all the users in the database
+     * Get all the active users in the database
      * @param conn connection with the database opened
-     * @return list of users present
+     * @return list of active users present
      * @throws SQLException 
      */
     public static LinkedList<User> getUsers(Connection conn) throws SQLException {
         LinkedList<User> users = new LinkedList<>();
-        String query = "SELECT * FROM utente";
+        String query = "SELECT * FROM utente WHERE attivo = 'true'";
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
@@ -244,14 +244,15 @@ public class User {
         
     }
     /**
-     * Remove a user from the database
+     * Deactivate a user from the system deselecting the state variable, maintaining
+     * the link to the user, useful for the log activity.
      * @param conn connection with the database opened
-     * @param user user to remove 
+     * @param user user to deactivate
      * @throws SQLException 
      */
-    public static void removeUser(Connection conn, User user) throws SQLException{
+    public static void deactivateUser(Connection conn, User user) throws SQLException{
         PreparedStatement stmtUser;
-        String query_insert_user = "DELETE FROM utente WHERE username = (?);";
+        String query_insert_user = "UPDATE utente SET attivo = 'false' WHERE username = (?);";
         
         stmtUser= conn.prepareStatement(query_insert_user);
         stmtUser.setString(1, user.getUsername());
