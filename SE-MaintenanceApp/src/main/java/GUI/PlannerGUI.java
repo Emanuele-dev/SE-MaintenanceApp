@@ -5,13 +5,11 @@
  */
 package GUI;
 
+import GUI.dialogs.EditNoteJDialog;
 import com.team14.se.maintenanceapp.*;
 import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -28,9 +26,13 @@ import javax.swing.table.DefaultTableModel;
  * @author mario
  */
 public class PlannerGUI extends javax.swing.JFrame {
-    
+
     private User loggedUser;
     private Connection connection;
+    private LinkedList<MaintenanceActivity> activityList;
+    private boolean activityIsSelected = false;
+    private MaintenanceActivity targetActivity;
+    private DefaultListModel listModel = new DefaultListModel();
 
     /**
      * Creates new form MantainerGUI
@@ -38,10 +40,10 @@ public class PlannerGUI extends javax.swing.JFrame {
     public PlannerGUI() {
         initComponents();
     }
-    
+
     /**
      * Creates new form MantainerGUI
-     * 
+     *
      * @param loggedUser the logged user
      * @param connection the database connection
      */
@@ -197,6 +199,11 @@ public class PlannerGUI extends javax.swing.JFrame {
         detailsNotesJTextArea.setText("Notes will be implemented in sprint 2");
         detailsNotesJTextArea.setEnabled(false);
         detailsNotesJTextArea.setFocusable(false);
+        detailsNotesJTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                detailsNotesJTextAreaMouseClicked(evt);
+            }
+        });
         detailsNotesJScrollPane.setViewportView(detailsNotesJTextArea);
 
         forwardJButton.setText("Forward");
@@ -207,6 +214,12 @@ public class PlannerGUI extends javax.swing.JFrame {
         });
 
         assignJLabel.setText("Assigned to");
+
+        assignJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assignJComboBoxActionPerformed(evt);
+            }
+        });
 
         detailsIdJLabel.setText("Id activity");
 
@@ -497,26 +510,30 @@ public class PlannerGUI extends javax.swing.JFrame {
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         int week_n = (int) weekNumberJSpinner.getValue();
         initTable(week_n);
-        detailsNotesJTextArea.setEnabled(false);   
+        detailsNotesJTextArea.setEnabled(false);
         detailsWeekJTextField.setText("--");
         detailsSMPJTextField.setText("");
         detailsActivityJTextField.setText("");
         detailsDescriptionJTextArea.setText("");
         detailsIdJTextField.setText("");
+        detailsNotesJTextArea.setText("");
         detailsSkillsJList.removeAll();
+        activityIsSelected = false;
+        targetActivity = null;
+        listModel.removeAllElements();
     }//GEN-LAST:event_refreshJButtonActionPerformed
 
-    private String getButtonText(ButtonGroup buttonGroup){
+    private String getButtonText(ButtonGroup buttonGroup) {
         String value = null;
-       for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
                 value = button.getText();
             }
         }
-       return value;
+        return value;
     }
-    
+
     private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
         MaintenanceActivity maintenanceActivity;
         String description = descriptionJTextArea.getText();
@@ -524,82 +541,65 @@ public class PlannerGUI extends javax.swing.JFrame {
         String typology = String.valueOf(typeJComboBox.getSelectedItem());
         String procedure = String.valueOf(procedureJComboBox.getSelectedItem());
         String site = String.valueOf(siteJComboBox.getSelectedItem());
-        int week = (int)weekJSpinner.getValue();
+        int week = (int) weekJSpinner.getValue();
         int estimatedTime = (int) estimatedTimeJSpinner.getValue();
         boolean interrruptable;
-        if(getButtonText(interrruptableButtonGroup).equals("Yes")){
-            interrruptable = true;
-        }else{
-            interrruptable = false;
-        }
+        interrruptable = getButtonText(interrruptableButtonGroup).equals("Yes");
         boolean ewo;
-        if(getButtonText(eowButtonGroup).equals("Yes")){
-            ewo = true;
-        }else{
-            ewo = false;
-        }
-        
-        maintenanceActivity = new MaintenanceActivity(name, description, interrruptable, estimatedTime, ewo, week, new Procedure(procedure, "", new Competence("")), new Site(site), new Typology(typology));
-        int input = JOptionPane.showConfirmDialog(rootPane, 
+        ewo = getButtonText(eowButtonGroup).equals("Yes");
+
+        maintenanceActivity = new MaintenanceActivity(name, description, interrruptable, estimatedTime, ewo, week, new Procedure(procedure, "", new LinkedList<>()), new Site(site), new Typology(typology), " ");
+        int input = JOptionPane.showConfirmDialog(rootPane,
                 "Are you sure you want to create this activity?",
-                "Select an Option...",JOptionPane.YES_NO_CANCEL_OPTION);
-        if (input == 0){
+                "Select an Option...", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (input == 0) {
             try {
                 MaintenanceActivity.addMaintenanceActivity(connection, maintenanceActivity);
-                JOptionPane.showMessageDialog(rootPane, "Activity created successfully"); 
+                JOptionPane.showMessageDialog(rootPane, "Activity created successfully");
             } catch (SQLException ex) {
                 Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else{
+        } else {
             JOptionPane.showMessageDialog(rootPane, "Operation canceled");
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_addJButtonActionPerformed
-   
+
     private void ewoYesJRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ewoYesJRadioButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ewoYesJRadioButtonActionPerformed
 
     private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
-        JTable source = (JTable)evt.getSource();
-            int row = source.rowAtPoint( evt.getPoint() );
-            String id=source.getModel().getValueAt(row, 0)+"";
-        /* statement for 1 maint activity */
-        try {
-            Statement statement = connection.createStatement();
-            String querySingleActivity = "SELECT * FROM ATTIVITA_MANUTENZIONE, PROCEDURA "
-                    + "WHERE ATTIVITA_MANUTENZIONE.procedura = PROCEDURA.nome "
-                    + "AND activity_id ="+id+";";
-            ResultSet rs = statement.executeQuery(querySingleActivity);
-            
-            if(rs.next()){
-                detailsActivityJTextField.setText(rs.getString("nome"));
+        JTable source = (JTable) evt.getSource();
+        int row = source.rowAtPoint(evt.getPoint());
+        String id = source.getModel().getValueAt(row, 0) + "";
+        activityList.forEach((MaintenanceActivity activity) -> {
+            if (activity.getActivityId() == Integer.parseInt(id)) {
+                targetActivity = activity;
+                detailsActivityJTextField.setText(activity.getName());
                 detailsIdJTextField.setText(id);
-                detailsWeekJTextField.setText(String.valueOf(rs.getInt("settimana")));
-                detailsSMPJTextField.setText(rs.getString("smp"));
-                detailsDescriptionJTextArea.setText(rs.getString("descrizione"));
-                DefaultListModel listModel = new DefaultListModel();
-                listModel.addElement(rs.getString("competenza"));
-                detailsSkillsJList.setModel(listModel);
+                detailsWeekJTextField.setText(String.valueOf(activity.getWeek()));
+                detailsSMPJTextField.setText(activity.getProcedure().getSmpName());
+                detailsDescriptionJTextArea.setText(activity.getDescription());
+                detailsNotesJTextArea.setText(activity.getNote());
+                if (assignJComboBox.getSelectedItem() != null) {
+                    checkCommonCompetences();
+                } else {
+                    listModel = new DefaultListModel();
+                    LinkedList<Competence> competenceList = activity.getProcedure().getProcedureCompetences();
+                    competenceList.forEach(competence -> {
+                        listModel.addElement(competence.getName());
+                    });
+                    detailsSkillsJList.setModel(listModel);
+                }
                 detailsNotesJTextArea.setEnabled(true);
                 assignJComboBox.setEnabled(true);
                 forwardJButton.setEnabled(true);
+                activityIsSelected = true;
             }
-            PreparedStatement statementForCheck ;
+        });
 
-            String queryCheckIsAssigned = "SELECT * FROM ESECUZIONE WHERE activity_id ='"+id+"';";
-            statementForCheck = connection.prepareStatement(queryCheckIsAssigned);
-            ResultSet rsCheck = statementForCheck.executeQuery();
-            if(rsCheck.next()){
-                forwardJButton.setEnabled(false);
-                detailsDescriptionJTextArea.setText(detailsDescriptionJTextArea.getText() + "\n \n -Activity Already assigned");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-           
     }//GEN-LAST:event_activitiesJTableMouseClicked
 
     private void detailsSMPJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsSMPJTextFieldActionPerformed
@@ -607,77 +607,44 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_detailsSMPJTextFieldActionPerformed
 
     private void forwardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardJButtonActionPerformed
-        if(detailsWeekJTextField.getText().equals("--")){
-            JOptionPane.showMessageDialog(rootPane,"Please, select an activity to assign to the maintenance", "Error: No activity selected", JOptionPane.ERROR_MESSAGE);
-        }
-        else{
+        if (detailsWeekJTextField.getText().equals("--")) {
+            JOptionPane.showMessageDialog(rootPane, "Please, select an activity to assign to the maintenance", "Error: No activity selected", JOptionPane.ERROR_MESSAGE);
+        } else {
             String activityId = detailsIdJTextField.getText();
             String usernameMaintainer = String.valueOf(assignJComboBox.getSelectedItem()).split(":")[0];
-            
-            int input = JOptionPane.showConfirmDialog(rootPane, 
-                "Are you sure to assign activity "+activityId + " to : " + usernameMaintainer +"?",
-                "Select an Option...",JOptionPane.YES_NO_CANCEL_OPTION);
-            
-            if (input==0){
+
+            int input = JOptionPane.showConfirmDialog(rootPane,
+                    "Are you sure to assign activity " + activityId + " to : " + usernameMaintainer + "?",
+                    "Select an Option...", JOptionPane.YES_NO_CANCEL_OPTION);
+
+            if (input == 0) {
                 try {
-                    PreparedStatement statementForAssign;
-                    String queryForAssign = "INSERT INTO ESECUZIONE(activity_id,maintainer) VALUES (?,?);";
-                    statementForAssign = connection.prepareStatement(queryForAssign);
-                    statementForAssign.setInt(1,Integer.parseInt(activityId));
-                    statementForAssign.setString(2, usernameMaintainer);
-                    statementForAssign.executeUpdate();
+                    MaintenanceActivity.assignActivity(connection, Integer.parseInt(activityId), usernameMaintainer);
                     JOptionPane.showMessageDialog(rootPane, "Task assigned correctly");
 
                 } catch (SQLException ex) {
                     Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Assignment canceled");
             }
-            else{
-               JOptionPane.showMessageDialog(rootPane, "Assignment canceled"); 
-            }
-      
-            
-            
+
         }
-        //Statement statement = connection.createStatement();
-        
+
     }//GEN-LAST:event_forwardJButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void detailsNotesJTextAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detailsNotesJTextAreaMouseClicked
+        if (activityIsSelected) {
+            EditNoteJDialog editDialog = new EditNoteJDialog(this, true, connection, targetActivity);
+            editDialog.setVisible(true);
         }
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_detailsNotesJTextAreaMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PlannerGUI().setVisible(true);
-            }
-        });
-    }
+    private void assignJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignJComboBoxActionPerformed
+        checkCommonCompetences();
+
+    }//GEN-LAST:event_assignJComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable activitiesJTable;
@@ -734,17 +701,17 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     private void initTable(int n_week) {
         try {
-            LinkedList<MaintenanceActivity> activityList = MaintenanceActivity.getMaintenanceActivities(connection);
+            activityList = MaintenanceActivity.getMaintenanceActivities(connection);
             DefaultTableModel activitiesTabelModel = (DefaultTableModel) activitiesJTable.getModel();
             activitiesTabelModel.setNumRows(0);
             activitiesTabelModel.fireTableDataChanged();
             activityList.forEach((MaintenanceActivity activity) -> {
-                if(activity.getWeek() == n_week){
+                if (activity.getWeek() == n_week) {
                     System.out.println(activity.getActivityId());
                     activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getEstimatedIntervention() + " min."});
                 }
             });
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -764,7 +731,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             typologyList.forEach(typology -> {
                 typeJComboBox.addItem(typology.getName());
             });
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -776,7 +743,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             procedureList.forEach(procedure -> {
                 procedureJComboBox.addItem(procedure.getName());
             });
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -788,22 +755,48 @@ public class PlannerGUI extends javax.swing.JFrame {
             siteyList.forEach(site -> {
                 siteJComboBox.addItem(site.getName());
             });
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void initAssigneComboBox() {
-         try {
+        try {
             LinkedList<User> userList = User.getUsers(connection);
             userList.forEach(user -> {
-                if(user.getRole().equals("Maintainer"))
-                    assignJComboBox.addItem(user.getUsername() +": "+ user.getName() + " " + user.getSurname());
+                if (user.getRole().equals("Maintainer")) {
+                    assignJComboBox.addItem(user.getUsername() + ": " + user.getName() + " " + user.getSurname());
+                }
             });
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void checkCommonCompetences() {
+        if (targetActivity != null) {
+            String usernameMaintainer = String.valueOf(assignJComboBox.getSelectedItem()).split(":")[0];
+            try {
+                LinkedList<Competence> maintainerCompetences = User.getUserCompetences(connection, usernameMaintainer);
+                LinkedList<Competence> competenceList = targetActivity.getProcedure().getProcedureCompetences();
+                listModel = new DefaultListModel();
+                competenceList.forEach(competence -> {
+                    String competenceName = competence.getName();
+                    for (Competence maintainerCompetence : maintainerCompetences) {
+                        if (maintainerCompetence.getName().equals(competenceName)) {
+                            competenceName = competenceName + "    ✔";
+                        }
+                    }
+                    listModel.addElement(competenceName);
+                });
+                detailsSkillsJList.setModel(listModel);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
         }
     }
 }
