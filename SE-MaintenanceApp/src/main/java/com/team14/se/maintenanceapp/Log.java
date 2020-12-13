@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 package com.team14.se.maintenanceapp;
-import java.sql.Timestamp; //format hour, minutes, seconds
-import java.util.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.sql.*;
 
 /**
@@ -15,27 +16,27 @@ import java.sql.*;
 public class Log {
     private int id;
     private String username;
-    private Timestamp timestamp; 
+    private LocalDateTime date;
     
     /**
      * Constructor Log: create a log with the username of the user and a timestamp
      * @param username username of the user that log in 
-     * @param timestamp date and time in which the user logged in
+     * @param date date and time in which the user logged in
      */
-    public Log(String username, Timestamp timestamp){
+    public Log(String username, LocalDateTime date){
         this.username = username;
-        this.timestamp = timestamp;  
+        this.date = date;  
     }
     /**
      * Constructor Log: create a log with the username of the user and a timestamp
      * @param id log id 
      * @param username username of the user that log in 
-     * @param timestamp date and time in which the user logged in
+     * @param date date and time in which the user logged in
      */
-    public Log(int id, String username, Timestamp timestamp){
+    public Log(int id, String username, LocalDateTime date){
         this.id = id;
         this.username = username;
-        this.timestamp = timestamp;  
+        this.date = date;  
     }
     /**
      * 
@@ -55,8 +56,8 @@ public class Log {
      * 
      * @return date and time of the user log in
      */
-    public Timestamp getTimestamp(){
-        return timestamp;
+    public LocalDateTime getDateTime(){
+        return date;
     }
     /**
      * 
@@ -74,10 +75,10 @@ public class Log {
     }
     /**
      * 
-     * @param timestamp new date and time of the user log in
+     * @param date new date and time of the user log in
      */
-    public void setTimestamp(Timestamp timestamp){
-        this.timestamp = timestamp; 
+    public void setDateTime(LocalDateTime date){
+        this.date = date; 
     }
     
     /**
@@ -86,7 +87,7 @@ public class Log {
      */
     @Override
     public String toString() {
-        return "Log{" + "id=" + id + ", username=" + username + ", timestamp=" + timestamp + '}';
+        return "Log{" + "id=" + id + ", username=" + username + ", date=" + date + '}';
     }
 
     /**
@@ -102,9 +103,8 @@ public class Log {
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
             if ((rst.getInt("id") != 1) & (rst.getString("username") != null) & (rst.getTimestamp("log_time") != null)){ //aavoid to return null row
-                logs.add(new Log(rst.getInt("id"), rst.getString("username"), rst.getTimestamp("log_time")));
+                logs.add(new Log(rst.getInt("id"), rst.getString("username"), rst.getTimestamp("log_time").toLocalDateTime()));
             }
-            
         }
         return logs;    
     }
@@ -116,13 +116,13 @@ public class Log {
      * @throws SQLException 
      */
     public static void addLog(Connection conn, Log log) throws SQLException{
-        String query_insert_log="";
         PreparedStatement stmtLog;
-        query_insert_log = "INSERT INTO logging (username, log_time) VALUES (?, ?);";
+        String query_insert_log = "INSERT INTO logging (username, log_time) VALUES (?, ?);";
+        
         
         stmtLog = conn.prepareStatement(query_insert_log);
         stmtLog.setString(1, log.getUsername());
-        stmtLog.setTimestamp(2, log.getTimestamp());
+        stmtLog.setTimestamp(2, Timestamp.valueOf(log.getDateTime()));
         stmtLog.executeUpdate();
     }
     
@@ -133,9 +133,8 @@ public class Log {
      * @throws SQLException 
      */
     public static void removeLog(Connection conn, Log log) throws SQLException{
-        String query_insert_log="";
         PreparedStatement stmtLog;
-        query_insert_log = "DELETE FROM logging WHERE (id) = (?)";
+        String query_insert_log = "DELETE FROM logging WHERE (id) = (?)";
         
         stmtLog = conn.prepareStatement(query_insert_log);
         stmtLog.setInt(1, log.getId());
@@ -150,12 +149,11 @@ public class Log {
      * @throws SQLException 
      */
     public static void updateLog(Connection conn, Log log, int oldId) throws SQLException{
-        String query_insert_log="";
         PreparedStatement stmtLog;
-        query_insert_log = "UPDATE logging SET username = (?), log_time = (?) WHERE id = (?)";
+        String query_insert_log = "UPDATE logging SET username = (?), log_time = (?) WHERE id = (?)";
         stmtLog= conn.prepareStatement(query_insert_log);
         stmtLog.setString(1, log.getUsername());
-        stmtLog.setTimestamp(2, log.getTimestamp());
+        stmtLog.setTimestamp(2, Timestamp.valueOf(log.getDateTime()));
         stmtLog.setInt(3, oldId);
         stmtLog.executeUpdate();
         

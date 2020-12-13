@@ -24,7 +24,8 @@ public class MaintenanceActivity {
     private Procedure procedure;
     private Site site;
     private Typology typology;
-    private Material material;
+    private String note;
+    private LinkedList<Material> materials;
     private ArrayList<User> users; //Maintainers
     
     /**
@@ -38,10 +39,11 @@ public class MaintenanceActivity {
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
+     * @param note note related to the activity
      */
     public MaintenanceActivity(String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
-            Procedure procedure, Site site, Typology typology){
+            Procedure procedure, Site site, Typology typology, String note){
         
         this.name = name;
         this.description = description;
@@ -52,6 +54,7 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
+        this.note = note;
     }
     
     /**
@@ -66,10 +69,11 @@ public class MaintenanceActivity {
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
+     * @param note note to add to the activity
      */
     public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, 
-            Procedure procedure, Site site, Typology typology){
+            Procedure procedure, Site site, Typology typology, String note){
         this.activityId = activityId;
         this.name = name;
         this.description = description;
@@ -80,6 +84,7 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
+        this.note = note;
     }
     
     /**
@@ -95,13 +100,14 @@ public class MaintenanceActivity {
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
-     * @param material material to use during the activity
+     * @param materials list of material to use during the activity
+     * @param note note to add to the activity
      * @param users users assigned to this activity
      */
     public MaintenanceActivity(int activityId, String name, String description, 
             boolean interruptible, int estimatedIntervention, boolean ewo, int week, boolean state, 
             Procedure procedure, Site site, Typology typology, 
-            Material material, ArrayList<User> users){
+            LinkedList<Material> materials, String note, ArrayList<User> users){
         
         this.activityId = activityId;
         this.name = name;
@@ -114,7 +120,8 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
-        this.material = material;
+        this.materials = materials;
+        this.note = note;
         this.users = users;  
     }
     
@@ -197,10 +204,17 @@ public class MaintenanceActivity {
     }
     /**
      * 
-     * @return material to use during the activity
+     * @return list of materials to use during the activity
      */
-    public Material getMaterial(){
-        return material;
+    public LinkedList<Material> getMaterials(){
+        return materials;
+    }
+    /**
+     * 
+     * @return note realated to the activity
+     */
+    public String getNote(){
+        return note;
     }
     /**
      * 
@@ -289,10 +303,17 @@ public class MaintenanceActivity {
     }
     /**
      * 
-     * @param material new activity material
+     * @param materials list of new materials to use during the activity
      */
-    public void setMaterial(Material material){
-        this.material = material;
+    public void setMaterials(LinkedList<Material> materials){
+        this.materials = materials;
+    }
+    /**
+     * 
+     * @param note note to add to the activity
+     */
+    public void setNote(String note){
+        this.note = note;
     }
     /**
      * 
@@ -308,7 +329,7 @@ public class MaintenanceActivity {
      */
     @Override
     public String toString() {
-        return "MaintenanceActivity{" + "activityId=" + activityId + ", name=" + name + ", description=" + description + ", interruptible=" + interruptible + ", estimatedIntervention=" + estimatedIntervention + ", ewo=" + ewo + ", week=" + week + ", state=" + state + ", procedure=" + procedure + ", site=" + site + ", typology=" + typology + ", material=" + material + ", users=" + users + '}';
+        return "MaintenanceActivity{" + "activityId=" + activityId + ", name=" + name + ", description=" + description + ", interruptible=" + interruptible + ", estimatedIntervention=" + estimatedIntervention + ", ewo=" + ewo + ", week=" + week + ", state=" + state + ", procedure=" + procedure + ", site=" + site + ", typology=" + typology + ", material=" + materials + ", users=" + users + '}';
     }
 
     
@@ -320,35 +341,35 @@ public class MaintenanceActivity {
      * @throws SQLException 
      */
     public static LinkedList<MaintenanceActivity> resultQueryGetActivities(Connection conn, String query) throws SQLException{
-        int competenceId = 0;
         int procedureId = 0;
         String procedureSmp = null;
-        String competenceName = null;
-        Procedure procedure;
-        
+        LinkedList<Competence> competences = new LinkedList<>();
         LinkedList<MaintenanceActivity> maintenaceActivities = new LinkedList<>();
         
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            String procedureName = rst.getString("procedura");            
-            String query2 = "SELECT * FROM procedura WHERE nome = '" + procedureName + "'";
-            PreparedStatement stm2 = conn.prepareStatement(query2);
-            ResultSet rst2 = stm2.executeQuery();
-            while (rst2.next()) {
-                procedureId = rst2.getInt("id");
-                procedureSmp = rst2.getString("smp");
-                competenceName = rst2.getString("competenza"); 
-                String query3 = "SELECT id FROM competenza WHERE nome = '" + competenceName + "'";
-                PreparedStatement stm3 = conn.prepareStatement(query3);
-                ResultSet rst3 = stm3.executeQuery();
-                while (rst3.next()){
-                    competenceId = rst3.getInt("id");
+            
+            String procedureName = rst.getString("procedura");
+            if(!procedureName.equals("")){
+                String query2 = "SELECT * FROM procedura WHERE nome = '" + procedureName + "'";
+                PreparedStatement stm2 = conn.prepareStatement(query2);
+                ResultSet rst2 = stm2.executeQuery();
+                while (rst2.next()) {
+                    if(rst2.getInt("id") != 0){
+                        procedureId = rst2.getInt("id");
+                        procedureSmp = rst2.getString("smp"); 
+                        String query3 = "SELECT competenza FROM assegnazione WHERE id_procedura = '" + procedureId + "'";
+                        PreparedStatement stm3 = conn.prepareStatement(query3);
+                        ResultSet rst3 = stm3.executeQuery();
+                        while (rst3.next()) {
+                            if(!rst3.getString("competenza").equals("")){
+                                competences.add(new Competence(rst3.getString("competenza")));
+                            }
+                        }
+                    }
                 }
             }
-            procedure = new Procedure(procedureId, procedureName, procedureSmp, 
-                    new Competence(competenceId, competenceName));
-            
             maintenaceActivities.add(
                     new MaintenanceActivity(rst.getInt("activity_id"),
                     rst.getString("nome"), 
@@ -357,10 +378,11 @@ public class MaintenanceActivity {
                     rst.getInt("intervento_stimato"), 
                     rst.getBoolean("ewo"), 
                     rst.getInt("settimana"), 
-                    procedure, 
+                    new Procedure(procedureId, procedureName, procedureSmp, competences), 
                     new Site(rst.getString("sito")), 
-                    new Typology(rst.getString("tipologia"))));
-            }
+                    new Typology(rst.getString("tipologia")),
+                    rst.getString("Nota")));
+        }
         return maintenaceActivities;
     }
     
@@ -389,15 +411,34 @@ public class MaintenanceActivity {
     }
     
     /**
+     * Get all the material associated to the activity
+     * @param conn connection to the database opened
+     * @param activityId activity whose material you want to know
+     * @return list of all materials used for the specific activity
+     * @throws SQLException 
+     */
+    public static LinkedList<Material> getMaterialsForActivity(Connection conn, int activityId)throws SQLException{
+        LinkedList<Material> materials = new LinkedList<>();
+        String query = "SELECT materiale FROM utilizzo WHERE activity_id = " + activityId;
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            if(!rst.getString("materiale").equals("")){ 
+                materials.add(new Material(rst.getString("materiale")));
+            }
+        }
+        return materials;
+    }
+    
+    /**
      * Add a maintenance activity in the database 
      * @param conn connection to the database opened
      * @param maintActivity maintenance activity to add
      * @throws SQLException 
      */
     public static void addMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
-        String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
-        query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
+        String query_insert_maintActivity = "INSERT INTO attivita_manutenzione "
                 + "(nome, descrizione, interrompibile, intervento_stimato,"
                 + " ewo, settimana,procedura, sito, tipologia) "
                 + "VALUES (?, ?, ?, ?, ?,?, ?, ?, ?);";
@@ -422,9 +463,8 @@ public class MaintenanceActivity {
      * @throws SQLException 
      */
     public static void removeMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity) throws SQLException{
-        String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
-        query_insert_maintActivity = "DELETE FROM attivita_manutenzione WHERE (activity_id) = (?)";
+        String query_insert_maintActivity = "DELETE FROM attivita_manutenzione WHERE (activity_id) = (?)";
         
         stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
         stmtMainActivity.setInt(1, maintActivity.getActivityId());
@@ -440,14 +480,14 @@ public class MaintenanceActivity {
      * @throws SQLException 
      */
     public static void updateMaintenanceActivity(Connection conn, MaintenanceActivity maintActivity, int oldActivityId) throws SQLException{
-        String query_insert_maintActivity="";
         PreparedStatement stmtMainActivity;
-        query_insert_maintActivity = "UPDATE attivita_manutenzione SET nome = (?), "
+        String query_insert_maintActivity = "UPDATE attivita_manutenzione SET nome = (?), "
                 + "descrizione = (?), interrompibile = (?), "
                 + "intervento_stimato = (?), ewo = (?),"
                 + "settimana = (?), procedura = (?), "
                 + "sito = (?), tipologia = (?),"
-                + "completa = (?) WHERE id = (?)";
+                + "completa = (?), "
+                + "nota = (?) WHERE id = (?)";
         
         stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
         stmtMainActivity.setString(1, maintActivity.getName());
@@ -460,7 +500,8 @@ public class MaintenanceActivity {
         stmtMainActivity.setString(8, maintActivity.getSite().getName());
         stmtMainActivity.setString(9, maintActivity.getTypology().getName());
         stmtMainActivity.setBoolean(10, maintActivity.getState());
-        stmtMainActivity.setInt(11, oldActivityId);
+        stmtMainActivity.setString(11, maintActivity.getNote());
+        stmtMainActivity.setInt(12, oldActivityId);
         stmtMainActivity.executeUpdate();
         
     }

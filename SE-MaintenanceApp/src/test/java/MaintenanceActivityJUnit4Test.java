@@ -51,7 +51,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetActivityId() {
         System.out.println("getActivityId");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         int expResult = 0;
         int result = instance.getActivityId();
         assertEquals(expResult, result);
@@ -63,7 +63,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         String expResult = "";
         String result = instance.getName();
         assertEquals(expResult, result);
@@ -75,7 +75,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetDescription() {
         System.out.println("getDescription");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         String expResult = "";
         String result = instance.getDescription();
         assertEquals(expResult, result);
@@ -87,7 +87,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetInterruptable() {
         System.out.println("getInterruptable");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         boolean expResult = false;
         boolean result = instance.getInterruptable();
         assertEquals(expResult, result);
@@ -99,7 +99,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetEstimatedIntervention() {
         System.out.println("getEstimatedIntervention");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         int expResult = 0;
         int result = instance.getEstimatedIntervention();
         assertEquals(expResult, result);
@@ -111,7 +111,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetEwo() {
         System.out.println("getEwo");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         boolean expResult = false;
         boolean result = instance.getEwo();
         assertEquals(expResult, result);
@@ -123,7 +123,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetWeek() {
         System.out.println("getWeek");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         int expResult = 0;
         int result = instance.getWeek();
         assertEquals(expResult, result);
@@ -135,7 +135,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetState() {
         System.out.println("getState");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         boolean expResult = false;
         boolean result = instance.getState();
         assertEquals(expResult, result);
@@ -147,7 +147,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetProcedure() {
         System.out.println("getProcedure");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         Procedure expResult = null;
         Procedure result = instance.getProcedure();
         assertEquals(expResult, result);
@@ -159,7 +159,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetSite() {
         System.out.println("getSite");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         Site expResult = null;
         Site result = instance.getSite();
         assertEquals(expResult, result);
@@ -171,21 +171,32 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetTypology() {
         System.out.println("getTypology");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         Typology expResult = null;
         Typology result = instance.getTypology();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of getMaterial method, of class MaintenanceActivity.
+     * Test of getMaterials method, of class MaintenanceActivity.
      */
     @Test
-    public void testGetMaterial() {
-        System.out.println("getMaterial");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
-        Material expResult = null;
-        Material result = instance.getMaterial();
+    public void testGetMaterials() {
+        System.out.println("getMaterials");
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
+        LinkedList<Material> expResult = new LinkedList<>();
+        LinkedList<Material> result = instance.getMaterials();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getNote method, of class MaintenanceActivity.
+     */
+    public void testGetNote(){
+        System.out.println("getNote");
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
+        String expResult = "";
+        String result = instance.getNote();
         assertEquals(expResult, result);
     }
 
@@ -195,7 +206,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetUsers() {
         System.out.println("getUsers");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         ArrayList expResult = null;
         ArrayList result = instance.getUsers();
         assertEquals(expResult, result);
@@ -208,7 +219,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetActivityId() {
         System.out.println("setActivityId");
         int activityId = 0;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setActivityId(activityId);
     }
 
@@ -219,7 +230,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetName() {
         System.out.println("setName");
         String name = "";
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setName(name);
     }
 
@@ -230,7 +241,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetDescription() {
         System.out.println("setDescription");
         String description = "";
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setDescription(description);
     }
 
@@ -241,7 +252,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetInterruptable() {
         System.out.println("setInterruptable");
         boolean interruptible = false;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setInterruptable(interruptible);
     }
 
@@ -252,7 +263,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetEstimatedIntervention() {
         System.out.println("setEstimatedIntervention");
         int estimatedIntervention = 0;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setEstimatedIntervention(estimatedIntervention);
     }
 
@@ -263,7 +274,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetEwo() {
         System.out.println("setEwo");
         boolean ewo = false;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setEwo(ewo);
     }
 
@@ -274,7 +285,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetWeek() {
         System.out.println("setWeek");
         int week = 0;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setWeek(week);
     }
 
@@ -285,7 +296,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetState() {
         System.out.println("setState");
         boolean state = false;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setState(state);
     }
 
@@ -296,7 +307,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetProcedure() {
         System.out.println("setProcedure");
         Procedure procedure = null;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setProcedure(procedure);
     }
 
@@ -307,7 +318,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetSite() {
         System.out.println("setSite");
         Site site = null;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setSite(site);
     }
 
@@ -318,19 +329,30 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetTypology() {
         System.out.println("setTypology");
         Typology typology = null;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setTypology(typology);
     }
 
     /**
-     * Test of setMaterial method, of class MaintenanceActivity.
+     * Test of setMaterials method, of class MaintenanceActivity.
      */
     @Test
-    public void testSetMaterial() {
-        System.out.println("setMaterial");
-        Material material = null;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
-        instance.setMaterial(material);
+    public void testSetMaterials() {
+        System.out.println("setMaterials");
+        LinkedList<Material> materials = new LinkedList<>();
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
+        instance.setMaterials(materials);
+    }
+    
+    /**
+     * Test of setNote method, of class MaintenanceActivity.
+     */
+    @Test
+    public void testSetNote() {
+        System.out.println("setNote");
+        String note = "";
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
+        instance.setNote(note);
     }
 
     /**
@@ -340,7 +362,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testSetUsers() {
         System.out.println("setUsers");
         ArrayList users = null;
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setUsers(users);
     }
 
@@ -350,14 +372,15 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testToString() {
         System.out.println("toString");
-        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null);
-        String expResult = "MaintenanceActivity{" + "activityId=" + instance.getActivityId() + ", name=" + instance.getName() + ", description=" + instance.getDescription() + ", interruptible=" + instance.getInterruptable() + ", estimatedIntervention=" + instance.getEstimatedIntervention() + ", ewo=" + instance.getEwo()+ ", week=" + instance.getWeek() + ", state=" + instance.getState() + ", procedure=" + instance.getProcedure() + ", site=" + instance.getSite() + ", typology=" + instance.getTypology() + ", material=" + instance.getMaterial() + ", users=" + instance.getUsers() + '}';
+        MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
+        String expResult = "MaintenanceActivity{" + "activityId=" + instance.getActivityId() + ", name=" + instance.getName() + ", description=" + instance.getDescription() + ", interruptible=" + instance.getInterruptable() + ", estimatedIntervention=" + instance.getEstimatedIntervention() + ", ewo=" + instance.getEwo()+ ", week=" + instance.getWeek() + ", state=" + instance.getState() + ", procedure=" + instance.getProcedure() + ", site=" + instance.getSite() + ", typology=" + instance.getTypology() + ", material=" + instance.getMaterials() + ", users=" + instance.getUsers() + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
     }
 
     /**
      * Test of resultQueryGetActivities method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testResultQueryGetActivities() throws Exception {
@@ -371,63 +394,76 @@ public class MaintenanceActivityJUnit4Test {
 
     /**
      * Test of getMaintenanceActivities method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetMaintenanceActivities() throws Exception {
         System.out.println("getMaintenanceActivities");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        LinkedList<MaintenanceActivity> expResult = null;
+        LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivities(conn);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of getMaintenanceActivitiesByWeek method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetMaintenanceActivitiesByWeek() throws Exception {
         System.out.println("getMaintenanceActivitiesByWeek");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         int week_number = 0;
-        LinkedList<MaintenanceActivity> expResult = null;
+        LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivitiesByWeek(conn, week_number);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
-
+    
+    /**
+     * Test of getMaterialsForActivity method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testGetMaterialsForActivity()throws Exception{
+        System.out.println("getMaterialsForActivity");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        int activityId = 0;
+        LinkedList<Material> expResult = new LinkedList<>();
+        LinkedList<Material> result = MaintenanceActivity.getMaterialsForActivity(conn, activityId);
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of addMaintenanceActivity method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddMaintenanceActivity() throws Exception {
         System.out.println("addMaintenanceActivity");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         MaintenanceActivity maintActivity = null;
-        MaintenanceActivity instance = null;
-        instance.addMaintenanceActivity(conn, maintActivity);
+        MaintenanceActivity.addMaintenanceActivity(conn, maintActivity);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of removeMaintenanceActivity method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveMaintenanceActivity() throws Exception {
         System.out.println("removeMaintenanceActivity");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         MaintenanceActivity maintActivity = null;
-        MaintenanceActivity instance = null;
-        instance.removeMaintenanceActivity(conn, maintActivity);
+        MaintenanceActivity.removeMaintenanceActivity(conn, maintActivity);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of updateMaintenanceActivity method, of class MaintenanceActivity.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateMaintenanceActivity() throws Exception {
@@ -435,8 +471,7 @@ public class MaintenanceActivityJUnit4Test {
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         MaintenanceActivity maintActivity = null;
         int oldActivityId = 0;
-        MaintenanceActivity instance = null;
-        instance.updateMaintenanceActivity(conn, maintActivity, oldActivityId);
+        MaintenanceActivity.updateMaintenanceActivity(conn, maintActivity, oldActivityId);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

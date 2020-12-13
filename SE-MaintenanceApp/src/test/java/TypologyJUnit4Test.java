@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.Typology;
 import java.sql.Connection;
 import java.util.LinkedList;
@@ -69,66 +70,59 @@ public class TypologyJUnit4Test {
     public void testToString() {
         System.out.println("toString");
         Typology instance = new Typology("");
-        String expResult = "Typology{" + "name=" + instance.getName() + '}';
+        String expResult = "Typology{" + "name=" + instance.getName() + "}";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
 
     /**
      * Test of getTypologies method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetTypologies() throws Exception {
         System.out.println("getTypologies");
-        Connection conn = null;
-        LinkedList<Typology> expResult = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        LinkedList<Typology> expResult = new LinkedList<>();
         LinkedList<Typology> result = Typology.getTypologies(conn);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of addTypology method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddTypology() throws Exception {
         System.out.println("addTypology");
-        Connection conn = null;
-        Typology typology = null;
-        Typology instance = null;
-        instance.addTypology(conn, typology);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Typology typology = new Typology("");
+        Typology.addTypology(conn, typology);
     }
 
     /**
      * Test of removeTypology method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveTypology() throws Exception {
         System.out.println("removeTypology");
-        Connection conn = null;
-        Typology typology = null;
-        Typology instance = null;
-        instance.removeTypology(conn, typology);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Typology typology = new Typology("");;
+        Typology.removeTypology(conn, typology);
     }
 
     /**
      * Test of updateTypology method, of class Typology.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateTypology() throws Exception {
         System.out.println("updateTypology");
-        Connection conn = null;
-        Typology typology = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Typology typology = new Typology("");;
         String oldName = "";
-        Typology instance = null;
-        instance.updateTypology(conn, typology, oldName);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Typology.updateTypology(conn, typology, oldName);
     }
     
 }

@@ -67,9 +67,8 @@ public class Site {
      * @throws SQLException 
      */
     public static void addSite(Connection conn, Site site) throws SQLException{
-        String query_insert_site="";
         PreparedStatement stmtSite;
-        query_insert_site = "INSERT INTO sito (nome) VALUES (?);";
+        String query_insert_site = "INSERT INTO sito (nome) VALUES (?);";
         
         stmtSite = conn.prepareStatement(query_insert_site);
         stmtSite.setString(1, site.getName());
@@ -82,9 +81,8 @@ public class Site {
      * @throws SQLException 
      */
     public static void removeSite(Connection conn, Site site) throws SQLException{
-        String query_insert_site="";
         PreparedStatement stmtSite;
-        query_insert_site = "DELETE FROM sito WHERE (nome) = (?);";
+        String query_insert_site = "DELETE FROM sito WHERE (nome) = (?);";
         
         stmtSite = conn.prepareStatement(query_insert_site);
         stmtSite.setString(1, site.getName());
@@ -98,9 +96,8 @@ public class Site {
      * @throws SQLException 
      */
     public static void updateSite(Connection conn, Site site, String oldName) throws SQLException{
-        String query_insert_site="";
         PreparedStatement stmtSite;
-        query_insert_site = "UPDATE sito SET nome = (?) WHERE nome = (?)";
+        String query_insert_site = "UPDATE sito SET nome = (?) WHERE nome = (?)";
         stmtSite= conn.prepareStatement(query_insert_site);
         stmtSite.setString(1, site.getName());
         stmtSite.setString(2, oldName);

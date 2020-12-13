@@ -18,6 +18,7 @@ public class User {
     private String password;
     private boolean state; //attivo o non attivo
     private String role;
+    private LinkedList<Competence> competences;
     
     /**
      * Constructor User: create an user with name, surname, username, password, state, role
@@ -35,6 +36,26 @@ public class User {
         this.password = password;
         this.state = state;
         this.role = role;
+    }
+    
+    /**
+     * Constructor User: create an user with name, surname, username, password, state, role, competences
+     * @param nome name of the user
+     * @param cognome surnama of the user 
+     * @param username username of the user
+     * @param password password of the user
+     * @param state indicate if the user is active or not
+     * @param role indicate the role of the user in the system
+     * @param competences list of competences of the user
+     */
+    public User(String nome, String cognome, String username, String password, boolean state, String role, LinkedList<Competence> competences) {
+        this.name = nome;
+        this.surname = cognome;
+        this.username = username;
+        this.password = password;
+        this.state = state;
+        this.role = role;
+        this.competences = competences;
     }
     /**
      * 
@@ -80,6 +101,13 @@ public class User {
     }
     /**
      * 
+     * @return list of competences assigned to the user
+     */
+    public LinkedList<Competence> getCompetences(){
+        return competences;
+    }
+    /**
+     * 
      * @param name new name of the user
      */
     public void setName(String name){
@@ -121,32 +149,79 @@ public class User {
         this.role = role;
     }
     /**
+     * 
+     * @param competences list of competences to asssingn to the user
+     */
+    public void setCompetences(LinkedList<Competence> competences){
+        this.competences = competences;
+    }
+    
+    /**
      * Print user
      * @return string containing data for a single user
      */
     @Override
-    public String toString() {
-        return "User{" + "name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", role=" + role + '}';
+    public String toString (){
+        return "User{" + "name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", state=" + state + ", role=" + role + ", competences=" + competences + '}';    
     }
-    
+
     /**
-     * Get all the users in the database
+     * Get all the active users in the database
      * @param conn connection with the database opened
-     * @return list of users present
+     * @return list of active users present
      * @throws SQLException 
      */
-    public static LinkedList<User> getUsers (Connection conn) throws SQLException{
+    public static LinkedList<User> getUsers(Connection conn) throws SQLException {
         LinkedList<User> users = new LinkedList<>();
-        String query = "SELECT * FROM utente";
+        String query = "SELECT * FROM utente WHERE attivo = 'true'";
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            users.add(new User(rst.getString("nome"), rst.getString("cognome"), 
-                   rst.getString("username"), rst.getString("pass"),
-                   rst.getBoolean("attivo"), rst.getString("ruolo")));
+            users.add(new User(rst.getString("nome"), rst.getString("cognome"),
+                        rst.getString("username"), rst.getString("pass"),
+                        rst.getBoolean("attivo"), rst.getString("ruolo")));
         }
         return users;    
     }
+    
+    /**
+     * Get all the competences of a specific user
+     * @param conn connection with the database opened
+     * @param username user whose skills you want to know
+     * @return list of competences assigned to the user
+     * @throws java.sql.SQLException 
+     */
+    public static LinkedList<Competence> getUserCompetences(Connection conn, String username)throws SQLException{
+        LinkedList<Competence> competences = new LinkedList<>();
+        String query = "SELECT competenza FROM qualificazione WHERE maintainer = '" + username + "'";
+        PreparedStatement stm = conn.prepareStatement(query);
+        ResultSet rst = stm.executeQuery();
+        while(rst.next()){
+            competences.add(new Competence(rst.getString("competenza")));
+        }
+        return competences;
+    }
+    
+    /**
+     * Assign a list of competences to a user
+     * @param conn connection with the database opened
+     * @param user user whose skills you want to assign
+     * @param competences list of competences to assign to the user
+     * @throws java.sql.SQLException
+     */
+    public static void assignCompetencesToUser(Connection conn, User user, LinkedList<Competence> competences)throws SQLException{
+        PreparedStatement stmQual;
+        String query_insert_qualification = "INSERT INTO qualificazione (maintainer, competenza) VALUES (?, ?)";
+        
+        stmQual = conn.prepareStatement(query_insert_qualification);
+        
+        for (int i=0; i<competences.size (); i++){
+            stmQual.setString(1, user.getUsername());
+            stmQual.setString(2, competences.get(i).getName());
+            stmQual.executeUpdate();
+        }
+    }
+    
     /**
      * Add a user in the database
      * @param conn connection with the database opened
@@ -154,11 +229,10 @@ public class User {
      * @throws SQLException 
      */
     public static void addUser(Connection conn, User user) throws SQLException{
-        String query_insert_user="";
         PreparedStatement stmtUser;
-        query_insert_user = "INSERT INTO utente (nome, cognome, username, pass, attivo, ruolo) VALUES (?, ?, ?, ?, ?, ?);";
+        String query_insert_user = "INSERT INTO utente (nome, cognome, username, pass, attivo, ruolo) VALUES (?, ?, ?, ?, ?, ?);";
         
-        stmtUser= conn.prepareStatement(query_insert_user);
+        stmtUser = conn.prepareStatement(query_insert_user);
         stmtUser.setString(1, user.getName());
         stmtUser.setString(2, user.getSurname());
         stmtUser.setString(3, user.getUsername());
@@ -170,15 +244,15 @@ public class User {
         
     }
     /**
-     * Remove a user from the database
+     * Deactivate a user from the system deselecting the state variable, maintaining
+     * the link to the user, useful for the log activity.
      * @param conn connection with the database opened
-     * @param user user to remove 
+     * @param user user to deactivate
      * @throws SQLException 
      */
-    public static void removeUser(Connection conn, User user) throws SQLException{
-        String query_insert_user="";
+    public static void deactivateUser(Connection conn, User user) throws SQLException{
         PreparedStatement stmtUser;
-        query_insert_user = "DELETE FROM utente WHERE username = (?);";
+        String query_insert_user = "UPDATE utente SET attivo = 'false' WHERE username = (?);";
         
         stmtUser= conn.prepareStatement(query_insert_user);
         stmtUser.setString(1, user.getUsername());
@@ -195,9 +269,8 @@ public class User {
      * @throws SQLException 
      */
     public static void updateUser(Connection conn, User user, String oldUsername) throws SQLException{
-        String query_insert_user="";
         PreparedStatement stmtUser;
-        query_insert_user = "UPDATE utente SET nome = (?),"
+        String query_insert_user = "UPDATE utente SET nome = (?),"
                                         + " cognome = (?)," 
                                         + " username = (?),"
                                         + " pass = (?)," 

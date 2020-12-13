@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.Site;
 import java.sql.Connection;
 import java.util.LinkedList;
@@ -69,66 +70,59 @@ public class SiteJUnit4Test {
     public void testToString() {
         System.out.println("toString");
         Site instance = new Site("");
-        String expResult = "Site{" + "name=" + instance.getName() + '}';
+        String expResult = "Site{" + "name=" + instance.getName() + "}";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
 
     /**
      * Test of getSites method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetSites() throws Exception {
         System.out.println("getSites");
-        Connection conn = null;
-        LinkedList<Site> expResult = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        LinkedList<Site> expResult = new LinkedList<>();
         LinkedList<Site> result = Site.getSites(conn);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of addSite method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddSite() throws Exception {
         System.out.println("addSite");
-        Connection conn = null;
-        Site site = null;
-        Site instance = null;
-        instance.addSite(conn, site);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Site site = new Site("");
+        Site.addSite(conn, site);
     }
 
     /**
      * Test of removeSite method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveSite() throws Exception {
         System.out.println("removeSite");
-        Connection conn = null;
-        Site site = null;
-        Site instance = null;
-        instance.removeSite(conn, site);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Site site = new Site("");
+        Site.removeSite(conn, site);
     }
 
     /**
      * Test of updateSite method, of class Site.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateSite() throws Exception {
         System.out.println("updateSite");
-        Connection conn = null;
-        Site site = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Site site = new Site("");;
         String oldName = "";
-        Site instance = null;
-        instance.updateSite(conn, site, oldName);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Site.updateSite(conn, site, oldName);
     }
     
 }

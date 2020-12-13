@@ -100,58 +100,52 @@ public class MaterialJUnit4Test {
 
     /**
      * Test of getMaterials method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetMaterials() throws Exception {
         System.out.println("getMaterials");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        LinkedList<Material> expResult = new LinkedList<>();
         LinkedList<Material> result = Material.getMaterials(conn);
-        assertEquals(0, result.size());
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);
     }
 
     /**
      * Test of addMaterial method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddMaterial() throws Exception {
         System.out.println("addMaterial");
-        Connection conn = null;
-        Material material = null;
-        Material instance = null;
-        instance.addMaterial(conn, material);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Material material = new Material("", "");
+        Material.addMaterial(conn, material);
     }
 
     /**
      * Test of removeMaterial method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveMaterial() throws Exception {
         System.out.println("removeMaterial");
-        Connection conn = null;
-        Material material = null;
-        Material instance = null;
-        instance.removeMaterial(conn, material);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Material material = new Material("", "");
+        Material.removeMaterial(conn, material);
     }
 
     /**
      * Test of updateMaterial method, of class Material.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateMaterial() throws Exception {
         System.out.println("updateMaterial");
-        Connection conn = null;
-        Material material = null;
-        int oldName = 0;
-        Material instance = null;
-        instance.updateMaterial(conn, material, oldName);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Material material = new Material("", "");
+        String oldName = "";
+        Material.updateMaterial(conn, material, oldName);
     }
     
 }

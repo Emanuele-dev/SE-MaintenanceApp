@@ -6,8 +6,10 @@
 
 import com.team14.se.maintenanceapp.Log;
 import com.team14.se.maintenanceapp.MyConnection;
+import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -67,14 +69,14 @@ public class LogJUnit4Test {
     }
 
     /**
-     * Test of getTimestamp method, of class Log.
+     * Test of getDateTime method, of class Log.
      */
     @Test
-    public void testGetTimestamp() {
-        System.out.println("getTimestamp");
+    public void testGetDateTime() {
+        System.out.println("getDateTime");
         Log instance = new Log("", null);
-        Timestamp expResult = null;
-        Timestamp result = instance.getTimestamp();
+        LocalDateTime expResult = null;
+        LocalDateTime result = instance.getDateTime();
         assertEquals(expResult, result);
     }
 
@@ -101,14 +103,14 @@ public class LogJUnit4Test {
     }
 
     /**
-     * Test of setTimestamp method, of class Log.
+     * Test of setDateTime method, of class Log.
      */
     @Test
-    public void testSetTimestamp() {
-        System.out.println("setTimestamp");
-        Timestamp timestamp = null;
+    public void testSetDateTime() {
+        System.out.println("setDateTime");
+        LocalDateTime timestamp = null;
         Log instance = new Log("", null);
-        instance.setTimestamp(timestamp);
+        instance.setDateTime(timestamp);
     }
 
     /**
@@ -117,14 +119,15 @@ public class LogJUnit4Test {
     @Test
     public void testToString() {
         System.out.println("toString");
-        Log instance = null;
-        String expResult = "Log{" + "id=" + instance.getId() + ", username=" + instance.getUsername() + ", timestamp=" + instance.getTimestamp() + '}';
+        Log instance = new Log("", null);
+        String expResult = "Log{" + "id=" + instance.getId() + ", username=" + instance.getUsername() + ", date=" + instance.getDateTime() + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
     }
 
     /**
      * Test of getLogs method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetLogs() throws Exception {
@@ -137,43 +140,41 @@ public class LogJUnit4Test {
 
     /**
      * Test of addLog method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddLog() throws Exception {
         System.out.println("addLog");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        Log log = new Log(" ", null);
-        Log instance = new Log(" ", null);
-        instance.addLog(conn, log);
+        User user = new User("", "", "", "", false, "SystemAdministrator");
+        user.addUser(conn, user);
+        Log log = new Log(user.getName(), LocalDateTime.now());
+        Log.addLog(conn, log);
     }
 
     /**
      * Test of removeLog method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testRemoveLog() throws Exception {
         System.out.println("removeLog");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Log log = new Log(" ", null);
-        Log instance = new Log("", null);
-        instance.removeLog(conn, log);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Log.removeLog(conn, log);
     }
 
     /**
      * Test of updateLog method, of class Log.
+     * @throws java.lang.Exception
      */
     @Test
     public void testUpdateLog() throws Exception {
         System.out.println("updateLog");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        Log log = new Log(" ", null);
+        Log log = new Log(" ", LocalDateTime.now());
         int oldId = 0;
-        Log instance = null;
-        instance.updateLog(conn, log, oldId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Log.updateLog(conn, log, oldId);
     }
     
 }
