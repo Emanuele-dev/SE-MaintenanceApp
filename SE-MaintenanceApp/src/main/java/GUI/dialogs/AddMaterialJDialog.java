@@ -150,8 +150,6 @@ public class AddMaterialJDialog extends javax.swing.JDialog {
 
         if (name.isBlank()) {
             Messages.showErrorEmptyfield(this, "Name");
-        } else if (description.isBlank()) {
-            Messages.showErrorEmptyfield(this, "Description");
         } else {
             newMaterial = new Material(name, description);
             new AddMaterialWorker().execute();
