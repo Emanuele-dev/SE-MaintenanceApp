@@ -52,7 +52,7 @@ public class AddCompetenceJDialog extends javax.swing.JDialog {
         this.newCompetence = null;
         this.connection = connection;
         initComponents();
-        this.setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);
     }
 
     /** This method is called from within the constructor to

@@ -50,6 +50,7 @@ public class AddTypeJDialog extends javax.swing.JDialog {
         this.newType = null;
         this.connection = connection;
         initComponents();
+        setLocationRelativeTo(parent);
     }
 
 

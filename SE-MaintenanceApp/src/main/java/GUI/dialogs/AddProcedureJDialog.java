@@ -62,6 +62,7 @@ public class AddProcedureJDialog extends javax.swing.JDialog {
         this.connection = connection;
         
         initComponents();
+        setLocationRelativeTo(parent);
         this.competencePanel.activate(new LinkedList<>(), competencesList);
     }
     
