@@ -131,6 +131,7 @@ public class Procedure {
                     }
                 }
                 procedures.add(new Procedure(rst.getInt("id"),rst.getString("nome"), rst.getString("smp"), competences));
+                competences = new LinkedList<>();
             }
         }
         return procedures;
