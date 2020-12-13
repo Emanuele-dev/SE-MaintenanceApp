@@ -2287,6 +2287,7 @@ public class AdminGUI extends javax.swing.JFrame {
         removeMaterialJButton.setEnabled(false);
         updateMaterialJButton.setEnabled(false);
         materialNameJTextField.setEnabled(false);
+        materialDescriptionJTextArea.setEnabled(false);
         
         String name = this.materialNameJTextField.getText();
         
@@ -2296,13 +2297,14 @@ public class AdminGUI extends javax.swing.JFrame {
             removeMaterialJButton.setEnabled(true);
             updateMaterialJButton.setEnabled(true);
             materialNameJTextField.setEnabled(true);
+            materialDescriptionJTextArea.setEnabled(true);
         } else {
             newMaterialData = new Material(name, this.materialDescriptionJTextArea.getText());
             new UpdateMaterialWorker().execute();
         }
     }//GEN-LAST:event_updateMaterialJButtonActionPerformed
 
-       class UpdateMaterialWorker extends SwingWorker<Boolean , Void> {
+    class UpdateMaterialWorker extends SwingWorker<Boolean , Void> {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
@@ -2333,6 +2335,7 @@ public class AdminGUI extends javax.swing.JFrame {
                     removeMaterialJButton.setEnabled(true);
                     updateMaterialJButton.setEnabled(true);
                     materialNameJTextField.setEnabled(true);
+                    materialDescriptionJTextArea.setEnabled(true);
                 }
             } catch (InterruptedException | ExecutionException ex) {
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
@@ -2343,9 +2346,59 @@ public class AdminGUI extends javax.swing.JFrame {
     ///////////////////// UPDATE SITE /////////////////////
     
     private void updateSiteJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSiteJButtonActionPerformed
-        // TODO add your handling code here:
+        sitesJList.setEnabled(false);
+        removeSiteJButton.setEnabled(false);
+        updateSiteJButton.setEnabled(false);
+        siteNameJTextField.setEnabled(false);
+        
+        String name = this.siteNameJTextField.getText();
+        
+        if (name.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Name");
+            sitesJList.setEnabled(true);
+            removeSiteJButton.setEnabled(true);
+            updateSiteJButton.setEnabled(true);
+            siteNameJTextField.setEnabled(true);
+        } else {
+            newSiteData = new Site(name);
+            new UpdateSitelWorker().execute();
+        }
     }//GEN-LAST:event_updateSiteJButtonActionPerformed
 
+    class UpdateSitelWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Site.updateSite(connection, newSiteData, sitesJList.getSelectedValue());
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Site Updated!");
+                    refreshSitesList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    sitesJList.setEnabled(true);
+                    removeSiteJButton.setEnabled(true);
+                    updateSiteJButton.setEnabled(true);
+                    siteNameJTextField.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     ///////////////////// UPDATE TYPE /////////////////////
     
     private void updateTypeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateTypeJButtonActionPerformed
@@ -2488,6 +2541,7 @@ public class AdminGUI extends javax.swing.JFrame {
         
         if (this.sitesJList.getSelectedValue() == null) {
             this.removeSiteJButton.setEnabled(false);
+            this.updateSiteJButton.setEnabled(false);
             return;
         }
         
@@ -2499,6 +2553,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.siteNameJTextField.setEnabled(true);
         }
         this.removeSiteJButton.setEnabled(true);
+        this.updateSiteJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.siteNameJTextField.setText(this.sitesJList.getSelectedValue());
