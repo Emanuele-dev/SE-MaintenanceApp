@@ -647,6 +647,7 @@ public class AdminGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin");
+        setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(806, 589));
 
         usersJPanel.setLayout(new java.awt.BorderLayout());

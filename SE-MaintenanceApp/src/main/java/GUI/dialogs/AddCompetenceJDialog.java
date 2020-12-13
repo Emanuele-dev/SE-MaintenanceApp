@@ -70,6 +70,7 @@ public class AddCompetenceJDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add New Competence");
+        setLocationByPlatform(true);
         setPreferredSize(new java.awt.Dimension(400, 70));
         setResizable(false);
 
