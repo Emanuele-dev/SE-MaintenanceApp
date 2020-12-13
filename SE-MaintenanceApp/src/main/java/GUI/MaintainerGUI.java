@@ -5,13 +5,14 @@
  */
 package GUI;
 
+import com.team14.se.maintenanceapp.Competence;
 import com.team14.se.maintenanceapp.MaintenanceActivity;
 import com.team14.se.maintenanceapp.User;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,9 +25,10 @@ import javax.swing.table.DefaultTableModel;
  * @author mario
  */
 public class MaintainerGUI extends javax.swing.JFrame {
-    
+
     private User loggedUser;
     private Connection connection;
+    private LinkedList<MaintenanceActivity> activityList;
 
     /**
      * Creates new form PlannerGUI
@@ -34,10 +36,10 @@ public class MaintainerGUI extends javax.swing.JFrame {
     public MaintainerGUI() {
         initComponents();
     }
-    
+
     /**
      * Creates new form PlannerGUI
-     * 
+     *
      * @param loggedUser the logged user
      * @param connection the database connection
      */
@@ -180,23 +182,22 @@ public class MaintainerGUI extends javax.swing.JFrame {
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(detailsDescriptionJScrollPane)
-                        .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(detailsJPanelLayout.createSequentialGroup()
-                                .addComponent(detailsWeekJLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(detailsStatusJLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(detailsStatusJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(detailsJPanelLayout.createSequentialGroup()
-                                .addComponent(detailsSMPJLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(detailsJPanelLayout.createSequentialGroup()
-                                .addComponent(detailsActivityJLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                            .addComponent(detailsWeekJLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(detailsStatusJLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(detailsStatusJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                            .addComponent(detailsSMPJLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                            .addComponent(detailsActivityJLabel)
+                            .addGap(18, 18, 18)
+                            .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(detailsSkillsJScrollPane))
                     .addComponent(detailsNotesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -204,12 +205,13 @@ public class MaintainerGUI extends javax.swing.JFrame {
         detailsJPanelLayout.setVerticalGroup(
             detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detailsJPanelLayout.createSequentialGroup()
-                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(detailsWeekJLabel)
-                    .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(detailsStatusJLabel)
-                        .addComponent(detailsStatusJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(detailsStatusJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(detailsWeekJLabel)
+                        .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(detailsActivityJLabel)
@@ -287,74 +289,78 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         int week_n = (int) weekJSpinner.getValue();
         initTable(week_n);
-        detailsNotesJTextArea.setEnabled(false);   
+        detailsNotesJTextArea.setEnabled(false);
         detailsWeekJTextField.setText("--");
         detailsSMPJTextField.setText("");
         detailsActivityJTextField.setText("");
         detailsDescriptionJTextArea.setText("");
         detailsSkillsJList.removeAll();
+        detailsStatusJTextField.setEnabled(false);
     }//GEN-LAST:event_refreshJButtonActionPerformed
 
     private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
-        JTable source = (JTable)evt.getSource();
-        int row = source.rowAtPoint( evt.getPoint() );
-        String id=source.getModel().getValueAt(row, 0)+"";
-        /* statement for 1 maint activity */
-        try {
-            Statement statement = connection.createStatement();
-            String querySingleActivity = "SELECT * FROM ATTIVITA_MANUTENZIONE, PROCEDURA "
-                    + "WHERE ATTIVITA_MANUTENZIONE.procedura = PROCEDURA.nome "
-                    + "AND activity_id ="+id+";";
-            ResultSet rs = statement.executeQuery(querySingleActivity);
-            
-            if(rs.next()){
-                detailsActivityJTextField.setText(rs.getString("nome"));
-                detailsWeekJTextField.setText(String.valueOf(rs.getInt("settimana")));
-                detailsSMPJTextField.setText(rs.getString("smp"));
-                detailsDescriptionJTextArea.setText(rs.getString("descrizione"));
+        JTable source = (JTable) evt.getSource();
+        int row = source.rowAtPoint(evt.getPoint());
+        String id = source.getModel().getValueAt(row, 0) + "";
+        activityList.forEach((MaintenanceActivity activity) -> {
+            if (activity.getActivityId() == Integer.parseInt(id)) {
+                detailsActivityJTextField.setText(activity.getName());
+                detailsWeekJTextField.setText(String.valueOf(activity.getWeek()));
+                detailsSMPJTextField.setText(activity.getProcedure().getSmpName());
+                detailsDescriptionJTextArea.setText(activity.getDescription());
+                detailsNotesJTextArea.setText(activity.getNote());
                 DefaultListModel listModel = new DefaultListModel();
-                listModel.addElement(rs.getString("competenza"));
+                LinkedList<Competence> competenceList = activity.getProcedure().getProcedureCompetences();
+                competenceList.forEach(competence -> {
+                    listModel.addElement(competence.getName());
+                });
                 detailsSkillsJList.setModel(listModel);
                 detailsNotesJTextArea.setEnabled(true);
+                detailsStatusJTextField.setEnabled(true);
+                if (!activity.getState()) {
+                    detailsStatusJTextField.setText("Not Complete");
+                    detailsStatusJTextField.setBackground(Color.red);
+                } else {
+                    detailsStatusJTextField.setText("Complete");
+                    detailsStatusJTextField.setBackground(Color.green);
+                }
+
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-           
+        });
     }//GEN-LAST:event_activitiesJTableMouseClicked
 
     private void detailsStatusJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsStatusJTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_detailsStatusJTextFieldActionPerformed
-    
+
     private void initTable(int n_week) {
         try {
-            LinkedList<MaintenanceActivity> activityList = MaintenanceActivity.getMaintenanceActivities(connection);
+            activityList = MaintenanceActivity.getMaintenanceActivities(connection);
             DefaultTableModel activitiesTabelModel = (DefaultTableModel) activitiesJTable.getModel();
             activitiesTabelModel.setNumRows(0);
             activitiesTabelModel.fireTableDataChanged();
             activityList.forEach((MaintenanceActivity activity) -> {
-                if(activity.getWeek() == n_week){
-                    String queryCheckIfAssigned = "SELECT * FROM ESECUZIONE WHERE activity_id ='"+activity.getActivityId()+"'"
-                            + "AND maintainer='"+loggedUser.getUsername()+"';";
+                if (activity.getWeek() == n_week) {
+                    String queryCheckIfAssigned = "SELECT * FROM ESECUZIONE WHERE activity_id ='" + activity.getActivityId() + "'"
+                            + "AND maintainer='" + loggedUser.getUsername() + "';";
                     try {
                         PreparedStatement statementForCheck = connection.prepareStatement(queryCheckIfAssigned);
                         ResultSet rsCheck = statementForCheck.executeQuery();
-                        if(rsCheck.next()){
+                        if (rsCheck.next()) {
                             activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getEstimatedIntervention() + " min."});
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(MaintainerGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                    
+                    }
+
                 }
             });
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-           
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane activitiesJScrollPane;
@@ -382,4 +388,3 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel weekNumberJLabel;
     // End of variables declaration//GEN-END:variables
 }
-
