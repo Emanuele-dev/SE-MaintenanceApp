@@ -94,7 +94,7 @@ public class Procedure {
      * 
      * @param competences new list of competences to assign to this procedure
      */
-    public void setProcedureCompetences(LinkedList<Competence> competences){
+    public void setCompetences(LinkedList<Competence> competences){
         this.competences = competences;
     }
     
