@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,6 +30,8 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private User loggedUser;
     private Connection connection;
     private LinkedList<MaintenanceActivity> activityList;
+    private MaintenanceActivity targetActivity;
+    private DefaultListModel listModel = new DefaultListModel();
 
     /**
      * Creates new form PlannerGUI
@@ -79,6 +82,7 @@ public class MaintainerGUI extends javax.swing.JFrame {
         detailsNotesJTextArea = new javax.swing.JTextArea();
         detailsStatusJLabel = new javax.swing.JLabel();
         detailsStatusJTextField = new javax.swing.JTextField();
+        statusActivityJButton = new javax.swing.JButton();
         activitiesJScrollPane = new javax.swing.JScrollPane();
         activitiesJTable = new javax.swing.JTable();
 
@@ -173,6 +177,13 @@ public class MaintainerGUI extends javax.swing.JFrame {
             }
         });
 
+        statusActivityJButton.setText("Declare activity complete");
+        statusActivityJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusActivityJButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout detailsJPanelLayout = new javax.swing.GroupLayout(detailsJPanel);
         detailsJPanel.setLayout(detailsJPanelLayout);
         detailsJPanelLayout.setHorizontalGroup(
@@ -180,27 +191,30 @@ public class MaintainerGUI extends javax.swing.JFrame {
             .addGroup(detailsJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(detailsDescriptionJScrollPane)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
-                            .addComponent(detailsWeekJLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(detailsStatusJLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(detailsStatusJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
-                            .addComponent(detailsSMPJLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
-                            .addComponent(detailsActivityJLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(detailsSkillsJScrollPane))
-                    .addComponent(detailsNotesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(detailsNotesJScrollPane)
+                    .addGroup(detailsJPanelLayout.createSequentialGroup()
+                        .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(statusActivityJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(detailsDescriptionJScrollPane)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                                .addComponent(detailsWeekJLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(detailsWeekJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(detailsStatusJLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(detailsStatusJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                                .addComponent(detailsSMPJLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(detailsSMPJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailsJPanelLayout.createSequentialGroup()
+                                .addComponent(detailsActivityJLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(detailsActivityJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(detailsSkillsJScrollPane))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         detailsJPanelLayout.setVerticalGroup(
             detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,10 +237,12 @@ public class MaintainerGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(detailsDescriptionJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(detailsSkillsJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(detailsSkillsJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(detailsNotesJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(statusActivityJButton)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         mainJPanel.add(detailsJPanel, java.awt.BorderLayout.LINE_END);
@@ -287,15 +303,8 @@ public class MaintainerGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
-        int week_n = (int) weekJSpinner.getValue();
-        initTable(week_n);
-        detailsNotesJTextArea.setEnabled(false);
-        detailsWeekJTextField.setText("--");
-        detailsSMPJTextField.setText("");
-        detailsActivityJTextField.setText("");
-        detailsDescriptionJTextArea.setText("");
-        detailsSkillsJList.removeAll();
-        detailsStatusJTextField.setEnabled(false);
+        refreshElements();
+        
     }//GEN-LAST:event_refreshJButtonActionPerformed
 
     private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
@@ -304,12 +313,13 @@ public class MaintainerGUI extends javax.swing.JFrame {
         String id = source.getModel().getValueAt(row, 0) + "";
         activityList.forEach((MaintenanceActivity activity) -> {
             if (activity.getActivityId() == Integer.parseInt(id)) {
+                targetActivity = activity;
                 detailsActivityJTextField.setText(activity.getName());
                 detailsWeekJTextField.setText(String.valueOf(activity.getWeek()));
                 detailsSMPJTextField.setText(activity.getProcedure().getSmpName());
                 detailsDescriptionJTextArea.setText(activity.getDescription());
                 detailsNotesJTextArea.setText(activity.getNote());
-                DefaultListModel listModel = new DefaultListModel();
+                listModel = new DefaultListModel();
                 LinkedList<Competence> competenceList = activity.getProcedure().getProcedureCompetences();
                 competenceList.forEach(competence -> {
                     listModel.addElement(competence.getName());
@@ -332,6 +342,39 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private void detailsStatusJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsStatusJTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_detailsStatusJTextFieldActionPerformed
+
+    private void statusActivityJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActivityJButtonActionPerformed
+        if (targetActivity == null) {
+            JOptionPane.showMessageDialog(rootPane, "Please, select an activity to declar complete", "Error: No activity selected", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (targetActivity.getState()) {
+                JOptionPane.showMessageDialog(rootPane, "This activity is already complete. Please select a valid activity", "Error: Activity Already Complete", JOptionPane.ERROR_MESSAGE);
+            } else {
+                int input = JOptionPane.showConfirmDialog(rootPane,
+                        "Are you sure to declare this activity ?",
+                        "Select an Option...", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                if (input == 0) {
+                    try {
+                        targetActivity.setState(true);
+                        System.out.println(targetActivity.getState());
+                        System.out.println(targetActivity.getActivityId());
+                        MaintenanceActivity.updateMaintenanceActivity(connection, targetActivity, targetActivity.getActivityId());
+                         JOptionPane.showMessageDialog(rootPane, "Operation completed successfully");
+                         refreshElements();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MaintainerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
+                }
+                else{
+                    JOptionPane.showMessageDialog(rootPane, "Operation canceled");
+                }
+            }
+        }
+    }//GEN-LAST:event_statusActivityJButtonActionPerformed
+
+    
 
     private void initTable(int n_week) {
         try {
@@ -383,8 +426,25 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainJPanel;
     private javax.swing.JButton refreshJButton;
+    private javax.swing.JButton statusActivityJButton;
     private javax.swing.JPanel topJPanel;
     private javax.swing.JSpinner weekJSpinner;
     private javax.swing.JLabel weekNumberJLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void refreshElements() {
+        int week_n = (int) weekJSpinner.getValue();
+        initTable(week_n);
+        detailsNotesJTextArea.setEnabled(false);
+        detailsWeekJTextField.setText("--");
+        detailsSMPJTextField.setText("");
+        detailsActivityJTextField.setText("");
+        detailsDescriptionJTextArea.setText("");
+        detailsSkillsJList.removeAll();
+        detailsStatusJTextField.setEnabled(false);
+        detailsNotesJTextArea.setText("");
+        listModel.removeAllElements();
+        detailsStatusJTextField.setText("N/D");
+        targetActivity = null;
+    }
 }
