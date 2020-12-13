@@ -76,11 +76,12 @@ public class MaintenanceActivity {
      * @param procedure procedure that the activity must follow
      * @param site area in which the activity must take place
      * @param typology typology of the activity to perform
+     * @param complete flag that indicates if the activity is complete or not
      * @param note note to add to the activity
      */
     public MaintenanceActivity(int activityId, String name, String description,
             boolean interruptible, int estimatedIntervention, boolean ewo, int week,
-            Procedure procedure, Site site, Typology typology, String note) {
+            Procedure procedure, Site site, Typology typology, boolean complete, String note) {
         this.activityId = activityId;
         this.name = name;
         this.description = description;
@@ -91,6 +92,7 @@ public class MaintenanceActivity {
         this.procedure = procedure;
         this.site = site;
         this.typology = typology;
+        this.state = complete;
         this.note = note;
     }
 
@@ -418,6 +420,7 @@ public class MaintenanceActivity {
                             new Procedure(procedureId, procedureName, procedureSmp, competences),
                             new Site(rst.getString("sito")),
                             new Typology(rst.getString("tipologia")),
+                            rst.getBoolean("completa"),
                             rst.getString("Nota")));
         }
         return maintenaceActivities;
@@ -554,5 +557,21 @@ public class MaintenanceActivity {
         statementForAssign.setInt(1, activity_id);
         statementForAssign.setString(2, maintainer);
         statementForAssign.executeUpdate();
+    }
+    
+    public static LinkedList<MaintenanceActivity> assignedActivity(Connection conn) throws SQLException{
+        PreparedStatement stmtMainActivity;
+        String query_assigned_MaintActivity = "SELECT activity_id FROM ESECUZIONE";
+        stmtMainActivity= conn.prepareStatement(query_assigned_MaintActivity);
+        ResultSet rst = stmtMainActivity.executeQuery();
+        LinkedList<MaintenanceActivity> activities = MaintenanceActivity.getMaintenanceActivities(conn);
+        LinkedList<MaintenanceActivity> assignedActivities = new LinkedList<>();
+        while(rst.next()){
+            int id = rst.getInt("activity_id");
+            activities.stream().filter(activity -> (activity.getActivityId() == id)).forEachOrdered(activity -> {
+                assignedActivities.add(activity);
+            });
+        }
+        return assignedActivities;
     }
 }
