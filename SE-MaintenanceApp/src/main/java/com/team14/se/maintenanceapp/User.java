@@ -162,7 +162,7 @@ public class User {
      * @param conn connection with the database opened
      * @throws SQLException 
      */
-    public void clearrCompetence(Connection conn) throws SQLException{
+    public void clearCompetence(Connection conn) throws SQLException{
         PreparedStatement stmQual;
         String query_remove_qualification = "DELETE From qualificazione WHERE (maintainer) = (?)";
         

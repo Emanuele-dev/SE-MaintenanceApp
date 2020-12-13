@@ -191,7 +191,7 @@ public class AddProcedureJDialog extends javax.swing.JDialog {
         protected Boolean doInBackground() throws Exception {
             try {
                 Procedure.addProcedure(connection, newProcedure);
-                Procedure.assignCompetencesToProcedure(connection, newProcedure, newProcedure.getProcedureCompetences());
+                Procedure.assignCompetencesToProcedure(connection, newProcedure, newProcedure.getCompetences());
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);

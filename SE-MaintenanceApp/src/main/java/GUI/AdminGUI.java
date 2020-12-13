@@ -46,7 +46,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private LinkedList<Typology> typesList;
     
     private User newUserData;
-    
+    private Procedure newProcedureData;
     /**
      * Creates new form AdminGUI
      */
@@ -919,6 +919,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         updateProcedureJButton.setText("Update Procedure");
         updateProcedureJButton.setEnabled(false);
+        updateProcedureJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateProcedureJButtonActionPerformed(evt);
+            }
+        });
 
         procedureCompetencePanel.setEnabled(false);
 
@@ -2012,6 +2017,7 @@ public class AdminGUI extends javax.swing.JFrame {
         }
         this.usersTableJTable.setEnabled(false);
         this.removeUserJButton.setEnabled(false);
+        this.updateUserJButton.setEnabled(false);
         
         String name = this.userNameJTextField.getText();
         String surname = this.userSurnameJTextField.getText();
@@ -2049,9 +2055,10 @@ public class AdminGUI extends javax.swing.JFrame {
         }
         this.usersTableJTable.setEnabled(true);
         this.removeUserJButton.setEnabled(true);
+        this.updateUserJButton.setEnabled(true);
     }//GEN-LAST:event_updateUserJButtonActionPerformed
-    
-     class UpdateUserWorker extends SwingWorker<Boolean , Void> {
+
+    class UpdateUserWorker extends SwingWorker<Boolean , Void> {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
@@ -2059,7 +2066,7 @@ public class AdminGUI extends javax.swing.JFrame {
                         newUserData, 
                         usersList.get(usersTableJTable.getSelectedRow()).getUsername()
                 );
-                usersList.get(usersTableJTable.getSelectedRow()).clearrCompetence(connection);
+                usersList.get(usersTableJTable.getSelectedRow()).clearCompetence(connection);
                 if (newUserData.getRole().equals("Maintainer")){
                     User.assignCompetencesToUser(connection, newUserData, newUserData.getCompetences());
                 }
@@ -2085,8 +2092,99 @@ public class AdminGUI extends javax.swing.JFrame {
                     for(Component component:editUsersJPanel.getComponents()){
                         component.setEnabled(true);
                     }
-                    usersTableJTable.setEnabled(true);
-                    removeUserJButton.setEnabled(true);
+                for(Component component:editUsersJPanel.getComponents()){
+                    component.setEnabled(true);
+                }
+                usersTableJTable.setEnabled(true);
+                removeUserJButton.setEnabled(true);
+                updateUserJButton.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+
+    private void updateProcedureJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateProcedureJButtonActionPerformed
+        for(Component component:editProceduresJPanel.getComponents()){
+            component.setEnabled(false);
+        }
+        proceduresTableJTable.setEnabled(false);
+        removeProcedureJButton.setEnabled(false);
+        updateProcedureJButton.setEnabled(false);
+        
+        String name = this.procedureNameJTextField.getText();
+        String smp = this.SMPJTextField.getText();
+        LinkedList<Competence> competences = new LinkedList<>();
+        
+        if (name.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Name");
+        } else if (smp.isBlank()) {
+            Messages.showErrorEmptyfield(this, "SMP");
+        } else {
+            this.procedureCompetencePanel.getSelectedCompetences().forEach(competenceName -> {
+                competences.add(new Competence(competenceName));
+            });
+            newProcedureData = new Procedure(
+                    name, 
+                    smp,
+                    competences
+            );
+            new UpdateProcedureWorker().execute();
+            return;
+        }
+        
+        for(Component component:editProceduresJPanel.getComponents()){
+            component.setEnabled(true);
+        }
+        proceduresTableJTable.setEnabled(true);
+        removeProcedureJButton.setEnabled(true);
+        updateProcedureJButton.setEnabled(true);
+    }//GEN-LAST:event_updateProcedureJButtonActionPerformed
+    
+    class UpdateProcedureWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Procedure selectedProcedure = proceduresList.get(proceduresTableJTable.getSelectedRow());
+                
+                Procedure.updateProcedure(connection, 
+                        newProcedureData, 
+                        selectedProcedure.getId()
+                );
+                
+                selectedProcedure.clearCompetence(connection);
+                Procedure.assignCompetencesToProcedure(connection, 
+                        selectedProcedure, 
+                        newProcedureData.getCompetences()
+                );
+                
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Procedure Updated!");
+                    refreshProceduresList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    for(Component component:editProceduresJPanel.getComponents()){
+                        component.setEnabled(true);
+                    }
+                    proceduresTableJTable.setEnabled(true);
+                    removeProcedureJButton.setEnabled(true);
+                    updateProcedureJButton.setEnabled(true);
                 }
             } catch (InterruptedException | ExecutionException ex) {
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
@@ -2107,6 +2205,7 @@ public class AdminGUI extends javax.swing.JFrame {
         // return if no row selected
         if (selectedUserIndex == -1) {
             this.removeUserJButton.setEnabled(false);
+            this.updateUserJButton.setEnabled(false);
             return;
         }
         
@@ -2164,6 +2263,7 @@ public class AdminGUI extends javax.swing.JFrame {
         // return if no row selected
         if (selectedProcedureIndex == -1) {
             this.removeProcedureJButton.setEnabled(false);
+            this.updateProcedureJButton.setEnabled(false);
             return;
         }
         
@@ -2179,12 +2279,13 @@ public class AdminGUI extends javax.swing.JFrame {
         }
         
         this.removeProcedureJButton.setEnabled(true);
+        this.updateProcedureJButton.setEnabled(true);
 
         // fill form whit the data of the selected procedure
         this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
 
         this.SMPJTextField.setText(proceduresList.get(selectedProcedureIndex).getSmpName());
-        procedureCompetencePanel.activate(proceduresList.get(selectedProcedureIndex).getProcedureCompetences(), competencesList);
+        procedureCompetencePanel.activate(proceduresList.get(selectedProcedureIndex).getCompetences(), competencesList);
     }
     
     /**

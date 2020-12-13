@@ -66,7 +66,7 @@ public class Procedure {
      * 
      * @return list of competences of the procedure
      */
-    public LinkedList<Competence> getProcedureCompetences(){
+    public LinkedList<Competence> getCompetences(){
         return competences;
     }
     /**
@@ -96,6 +96,21 @@ public class Procedure {
      */
     public void setProcedureCompetences(LinkedList<Competence> competences){
         this.competences = competences;
+    }
+    
+    /**
+     * Remove all competences assigned to the procedure
+     * 
+     * @param conn connection with the database opened
+     * @throws SQLException 
+     */
+    public void clearCompetence(Connection conn) throws SQLException{
+        PreparedStatement stmQual;
+        String query_remove_qualification = "DELETE FROM assegnazione WHERE (id_procedura) = (?)";
+        
+        stmQual = conn.prepareStatement(query_remove_qualification);
+        stmQual.setInt(1, this.id);
+        stmQual.executeUpdate();
     }
 
     /**
