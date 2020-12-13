@@ -2399,12 +2399,63 @@ public class AdminGUI extends javax.swing.JFrame {
             }
         }
     }
+    
     ///////////////////// UPDATE TYPE /////////////////////
     
     private void updateTypeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateTypeJButtonActionPerformed
-        // TODO add your handling code here:
+        typesJList.setEnabled(false);
+        removeTypeJButton.setEnabled(false);
+        updateTypeJButton.setEnabled(false);
+        typeNameJTextField.setEnabled(false);
+        
+        String name = this.typeNameJTextField.getText();
+        
+        if (name.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Name");
+            typesJList.setEnabled(true);
+            removeTypeJButton.setEnabled(true);
+            updateTypeJButton.setEnabled(true);
+            typeNameJTextField.setEnabled(true);
+        } else {
+            newTypeData = new Typology(name);
+            new UpdateTypeWorker().execute();
+        }
     }//GEN-LAST:event_updateTypeJButtonActionPerformed
 
+    class UpdateTypeWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Typology.updateTypology(connection, newTypeData, typesJList.getSelectedValue());
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Type Updated!");
+                    refreshTypesList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    typesJList.setEnabled(true);
+                    removeTypeJButton.setEnabled(true);
+                    updateTypeJButton.setEnabled(true);
+                    typeNameJTextField.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     ///////////////////// TABLES ACTION /////////////////////
     
@@ -2600,6 +2651,7 @@ public class AdminGUI extends javax.swing.JFrame {
         
         if (this.typesJList.getSelectedValue() == null){
             this.removeTypeJButton.setEnabled(false);
+            this.updateTypeJButton.setEnabled(false);
             return;
         }
         
@@ -2611,6 +2663,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.typeNameJTextField.setEnabled(true);
         }
         this.removeTypeJButton.setEnabled(true);
+        this.updateTypeJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.typeNameJTextField.setText(this.typesJList.getSelectedValue());
