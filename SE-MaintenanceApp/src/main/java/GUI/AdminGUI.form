@@ -4,6 +4,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Admin"/>
+    <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[806, 589]"/>
     </Property>
@@ -305,6 +306,9 @@
                         <Property name="text" type="java.lang.String" value="Update User"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateUserJButtonActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="GUI.CompetencePanel" name="userCompetencePanel">
                       <Properties>
@@ -566,6 +570,9 @@
                         <Property name="text" type="java.lang.String" value="Update Procedure"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateProcedureJButtonActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="GUI.CompetencePanel" name="procedureCompetencePanel">
                       <Properties>
@@ -812,6 +819,9 @@
                         <Property name="text" type="java.lang.String" value="Update Competence"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateCompetenceJButtonActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1030,6 +1040,9 @@
                         <Property name="text" type="java.lang.String" value="Update Site"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateSiteJButtonActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1234,6 +1247,9 @@
                         <Property name="text" type="java.lang.String" value="Update Material"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateMaterialJButtonActionPerformed"/>
+                      </Events>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="materialDescriptionJScrollPane">
                       <Properties>
@@ -1473,6 +1489,9 @@
                         <Property name="text" type="java.lang.String" value="Update Type"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateTypeJButtonActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

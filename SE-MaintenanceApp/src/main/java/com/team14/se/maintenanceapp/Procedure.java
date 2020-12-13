@@ -66,7 +66,7 @@ public class Procedure {
      * 
      * @return list of competences of the procedure
      */
-    public LinkedList<Competence> getProcedureCompetences(){
+    public LinkedList<Competence> getCompetences(){
         return competences;
     }
     /**
@@ -96,6 +96,21 @@ public class Procedure {
      */
     public void setProcedureCompetences(LinkedList<Competence> competences){
         this.competences = competences;
+    }
+    
+    /**
+     * Remove all competences assigned to the procedure
+     * 
+     * @param conn connection with the database opened
+     * @throws SQLException 
+     */
+    public void clearCompetence(Connection conn) throws SQLException{
+        PreparedStatement stmQual;
+        String query_remove_qualification = "DELETE FROM assegnazione WHERE (id_procedura) = (?)";
+        
+        stmQual = conn.prepareStatement(query_remove_qualification);
+        stmQual.setInt(1, this.id);
+        stmQual.executeUpdate();
     }
 
     /**
@@ -131,6 +146,7 @@ public class Procedure {
                     }
                 }
                 procedures.add(new Procedure(rst.getInt("id"),rst.getString("nome"), rst.getString("smp"), competences));
+                competences = new LinkedList<>();
             }
         }
         return procedures;
@@ -190,6 +206,15 @@ public class Procedure {
         stmtProcedure.setString(1, procedure.getName());
         stmtProcedure.setString(2, procedure.getSmpName());
         stmtProcedure.executeUpdate();
+        
+        // get the new id
+        PreparedStatement stmtId;
+        String query_get_procedure_id = "SELECT id FROM procedura WHERE nome = ?";
+        stmtId = conn.prepareStatement(query_get_procedure_id);
+        stmtId.setString(1, procedure.getName());
+        ResultSet rst = stmtId.executeQuery();
+        rst.next();
+        procedure.setId(rst.getInt("id"));
     }
     
     /**

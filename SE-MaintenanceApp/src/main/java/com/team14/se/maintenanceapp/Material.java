@@ -81,7 +81,7 @@ public class Material {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            if ((!rst.getString("nome").equals("")) & (!rst.getString("descrizione").equals(""))){ //aavoid to return null row
+            if ((!rst.getString("nome").equals(""))){ //aavoid to return null row
                 materials.add(new Material(rst.getString("nome"), rst.getString("descrizione")));
             }
         }

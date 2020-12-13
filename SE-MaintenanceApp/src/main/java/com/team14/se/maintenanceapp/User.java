@@ -157,6 +157,21 @@ public class User {
     }
     
     /**
+     * Remove all competences assigned to the user
+     * 
+     * @param conn connection with the database opened
+     * @throws SQLException 
+     */
+    public void clearCompetence(Connection conn) throws SQLException{
+        PreparedStatement stmQual;
+        String query_remove_qualification = "DELETE From qualificazione WHERE (maintainer) = (?)";
+        
+        stmQual = conn.prepareStatement(query_remove_qualification);
+        stmQual.setString(1, this.username);
+        stmQual.executeUpdate();
+    }
+    
+    /**
      * Print user
      * @return string containing data for a single user
      */
@@ -177,9 +192,26 @@ public class User {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            users.add(new User(rst.getString("nome"), rst.getString("cognome"),
-                        rst.getString("username"), rst.getString("pass"),
-                        rst.getBoolean("attivo"), rst.getString("ruolo")));
+            if (rst.getString("ruolo").equals("Maintainer")){
+                LinkedList<Competence> competences = new LinkedList<>();
+                String query2 = "SELECT competenza FROM qualificazione WHERE maintainer = ?";
+                PreparedStatement stm2 = conn.prepareStatement(query2);
+                stm2.setString(1, rst.getString("username"));
+                ResultSet rst2 = stm2.executeQuery();
+                while (rst2.next()) {
+                    if(!rst2.getString("competenza").equals("")){
+                        competences.add(new Competence(rst2.getString("competenza")));
+                    }
+                }
+                users.add(new User(rst.getString("nome"), rst.getString("cognome"),
+                            rst.getString("username"), rst.getString("pass"),
+                            rst.getBoolean("attivo"), rst.getString("ruolo"), 
+                            competences));
+            } else {
+                users.add(new User(rst.getString("nome"), rst.getString("cognome"),
+                            rst.getString("username"), rst.getString("pass"),
+                            rst.getBoolean("attivo"), rst.getString("ruolo")));
+            }
         }
         return users;    
     }
@@ -220,6 +252,22 @@ public class User {
             stmQual.setString(2, competences.get(i).getName());
             stmQual.executeUpdate();
         }
+    }
+    
+    /**
+     * Remove all competences assigned to some user
+     * 
+     * @param conn connection with the database opened
+     * @param user user whose skills you want to remove
+     * @throws SQLException 
+     */
+    public static void clearUserCompetence(Connection conn, User user) throws SQLException{
+        PreparedStatement stmQual;
+        String query_remove_qualification = "DELETE From qualificazione WHERE (maintainer) = (?)";
+        
+        stmQual = conn.prepareStatement(query_remove_qualification);
+        stmQual.setString(1, user.getUsername());
+        stmQual.executeUpdate();
     }
     
     /**
