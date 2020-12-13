@@ -47,6 +47,8 @@ public class AdminGUI extends javax.swing.JFrame {
     
     private User newUserData;
     private Procedure newProcedureData;
+    private Competence newCompetenceData;
+    
     /**
      * Creates new form AdminGUI
      */
@@ -1087,6 +1089,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         updateCompetenceJButton.setText("Update Competence");
         updateCompetenceJButton.setEnabled(false);
+        updateCompetenceJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateCompetenceJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout editCompetencesJPanelLayout = new javax.swing.GroupLayout(editCompetencesJPanel);
         editCompetencesJPanel.setLayout(editCompetencesJPanelLayout);
@@ -1239,6 +1246,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         updateSiteJButton.setText("Update Site");
         updateSiteJButton.setEnabled(false);
+        updateSiteJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateSiteJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout editSitesJPanelLayout = new javax.swing.GroupLayout(editSitesJPanel);
         editSitesJPanel.setLayout(editSitesJPanelLayout);
@@ -1359,6 +1371,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         updateMaterialJButton.setText("Update Material");
         updateMaterialJButton.setEnabled(false);
+        updateMaterialJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateMaterialJButtonActionPerformed(evt);
+            }
+        });
 
         materialDescriptionJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Desription"));
         materialDescriptionJScrollPane.setEnabled(false);
@@ -1514,6 +1531,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         updateTypeJButton.setText("Update Type");
         updateTypeJButton.setEnabled(false);
+        updateTypeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateTypeJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout editTypeJPanelLayout = new javax.swing.GroupLayout(editTypeJPanel);
         editTypeJPanel.setLayout(editTypeJPanelLayout);
@@ -2142,7 +2164,7 @@ public class AdminGUI extends javax.swing.JFrame {
         removeProcedureJButton.setEnabled(true);
         updateProcedureJButton.setEnabled(true);
     }//GEN-LAST:event_updateProcedureJButtonActionPerformed
-    
+
     class UpdateProcedureWorker extends SwingWorker<Boolean , Void> {
         @Override
         protected Boolean doInBackground() throws Exception {
@@ -2192,7 +2214,75 @@ public class AdminGUI extends javax.swing.JFrame {
         }
     }
     
-     
+    private void updateCompetenceJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCompetenceJButtonActionPerformed
+        competencesTableJTable.setEnabled(false);
+        removeCompetenceJButton.setEnabled(false);
+        updateCompetenceJButton.setEnabled(false);
+        
+        String name = this.competenceNameJTextField.getText();
+        
+        if (name.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Name");
+            competencesTableJTable.setEnabled(true);
+            removeCompetenceJButton.setEnabled(true);
+            updateCompetenceJButton.setEnabled(true);
+        } else {
+            newCompetenceData = new Competence(name);
+            new UpdateCompetenceWorker().execute();
+            return;
+        }
+    }//GEN-LAST:event_updateCompetenceJButtonActionPerformed
+
+    class UpdateCompetenceWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                Competence.updateCompetence(connection, 
+                        newCompetenceData, 
+                        competencesList.get(competencesTableJTable.getSelectedRow()).getId()
+                );
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "Competence Updated!");
+                    refreshCompetencesList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    competencesTableJTable.setEnabled(true);
+                    removeCompetenceJButton.setEnabled(true);
+                    updateCompetenceJButton.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+        
+    private void updateMaterialJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMaterialJButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateMaterialJButtonActionPerformed
+
+    private void updateSiteJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSiteJButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateSiteJButtonActionPerformed
+
+    private void updateTypeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateTypeJButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateTypeJButtonActionPerformed
+
     ///////////////////// TABLES ACTION /////////////////////
     
     /**
@@ -2298,6 +2388,7 @@ public class AdminGUI extends javax.swing.JFrame {
         // return if no row selected
         if (selectedCompetenceIndex == -1) {
             this.removeCompetenceJButton.setEnabled(false);
+            this.updateCompetenceJButton.setEnabled(false);
             return;
         }
         
@@ -2311,6 +2402,7 @@ public class AdminGUI extends javax.swing.JFrame {
             this.competenceNameJTextField.setEnabled(true);
         }
         this.removeCompetenceJButton.setEnabled(true);
+        this.updateCompetenceJButton.setEnabled(true);
 
         // fill form whit the data of the selected competence
         this.competenceNameJTextField.setText(competencesList.get(selectedCompetenceIndex).getName());

@@ -52,6 +52,7 @@ public class AddCompetenceJDialog extends javax.swing.JDialog {
         this.newCompetence = null;
         this.connection = connection;
         initComponents();
+        this.setLocationRelativeTo(parent);
     }
 
     /** This method is called from within the constructor to
@@ -75,6 +76,12 @@ public class AddCompetenceJDialog extends javax.swing.JDialog {
         setResizable(false);
 
         nameJLabel.setText("Name");
+
+        nameJTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameJTextFieldActionPerformed(evt);
+            }
+        });
 
         addJButton.setText("Add Competence");
         addJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -115,11 +122,11 @@ public class AddCompetenceJDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameJLabel)
                     .addComponent(nameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addJButton)
-                    .addComponent(cancelJButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cancelJButton)
+                    .addComponent(addJButton))
+                .addContainerGap())
         );
 
         pack();
@@ -148,6 +155,10 @@ public class AddCompetenceJDialog extends javax.swing.JDialog {
             component.setEnabled(true);
         }
     }//GEN-LAST:event_addJButtonActionPerformed
+
+    private void nameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameJTextFieldActionPerformed
+        this.addJButtonActionPerformed(evt);
+    }//GEN-LAST:event_nameJTextFieldActionPerformed
 
     private class AddCompetenceWorker extends SwingWorker<Boolean , Void> {
         @Override
