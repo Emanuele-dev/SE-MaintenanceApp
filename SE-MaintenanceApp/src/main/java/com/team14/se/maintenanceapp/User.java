@@ -157,6 +157,21 @@ public class User {
     }
     
     /**
+     * Remove all competences assigned to the user
+     * 
+     * @param conn connection with the database opened
+     * @throws SQLException 
+     */
+    public void clearrCompetence(Connection conn) throws SQLException{
+        PreparedStatement stmQual;
+        String query_remove_qualification = "DELETE From qualificazione WHERE (maintainer) = (?)";
+        
+        stmQual = conn.prepareStatement(query_remove_qualification);
+        stmQual.setString(1, this.username);
+        stmQual.executeUpdate();
+    }
+    
+    /**
      * Print user
      * @return string containing data for a single user
      */
@@ -237,6 +252,22 @@ public class User {
             stmQual.setString(2, competences.get(i).getName());
             stmQual.executeUpdate();
         }
+    }
+    
+    /**
+     * Remove all competences assigned to some user
+     * 
+     * @param conn connection with the database opened
+     * @param user user whose skills you want to remove
+     * @throws SQLException 
+     */
+    public static void clearUserCompetence(Connection conn, User user) throws SQLException{
+        PreparedStatement stmQual;
+        String query_remove_qualification = "DELETE From qualificazione WHERE (maintainer) = (?)";
+        
+        stmQual = conn.prepareStatement(query_remove_qualification);
+        stmQual.setString(1, user.getUsername());
+        stmQual.executeUpdate();
     }
     
     /**

@@ -305,6 +305,9 @@
                         <Property name="text" type="java.lang.String" value="Update User"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateUserJButtonActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="GUI.CompetencePanel" name="userCompetencePanel">
                       <Properties>

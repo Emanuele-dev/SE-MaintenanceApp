@@ -226,9 +226,11 @@ public class AddUserJDialog extends javax.swing.JDialog {
             "Error",
             JOptionPane.ERROR_MESSAGE);
         } else {
-            this.competencePanel.getSelectedCompetences().forEach(competenceName -> {
-                competences.add(new Competence(competenceName));
-            });
+            if (role.equals("Maintainer")){
+                this.competencePanel.getSelectedCompetences().forEach(competenceName -> {
+                    competences.add(new Competence(competenceName));
+                });
+            }
             newUser = new User(name, surname, username, password1, true, role, competences);
             new AddUserWorker().execute();
             return;

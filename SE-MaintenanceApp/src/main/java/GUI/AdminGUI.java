@@ -12,6 +12,7 @@ import GUI.dialogs.AddSiteJDialog;
 import GUI.dialogs.AddTypeJDialog;
 import GUI.dialogs.AddUserJDialog;
 import com.team14.se.maintenanceapp.*;
+import java.awt.Component;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -43,6 +44,8 @@ public class AdminGUI extends javax.swing.JFrame {
     private LinkedList<Site> sitesList;
     private LinkedList<Material> materialsList;
     private LinkedList<Typology> typesList;
+    
+    private User newUserData;
     
     /**
      * Creates new form AdminGUI
@@ -719,6 +722,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         updateUserJButton.setText("Update User");
         updateUserJButton.setEnabled(false);
+        updateUserJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateUserJButtonActionPerformed(evt);
+            }
+        });
 
         userCompetencePanel.setEnabled(false);
 
@@ -1946,7 +1954,7 @@ public class AdminGUI extends javax.swing.JFrame {
         }
     }
     
-    ///////////////////// DELETE SITE /////////////////////
+    ///////////////////// DELETE TYPE /////////////////////
     
     private void removeTypeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeTypeJButtonActionPerformed
         this.removeTypeJButton.setEnabled(false);
@@ -1964,7 +1972,7 @@ public class AdminGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeTypeJButtonActionPerformed
 
-    private class DeleteTypeWorker extends SwingWorker<Boolean , Void> {
+        private class DeleteTypeWorker extends SwingWorker<Boolean , Void> {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
@@ -1996,7 +2004,96 @@ public class AdminGUI extends javax.swing.JFrame {
             }
         }
     }
+        
+    private void updateUserJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUserJButtonActionPerformed
+        for(Component component:editUsersJPanel.getComponents()){
+            component.setEnabled(false);
+        }
+        this.usersTableJTable.setEnabled(false);
+        this.removeUserJButton.setEnabled(false);
+        
+        String name = this.userNameJTextField.getText();
+        String surname = this.userSurnameJTextField.getText();
+        String username = this.usernameJTextField.getText();
+        String role = (String)userRoleJComboBox.getSelectedItem();
+        LinkedList<Competence> competences = new LinkedList<>();
+        
+        if (name.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Name");
+        } else if (surname.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Surname");
+        } else if (username.isBlank()) {
+            Messages.showErrorEmptyfield(this, "Username");
+        } else {
+            if (role.equals("Maintainer")){
+                this.userCompetencePanel.getSelectedCompetences().forEach(competenceName -> {
+                    competences.add(new Competence(competenceName));
+                });
+            }
+            newUserData = new User(
+                    name, 
+                    surname, 
+                    username, 
+                    usersList.get(usersTableJTable.getSelectedRow()).getPassword(), 
+                    true, 
+                    role, 
+                    competences
+            );
+            new UpdateUserWorker().execute();
+            return;
+        }
+        
+        for(Component component:editUsersJPanel.getComponents()){
+            component.setEnabled(true);
+        }
+        this.usersTableJTable.setEnabled(true);
+        this.removeUserJButton.setEnabled(true);
+    }//GEN-LAST:event_updateUserJButtonActionPerformed
     
+     class UpdateUserWorker extends SwingWorker<Boolean , Void> {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            try {
+                User.updateUser(connection, 
+                        newUserData, 
+                        usersList.get(usersTableJTable.getSelectedRow()).getUsername()
+                );
+                usersList.get(usersTableJTable.getSelectedRow()).clearrCompetence(connection);
+                if (newUserData.getRole().equals("Maintainer")){
+                    User.assignCompetencesToUser(connection, newUserData, newUserData.getCompetences());
+                }
+                return true;
+            } catch(SQLException ex){
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean result = get();
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "User Updated!");
+                    refreshUsersList();
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                        "An error has occurred",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    for(Component component:editUsersJPanel.getComponents()){
+                        component.setEnabled(true);
+                    }
+                    usersTableJTable.setEnabled(true);
+                    removeUserJButton.setEnabled(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+     
     ///////////////////// TABLES ACTION /////////////////////
     
     /**
@@ -2031,8 +2128,10 @@ public class AdminGUI extends javax.swing.JFrame {
         
         if (usersList.get(selectedUserIndex).getUsername().equals(loggedUser.getUsername())){
             this.removeUserJButton.setEnabled(false);
+            this.updateUserJButton.setEnabled(false);
         } else {
             this.removeUserJButton.setEnabled(true);
+            this.updateUserJButton.setEnabled(true);
         }
         
         // fill form whit the data of the selected user
