@@ -2047,7 +2047,7 @@ public class AdminGUI extends javax.swing.JFrame {
         // if the user is a maintainer enable the enable the competences panel
         if (usersList.get(selectedUserIndex).getRole().equals("Maintainer")){
             //TODO: pass user's competences list instead of null
-            userCompetencePanel.activate(new LinkedList<>(), competencesList);
+            userCompetencePanel.activate(usersList.get(selectedUserIndex).getCompetences(), competencesList);
         } else {
             userCompetencePanel.setEnabled(false);
         }

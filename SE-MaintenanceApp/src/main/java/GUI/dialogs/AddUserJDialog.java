@@ -208,6 +208,7 @@ public class AddUserJDialog extends javax.swing.JDialog {
         String password1 = new String(this.jPasswordField1.getPassword());
         String password2 = new String(this.jPasswordField2.getPassword());
         String role = (String)roleJComboBox.getSelectedItem();
+        LinkedList<Competence> competences = new LinkedList<>();
         
         if (name.isBlank()) {
             Messages.showErrorEmptyfield(this, "Name");
@@ -225,7 +226,10 @@ public class AddUserJDialog extends javax.swing.JDialog {
             "Error",
             JOptionPane.ERROR_MESSAGE);
         } else {
-            newUser = new User(name, surname, username, password1, true, role);
+            this.competencePanel.getSelectedCompetences().forEach(competenceName -> {
+                competences.add(new Competence(competenceName));
+            });
+            newUser = new User(name, surname, username, password1, true, role, competences);
             new AddUserWorker().execute();
             return;
         }
@@ -240,6 +244,9 @@ public class AddUserJDialog extends javax.swing.JDialog {
         protected Boolean doInBackground() throws Exception {
             try {
                 User.addUser(connection, newUser);
+                if (newUser.getRole().equals("Maintainer")){
+                    User.assignCompetencesToUser(connection, newUser, newUser.getCompetences());
+                }
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
@@ -253,9 +260,6 @@ public class AddUserJDialog extends javax.swing.JDialog {
                 boolean result = get();
                 if (result) {
                     JOptionPane.showMessageDialog(frame, "User Created!");
-                    if (newUser.getRole().equals("Maintainer")){
-                        JOptionPane.showMessageDialog(frame, "Competences managment not implementad yet");
-                    }
                     frame.dispose();
                 } else {
                     JOptionPane.showMessageDialog(frame,
