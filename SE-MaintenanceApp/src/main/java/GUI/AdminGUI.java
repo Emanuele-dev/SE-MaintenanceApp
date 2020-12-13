@@ -1713,7 +1713,7 @@ public class AdminGUI extends javax.swing.JFrame {
         @Override
         protected Boolean doInBackground() throws Exception {
             try {
-                User.removeUser(connection, usersList.get(usersTableJTable.getSelectedRow()));
+                User.deactivateUser(connection, usersList.get(usersTableJTable.getSelectedRow()));
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AdminGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -2084,12 +2084,7 @@ public class AdminGUI extends javax.swing.JFrame {
         this.procedureNameJTextField.setText(proceduresList.get(selectedProcedureIndex).getName());
 
         this.SMPJTextField.setText(proceduresList.get(selectedProcedureIndex).getSmpName());
-        
-        //LinkedList<Competence> procedureCompetences = Competence.getCompetences(connection);
-        //procedureCompetences.remove(proceduresList.get(selectedUserIndex).getCompetence());
-        LinkedList<Competence> procedureCompetences = new LinkedList<>();
-        procedureCompetences.add(proceduresList.get(selectedProcedureIndex).getCompetence());
-        procedureCompetencePanel.activate(procedureCompetences, competencesList);
+        procedureCompetencePanel.activate(proceduresList.get(selectedProcedureIndex).getProcedureCompetences(), competencesList);
     }
     
     /**

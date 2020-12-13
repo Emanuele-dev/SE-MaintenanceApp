@@ -190,6 +190,15 @@ public class Procedure {
         stmtProcedure.setString(1, procedure.getName());
         stmtProcedure.setString(2, procedure.getSmpName());
         stmtProcedure.executeUpdate();
+        
+        // get the new id
+        PreparedStatement stmtId;
+        String query_get_procedure_id = "SELECT id FROM procedura WHERE nome = ?";
+        stmtId = conn.prepareStatement(query_get_procedure_id);
+        stmtId.setString(1, procedure.getName());
+        ResultSet rst = stmtId.executeQuery();
+        rst.next();
+        procedure.setId(rst.getInt("id"));
     }
     
     /**

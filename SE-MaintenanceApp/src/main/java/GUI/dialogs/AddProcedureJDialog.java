@@ -163,21 +163,21 @@ public class AddProcedureJDialog extends javax.swing.JDialog {
         
         String name = this.nameJTextField.getText();
         String smp = this.smpJTextField.getText();
-        String competence;
+        LinkedList<Competence> competences = new LinkedList<>();
         
-        try {
-            competence = competencePanel.getSelectedCompetences().getFirst();
-        } catch(NoSuchElementException ex){
-            competence =null;
-        }
+
+        competencePanel.getSelectedCompetences().forEach(competenceName -> {
+            competences.add(new Competence(competenceName));
+        });
+
         if (name.isBlank()) {
             Messages.showErrorEmptyfield(this, "Name");
         } else if (smp.isBlank()) {
             Messages.showErrorEmptyfield(this, "SMP");
-        } else if (competence == null) {
+        } else if (competences.isEmpty()) {
             Messages.showErrorEmptyfield(this, "competence");
         } else {
-            newProcedure = new Procedure(name, smp, new Competence(competence));
+            newProcedure = new Procedure(name, smp, competences);
             new AddProcedureWorker().execute();
             return;
         }
@@ -192,6 +192,7 @@ public class AddProcedureJDialog extends javax.swing.JDialog {
         protected Boolean doInBackground() throws Exception {
             try {
                 Procedure.addProcedure(connection, newProcedure);
+                Procedure.assignCompetencesToProcedure(connection, newProcedure, newProcedure.getProcedureCompetences());
                 return true;
             } catch(SQLException ex){
                 Logger.getLogger(AddUserJDialog.class.getName()).log(Level.SEVERE, null, ex);
