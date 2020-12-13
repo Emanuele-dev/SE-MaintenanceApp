@@ -66,7 +66,7 @@ public class Procedure {
      * 
      * @return list of competences of the procedure
      */
-    public LinkedList<Competence> getCompetences(){
+    public LinkedList<Competence> getProcedureCompetences(){
         return competences;
     }
     /**
@@ -94,7 +94,7 @@ public class Procedure {
      * 
      * @param competences new list of competences to assign to this procedure
      */
-    public void setCompetences(LinkedList<Competence> competences){
+    public void setProcedureCompetences(LinkedList<Competence> competences){
         this.competences = competences;
     }
 
@@ -220,7 +220,7 @@ public class Procedure {
         stmtProcedure = conn.prepareStatement(query_insert_procedure);
         stmtProcedure.setString(1, procedure.getName());
         stmtProcedure.setString(2, procedure.getSmpName());
-        stmtProcedure.setInt(4, oldId);
+        stmtProcedure.setInt(3, oldId);
         stmtProcedure.executeUpdate();
     }
     

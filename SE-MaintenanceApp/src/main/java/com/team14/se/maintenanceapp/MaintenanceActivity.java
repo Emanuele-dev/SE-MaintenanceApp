@@ -349,23 +349,27 @@ public class MaintenanceActivity {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            String procedureName = rst.getString("procedura");            
-            String query2 = "SELECT * FROM procedura WHERE nome = '" + procedureName + "'";
-            PreparedStatement stm2 = conn.prepareStatement(query2);
-            ResultSet rst2 = stm2.executeQuery();
-            while (rst2.next()) {
-                procedureId = rst2.getInt("id");
-                procedureSmp = rst2.getString("smp"); 
-                String query3 = "SELECT competenza FROM assegnazione WHERE id_procedura = '" + procedureId + "'";
-                PreparedStatement stm3 = conn.prepareStatement(query3);
-                ResultSet rst3 = stm3.executeQuery();
-                while (rst3.next()) {
-                    if(!rst3.getString("competenza").equals("")){
-                        competences.add(new Competence(rst3.getString("competenza")));
+            
+            String procedureName = rst.getString("procedura");
+            if(!procedureName.equals("")){
+                String query2 = "SELECT * FROM procedura WHERE nome = '" + procedureName + "'";
+                PreparedStatement stm2 = conn.prepareStatement(query2);
+                ResultSet rst2 = stm2.executeQuery();
+                while (rst2.next()) {
+                    if(rst2.getInt("id") != 0){
+                        procedureId = rst2.getInt("id");
+                        procedureSmp = rst2.getString("smp"); 
+                        String query3 = "SELECT competenza FROM assegnazione WHERE id_procedura = '" + procedureId + "'";
+                        PreparedStatement stm3 = conn.prepareStatement(query3);
+                        ResultSet rst3 = stm3.executeQuery();
+                        while (rst3.next()) {
+                            if(!rst3.getString("competenza").equals("")){
+                                competences.add(new Competence(rst3.getString("competenza")));
+                            }
+                        }
                     }
                 }
             }
-            
             maintenaceActivities.add(
                     new MaintenanceActivity(rst.getInt("activity_id"),
                     rst.getString("nome"), 
@@ -415,7 +419,7 @@ public class MaintenanceActivity {
      */
     public static LinkedList<Material> getMaterialsForActivity(Connection conn, int activityId)throws SQLException{
         LinkedList<Material> materials = new LinkedList<>();
-        String query = "SELECT materiale FROM utilizzo WHERE activity_id = " + activityId + "'";
+        String query = "SELECT materiale FROM utilizzo WHERE activity_id = " + activityId;
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
@@ -482,7 +486,8 @@ public class MaintenanceActivity {
                 + "intervento_stimato = (?), ewo = (?),"
                 + "settimana = (?), procedura = (?), "
                 + "sito = (?), tipologia = (?),"
-                + "completa = (?) WHERE id = (?)";
+                + "completa = (?), "
+                + "nota = (?) WHERE id = (?)";
         
         stmtMainActivity = conn.prepareStatement(query_insert_maintActivity);
         stmtMainActivity.setString(1, maintActivity.getName());
@@ -495,7 +500,8 @@ public class MaintenanceActivity {
         stmtMainActivity.setString(8, maintActivity.getSite().getName());
         stmtMainActivity.setString(9, maintActivity.getTypology().getName());
         stmtMainActivity.setBoolean(10, maintActivity.getState());
-        stmtMainActivity.setInt(11, oldActivityId);
+        stmtMainActivity.setString(11, maintActivity.getNote());
+        stmtMainActivity.setInt(12, oldActivityId);
         stmtMainActivity.executeUpdate();
         
     }

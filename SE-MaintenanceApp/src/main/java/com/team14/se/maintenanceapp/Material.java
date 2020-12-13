@@ -81,7 +81,7 @@ public class Material {
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while(rst.next()){
-            if ((rst.getString("nome") != null) & (rst.getString("descrizione") != null)){ //aavoid to return null row
+            if ((!rst.getString("nome").equals("")) & (!rst.getString("descrizione").equals(""))){ //aavoid to return null row
                 materials.add(new Material(rst.getString("nome"), rst.getString("descrizione")));
             }
         }
@@ -126,13 +126,13 @@ public class Material {
      * @param oldName old material to update 
      * @throws SQLException 
      */
-    public static void updateMaterial(Connection conn, Material material, int oldName) throws SQLException{
+    public static void updateMaterial(Connection conn, Material material, String oldName) throws SQLException{
         PreparedStatement stmtMaterial;
         String query_insert_material = "UPDATE materiale SET nome = (?), descrizione = (?) WHERE nome = (?)";
         stmtMaterial= conn.prepareStatement(query_insert_material);
         stmtMaterial.setString(1, material.getName());
         stmtMaterial.setString(2, material.getDescription());
-        stmtMaterial.setInt(3, oldName);
+        stmtMaterial.setString(3, oldName);
         stmtMaterial.executeUpdate();
         
     }

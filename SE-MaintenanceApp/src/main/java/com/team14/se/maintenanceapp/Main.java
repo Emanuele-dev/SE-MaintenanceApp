@@ -64,7 +64,7 @@ public class Main { //behave as home: connection created only here
             LinkedList<Log> logs = Log.getLogs(conn);   
             System.out.println("\nLogs:");
             for(Log l : logs){
-                System.out.println(l.getUsername() + " " + l.getTimestamp());
+                System.out.println(l.getUsername() + " " + l.getDateTime());
             }
             
             // try to show maintenance activities in database 

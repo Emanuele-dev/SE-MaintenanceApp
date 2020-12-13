@@ -209,8 +209,8 @@ public class UserJUnit4Test {
     @Test
     public void testToString() {
         System.out.println("toString");
-        User instance = new User("", "", "", "", false, "");
-        String expResult = "User{" + "name=" + instance.getName() + ", surname=" + instance.getSurname() + ", username=" + instance.getUsername() + ", password=" + instance.getPassword() + ", role=" + instance.getRole() + '}';
+        User instance = new User("", "", "", "", false, "", null);
+        String expResult = "User{" + "name=" + instance.getName() + ", surname=" + instance.getSurname() + ", username=" + instance.getUsername() + ", password=" + instance.getPassword() + ", state=" + instance.getState() + ", role=" + instance.getRole() + ", competences=" + instance.getCompetences() + "}";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
@@ -275,7 +275,7 @@ public class UserJUnit4Test {
     public void testDeactivateUser() throws Exception {
         System.out.println("removeUser");   
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        User user = null;
+        User user = new User("", "", "", "", false, "SystemAdministrator");
         User.deactivateUser(conn, user);
     }
 
@@ -286,12 +286,10 @@ public class UserJUnit4Test {
     @Test
     public void testUpdateUser() throws Exception {
         System.out.println("updateUser");
-        Connection conn = null;
-        User user = null;
+       Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        User user = new User("", "", "", "", false, "SystemAdministrator");;
         String oldUsername = "";
         User.updateUser(conn, user, oldUsername);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }
