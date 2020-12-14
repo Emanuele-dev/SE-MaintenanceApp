@@ -7,6 +7,7 @@ package GUI;
 
 import com.team14.se.maintenanceapp.Competence;
 import com.team14.se.maintenanceapp.MaintenanceActivity;
+import com.team14.se.maintenanceapp.Procedure;
 import com.team14.se.maintenanceapp.User;
 import java.awt.Color;
 import java.sql.Connection;
@@ -313,26 +314,30 @@ public class MaintainerGUI extends javax.swing.JFrame {
         String id = source.getModel().getValueAt(row, 0) + "";
         activityList.forEach((MaintenanceActivity activity) -> {
             if (activity.getActivityId() == Integer.parseInt(id)) {
-                targetActivity = activity;
-                detailsActivityJTextField.setText(activity.getName());
-                detailsWeekJTextField.setText(String.valueOf(activity.getWeek()));
-                detailsSMPJTextField.setText(activity.getProcedure().getSmpName());
-                detailsDescriptionJTextArea.setText(activity.getDescription());
-                detailsNotesJTextArea.setText(activity.getNote());
-                listModel = new DefaultListModel();
-                LinkedList<Competence> competenceList = activity.getProcedure().getProcedureCompetences();
-                competenceList.forEach(competence -> {
-                    listModel.addElement(competence.getName());
-                });
-                detailsSkillsJList.setModel(listModel);
-                detailsNotesJTextArea.setEnabled(true);
-                detailsStatusJTextField.setEnabled(true);
-                if (!activity.getState()) {
-                    detailsStatusJTextField.setText("Not Complete");
-                    detailsStatusJTextField.setBackground(Color.red);
-                } else {
-                    detailsStatusJTextField.setText("Complete");
-                    detailsStatusJTextField.setBackground(Color.green);
+                try {
+                    targetActivity = activity;
+                    detailsActivityJTextField.setText(activity.getName());
+                    detailsWeekJTextField.setText(String.valueOf(activity.getWeek()));
+                    detailsSMPJTextField.setText(activity.getProcedure().getSmpName());
+                    detailsDescriptionJTextArea.setText(activity.getDescription());
+                    detailsNotesJTextArea.setText(activity.getNote());
+                    listModel = new DefaultListModel();
+                    LinkedList<Competence> competenceList = Procedure.getProcedureCompetences(connection, activity.getProcedure().getId());
+                    competenceList.forEach(competence -> {
+                        listModel.addElement(competence.getName());
+                    });
+                    detailsSkillsJList.setModel(listModel);
+                    detailsNotesJTextArea.setEnabled(true);
+                    detailsStatusJTextField.setEnabled(true);
+                    if (!activity.getState()) {
+                        detailsStatusJTextField.setText("Not Complete");
+                        detailsStatusJTextField.setBackground(Color.red);
+                    } else {
+                        detailsStatusJTextField.setText("Complete");
+                        detailsStatusJTextField.setBackground(Color.green);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(MaintainerGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
