@@ -562,6 +562,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         adminMainJTabbedPane = new javax.swing.JTabbedPane();
+        usersJScrollPane = new javax.swing.JScrollPane();
         usersJPanel = new javax.swing.JPanel();
         usersTopJPanel = new javax.swing.JPanel();
         refreshUsersJButton = new javax.swing.JButton();
@@ -582,6 +583,7 @@ public class AdminGUI extends javax.swing.JFrame {
         removeUserJButton = new javax.swing.JButton();
         usersTableJScrollPane = new javax.swing.JScrollPane();
         usersTableJTable = new javax.swing.JTable();
+        procedureJScrollPane = new javax.swing.JScrollPane();
         proceduresJPanel = new javax.swing.JPanel();
         proceduresTopJPanel = new javax.swing.JPanel();
         refreshProceduresJButton = new javax.swing.JButton();
@@ -597,6 +599,7 @@ public class AdminGUI extends javax.swing.JFrame {
         removeProcedureJButton = new javax.swing.JButton();
         proceduresTableJScrollPane = new javax.swing.JScrollPane();
         proceduresTableJTable = new javax.swing.JTable();
+        competencesJScrollPane = new javax.swing.JScrollPane();
         competencesJPanel = new javax.swing.JPanel();
         competencesTopJPanel = new javax.swing.JPanel();
         refreshCompetencesJButton = new javax.swing.JButton();
@@ -611,6 +614,7 @@ public class AdminGUI extends javax.swing.JFrame {
         removeCompetenceJButton = new javax.swing.JButton();
         competencesTableJScrollPane = new javax.swing.JScrollPane();
         competencesTableJTable = new javax.swing.JTable();
+        sitesJScrollPane = new javax.swing.JScrollPane();
         sitesJPanel = new javax.swing.JPanel();
         sitesTopJPanel = new javax.swing.JPanel();
         refreshSitesJButton = new javax.swing.JButton();
@@ -623,7 +627,8 @@ public class AdminGUI extends javax.swing.JFrame {
         removeSiteJButton = new javax.swing.JButton();
         sitesListJScrollPane = new javax.swing.JScrollPane();
         sitesJList = new javax.swing.JList<>();
-        MaterialJPanel = new javax.swing.JPanel();
+        materialsJScrollPane = new javax.swing.JScrollPane();
+        materialJPanel = new javax.swing.JPanel();
         MaterialTopJPanel = new javax.swing.JPanel();
         refreshMaterialsJButton = new javax.swing.JButton();
         materialsDetailsJPanel = new javax.swing.JPanel();
@@ -637,6 +642,7 @@ public class AdminGUI extends javax.swing.JFrame {
         removeMaterialJButton = new javax.swing.JButton();
         materialsTableJScrollPane = new javax.swing.JScrollPane();
         materialsTableJTable = new javax.swing.JTable();
+        typesJScrollPane = new javax.swing.JScrollPane();
         TypeJPanel = new javax.swing.JPanel();
         typesTopJPanel = new javax.swing.JPanel();
         refreshTypesJButton = new javax.swing.JButton();
@@ -868,7 +874,9 @@ public class AdminGUI extends javax.swing.JFrame {
 
         usersJPanel.add(usersTableJScrollPane, java.awt.BorderLayout.CENTER);
 
-        adminMainJTabbedPane.addTab("Users", usersJPanel);
+        usersJScrollPane.setViewportView(usersJPanel);
+
+        adminMainJTabbedPane.addTab("Users", usersJScrollPane);
 
         proceduresJPanel.setLayout(new java.awt.BorderLayout());
 
@@ -1035,7 +1043,9 @@ public class AdminGUI extends javax.swing.JFrame {
 
         proceduresJPanel.add(proceduresTableJScrollPane, java.awt.BorderLayout.CENTER);
 
-        adminMainJTabbedPane.addTab("Procedures", proceduresJPanel);
+        procedureJScrollPane.setViewportView(proceduresJPanel);
+
+        adminMainJTabbedPane.addTab("Procedures", procedureJScrollPane);
 
         competencesJPanel.setLayout(new java.awt.BorderLayout());
 
@@ -1198,7 +1208,9 @@ public class AdminGUI extends javax.swing.JFrame {
 
         competencesJPanel.add(competencesTableJScrollPane, java.awt.BorderLayout.CENTER);
 
-        adminMainJTabbedPane.addTab("Competences", competencesJPanel);
+        competencesJScrollPane.setViewportView(competencesJPanel);
+
+        adminMainJTabbedPane.addTab("Competence", competencesJScrollPane);
 
         sitesJPanel.setLayout(new java.awt.BorderLayout());
 
@@ -1323,9 +1335,11 @@ public class AdminGUI extends javax.swing.JFrame {
 
         sitesJPanel.add(sitesListJScrollPane, java.awt.BorderLayout.CENTER);
 
-        adminMainJTabbedPane.addTab("Sites", sitesJPanel);
+        sitesJScrollPane.setViewportView(sitesJPanel);
 
-        MaterialJPanel.setLayout(new java.awt.BorderLayout());
+        adminMainJTabbedPane.addTab("Sites", sitesJScrollPane);
+
+        materialJPanel.setLayout(new java.awt.BorderLayout());
 
         refreshMaterialsJButton.setText("Refresh List");
         refreshMaterialsJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1350,7 +1364,7 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        MaterialJPanel.add(MaterialTopJPanel, java.awt.BorderLayout.PAGE_START);
+        materialJPanel.add(MaterialTopJPanel, java.awt.BorderLayout.PAGE_START);
 
         addMaterialJButton.setText("Add New Material");
         addMaterialJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1451,7 +1465,7 @@ public class AdminGUI extends javax.swing.JFrame {
                 .addContainerGap(292, Short.MAX_VALUE))
         );
 
-        MaterialJPanel.add(materialsDetailsJPanel, java.awt.BorderLayout.LINE_END);
+        materialJPanel.add(materialsDetailsJPanel, java.awt.BorderLayout.LINE_END);
 
         materialsTableJScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Materials"));
 
@@ -1481,9 +1495,11 @@ public class AdminGUI extends javax.swing.JFrame {
         materialsTableJTable.getTableHeader().setReorderingAllowed(false);
         materialsTableJScrollPane.setViewportView(materialsTableJTable);
 
-        MaterialJPanel.add(materialsTableJScrollPane, java.awt.BorderLayout.CENTER);
+        materialJPanel.add(materialsTableJScrollPane, java.awt.BorderLayout.CENTER);
 
-        adminMainJTabbedPane.addTab("Materials", MaterialJPanel);
+        materialsJScrollPane.setViewportView(materialJPanel);
+
+        adminMainJTabbedPane.addTab("Materials", materialsJScrollPane);
 
         TypeJPanel.setLayout(new java.awt.BorderLayout());
 
@@ -1608,7 +1624,9 @@ public class AdminGUI extends javax.swing.JFrame {
 
         TypeJPanel.add(typesListJScrollPane2, java.awt.BorderLayout.CENTER);
 
-        adminMainJTabbedPane.addTab("Maintenance Types", TypeJPanel);
+        typesJScrollPane.setViewportView(TypeJPanel);
+
+        adminMainJTabbedPane.addTab("Mainenance Types", typesJScrollPane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -2671,7 +2689,6 @@ public class AdminGUI extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel MaterialJPanel;
     private javax.swing.JPanel MaterialTopJPanel;
     private javax.swing.JLabel SMPJLabel;
     private javax.swing.JTextField SMPJTextField;
@@ -2690,6 +2707,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JTextField competenceNameJTextField;
     private javax.swing.JPanel competencesDetailsJPanel;
     private javax.swing.JPanel competencesJPanel;
+    private javax.swing.JScrollPane competencesJScrollPane;
     private javax.swing.JScrollPane competencesTableJScrollPane;
     private javax.swing.JTable competencesTableJTable;
     private javax.swing.JPanel competencesTopJPanel;
@@ -2701,12 +2719,15 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JPanel editUsersJPanel;
     private javax.swing.JScrollPane materialDescriptionJScrollPane;
     private javax.swing.JTextArea materialDescriptionJTextArea;
+    private javax.swing.JPanel materialJPanel;
     private javax.swing.JLabel materialNameJLabel;
     private javax.swing.JTextField materialNameJTextField;
     private javax.swing.JPanel materialsDetailsJPanel;
+    private javax.swing.JScrollPane materialsJScrollPane;
     private javax.swing.JScrollPane materialsTableJScrollPane;
     private javax.swing.JTable materialsTableJTable;
     private GUI.CompetencePanel procedureCompetencePanel;
+    private javax.swing.JScrollPane procedureJScrollPane;
     private javax.swing.JLabel procedureNameJLabel;
     private javax.swing.JTextField procedureNameJTextField;
     private javax.swing.JPanel proceduresDetailsJPanel;
@@ -2731,12 +2752,14 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JPanel sitesDetailsJPanel;
     private javax.swing.JList<String> sitesJList;
     private javax.swing.JPanel sitesJPanel;
+    private javax.swing.JScrollPane sitesJScrollPane;
     private javax.swing.JScrollPane sitesListJScrollPane;
     private javax.swing.JPanel sitesTopJPanel;
     private javax.swing.JLabel typeNameJLabel;
     private javax.swing.JTextField typeNameJTextField;
     private javax.swing.JPanel typesDetailsjPanel;
     private javax.swing.JList<String> typesJList;
+    private javax.swing.JScrollPane typesJScrollPane;
     private javax.swing.JScrollPane typesListJScrollPane2;
     private javax.swing.JPanel typesTopJPanel;
     private javax.swing.JButton updateCompetenceJButton;
@@ -2756,6 +2779,7 @@ public class AdminGUI extends javax.swing.JFrame {
     private javax.swing.JTextField usernameJTextField;
     private javax.swing.JPanel usersDetailsJPanel;
     private javax.swing.JPanel usersJPanel;
+    private javax.swing.JScrollPane usersJScrollPane;
     private javax.swing.JScrollPane usersTableJScrollPane;
     private javax.swing.JTable usersTableJTable;
     private javax.swing.JPanel usersTopJPanel;
