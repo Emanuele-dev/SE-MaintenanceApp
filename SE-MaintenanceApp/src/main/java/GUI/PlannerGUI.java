@@ -609,17 +609,13 @@ public class PlannerGUI extends javax.swing.JFrame {
                 if (assignJComboBox.getSelectedItem() != null) {
                     checkCommonCompetences();
                 } else {
-                    try {
-                        listModel.removeAllElements();
-                        listModel = new DefaultListModel();
-                        LinkedList<Competence> competenceList = activity.getProcedure().getCompetences();
-                        competenceList.forEach(competence -> {
-                            listModel.addElement(competence.getName());
-                        });
-                        detailsSkillsJList.setModel(listModel);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    listModel.removeAllElements();
+                    listModel = new DefaultListModel();
+                    LinkedList<Competence> competenceList = activity.getProcedure().getCompetences();
+                    competenceList.forEach(competence -> {
+                        listModel.addElement(competence.getName());
+                    });
+                    detailsSkillsJList.setModel(listModel);
                 }
                 detailsNotesJTextArea.setEnabled(true);
                 assignJComboBox.setEnabled(true);
