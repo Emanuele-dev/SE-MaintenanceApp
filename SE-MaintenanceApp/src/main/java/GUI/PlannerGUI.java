@@ -8,6 +8,7 @@ package GUI;
 import GUI.dialogs.EditNoteJDialog;
 import com.team14.se.maintenanceapp.*;
 import com.team14.se.maintenanceapp.User;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Enumeration;
@@ -30,7 +31,9 @@ public class PlannerGUI extends javax.swing.JFrame {
     private User loggedUser;
     private Connection connection;
     private LinkedList<MaintenanceActivity> activityList;
+    private LinkedList<MaintenanceActivity> assignedActivityList;
     private boolean activityIsSelected = false;
+    boolean mainActivityIsAssigned = false;
     private MaintenanceActivity targetActivity;
     private DefaultListModel listModel = new DefaultListModel();
 
@@ -320,7 +323,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 .addGroup(detailsJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(assignJLabel)
                     .addComponent(assignJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
                 .addComponent(forwardJButton)
                 .addContainerGap())
         );
@@ -517,36 +520,24 @@ public class PlannerGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 797, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
-        int week_n = (int) weekNumberJSpinner.getValue();
-        initTable(week_n);
-        detailsNotesJTextArea.setEnabled(false);
-        detailsWeekJTextField.setText("--");
-        detailsSMPJTextField.setText("");
-        detailsActivityJTextField.setText("");
-        detailsDescriptionJTextArea.setText("");
-        detailsIdJTextField.setText("");
-        detailsNotesJTextArea.setText("");
-        detailsSkillsJList.removeAll();
-        activityIsSelected = false;
-        targetActivity = null;
-        listModel.removeAllElements();
+        refreshElements();
     }//GEN-LAST:event_refreshJButtonActionPerformed
 
     private String getButtonText(ButtonGroup buttonGroup) {
@@ -560,6 +551,10 @@ public class PlannerGUI extends javax.swing.JFrame {
         return value;
     }
 
+    /**
+     * Add new activity.
+     * @param evt 
+     */
     private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
         MaintenanceActivity maintenanceActivity;
         String description = descriptionJTextArea.getText();
@@ -600,6 +595,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         JTable source = (JTable) evt.getSource();
         int row = source.rowAtPoint(evt.getPoint());
         String id = source.getModel().getValueAt(row, 0) + "";
+
+        /* -------- ACTIVITY DETAILS -------- */
         activityList.forEach((MaintenanceActivity activity) -> {
             if (activity.getActivityId() == Integer.parseInt(id)) {
                 targetActivity = activity;
@@ -612,17 +609,43 @@ public class PlannerGUI extends javax.swing.JFrame {
                 if (assignJComboBox.getSelectedItem() != null) {
                     checkCommonCompetences();
                 } else {
-                    listModel = new DefaultListModel();
-                    LinkedList<Competence> competenceList = activity.getProcedure().getCompetences();
-                    competenceList.forEach(competence -> {
-                        listModel.addElement(competence.getName());
-                    });
-                    detailsSkillsJList.setModel(listModel);
+                    try {
+                        listModel.removeAllElements();
+                        listModel = new DefaultListModel();
+                        LinkedList<Competence> competenceList = activity.getProcedure().getCompetences();
+                        competenceList.forEach(competence -> {
+                            listModel.addElement(competence.getName());
+                        });
+                        detailsSkillsJList.setModel(listModel);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 detailsNotesJTextArea.setEnabled(true);
                 assignJComboBox.setEnabled(true);
                 forwardJButton.setEnabled(true);
                 activityIsSelected = true;
+
+                /* -------- STATUS CHECK -------- */
+                detailsStatusJTextField.setEnabled(true);
+                for (MaintenanceActivity assignedActivity : assignedActivityList) {
+                    if (assignedActivity.getActivityId() == Integer.parseInt(id)) {
+                        mainActivityIsAssigned = true;
+                        if (assignedActivity.getState()) {
+                            detailsStatusJTextField.setText("Complete");
+                            detailsStatusJTextField.setBackground(Color.green);
+
+                        } else {
+                            detailsStatusJTextField.setText("Assigned");
+                            detailsStatusJTextField.setBackground(Color.yellow);
+                        }
+                    }
+                }
+                if (!mainActivityIsAssigned) {
+                    detailsStatusJTextField.setText("To Assign");
+                    detailsStatusJTextField.setBackground(Color.red);
+                
+                }
             }
         });
 
@@ -632,24 +655,39 @@ public class PlannerGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_detailsSMPJTextFieldActionPerformed
 
+    /**
+     * Method that start assigne sequence.
+     * @param evt  
+     */
     private void forwardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardJButtonActionPerformed
-        if (detailsWeekJTextField.getText().equals("--")) {
+        // Verify if an activity is selected
+        if (targetActivity == null) {
             JOptionPane.showMessageDialog(rootPane, "Please, select an activity to assign to the maintenance", "Error: No activity selected", JOptionPane.ERROR_MESSAGE);
         } else {
+            // If is selected take data and call method for assign to the selected maintainer.
             String activityId = detailsIdJTextField.getText();
             String usernameMaintainer = String.valueOf(assignJComboBox.getSelectedItem()).split(":")[0];
-
             int input = JOptionPane.showConfirmDialog(rootPane,
                     "Are you sure to assign activity " + activityId + " to : " + usernameMaintainer + "?",
                     "Select an Option...", JOptionPane.YES_NO_CANCEL_OPTION);
-
+            // input == 0 means is chose "Yes" to confirmDialog
             if (input == 0) {
-                try {
-                    MaintenanceActivity.assignActivity(connection, Integer.parseInt(activityId), usernameMaintainer);
-                    JOptionPane.showMessageDialog(rootPane, "Task assigned correctly");
+                if (!mainActivityIsAssigned) {
+                    try {
+                        // Call static method to assign the activity
+                        MaintenanceActivity.assignActivity(connection, Integer.parseInt(activityId), usernameMaintainer);
+                        JOptionPane.showMessageDialog(rootPane, "Task assigned correctly");
+                        // Reload assigned activities
+                        loadAssignedActivities();
+                        // refresh elements
+                        refreshElements();
 
-                } catch (SQLException ex) {
-                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(rootPane, "This activity il already assigned. Please, select a valid activity to assign!", "Error: Activity Already Assigned", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Assignment canceled");
@@ -740,7 +778,6 @@ public class PlannerGUI extends javax.swing.JFrame {
             activitiesTabelModel.fireTableDataChanged();
             activityList.forEach((MaintenanceActivity activity) -> {
                 if (activity.getWeek() == n_week) {
-                    System.out.println(activity.getActivityId());
                     activitiesTabelModel.addRow(new Object[]{activity.getActivityId(), activity.getSite().getName(), activity.getTypology().getName(), activity.getEstimatedIntervention() + " min."});
                 }
             });
@@ -750,14 +787,21 @@ public class PlannerGUI extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Method for initialize GUI.
+     */
     private void initValues() {
         initTable(0);
         initTypeComboBox();
         initProcedureComboBox();
         initSiteComboBox();
         initAssigneComboBox();
+        loadAssignedActivities();
     }
 
+    /**
+     * Initialize Type Combo box.
+     */
     private void initTypeComboBox() {
         try {
             LinkedList<Typology> typologyList = Typology.getTypologies(connection);
@@ -770,6 +814,9 @@ public class PlannerGUI extends javax.swing.JFrame {
         }
     }
 
+     /**
+     * Initialize Procedure Combo box.
+     */
     private void initProcedureComboBox() {
         try {
             LinkedList<Procedure> procedureList = Procedure.getProcedures(connection);
@@ -782,6 +829,9 @@ public class PlannerGUI extends javax.swing.JFrame {
         }
     }
 
+     /**
+     * Initialize Site Combo box.
+     */
     private void initSiteComboBox() {
         try {
             LinkedList<Site> siteyList = Site.getSites(connection);
@@ -794,6 +844,9 @@ public class PlannerGUI extends javax.swing.JFrame {
         }
     }
 
+     /**
+     * Initialize Assigne Combo box with maintainers.
+     */
     private void initAssigneComboBox() {
         try {
             LinkedList<User> userList = User.getUsers(connection);
@@ -808,12 +861,17 @@ public class PlannerGUI extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Methods used for check common competence between selected activity and selected maintainer.
+     * When a common copetence is found, a ✔ is added near the competence name.
+     */
     private void checkCommonCompetences() {
         if (targetActivity != null) {
             String usernameMaintainer = String.valueOf(assignJComboBox.getSelectedItem()).split(":")[0];
             try {
                 LinkedList<Competence> maintainerCompetences = User.getUserCompetences(connection, usernameMaintainer);
                 LinkedList<Competence> competenceList = targetActivity.getProcedure().getCompetences();
+                listModel.removeAllElements();
                 listModel = new DefaultListModel();
                 competenceList.forEach(competence -> {
                     String competenceName = competence.getName();
@@ -831,5 +889,38 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         } else {
         }
+    }
+
+    /**
+     * Load all assigned activity.
+     */
+    private void loadAssignedActivities() {
+        try {
+            assignedActivityList = MaintenanceActivity.assignedActivity(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Refresh GUI elements.
+     */
+    private void refreshElements() {
+        int week_n = (int) weekNumberJSpinner.getValue();
+        initTable(week_n);
+        detailsNotesJTextArea.setEnabled(false);
+        detailsWeekJTextField.setText("--");
+        detailsSMPJTextField.setText("");
+        detailsActivityJTextField.setText("");
+        detailsDescriptionJTextArea.setText("");
+        detailsIdJTextField.setText("");
+        detailsNotesJTextArea.setText("");
+        detailsSkillsJList.removeAll();
+        activityIsSelected = false;
+        mainActivityIsAssigned = false;
+        targetActivity = null;
+        listModel.removeAllElements();
+        detailsStatusJTextField.setText("N/D");
+        detailsStatusJTextField.setEnabled(false);
     }
 }
