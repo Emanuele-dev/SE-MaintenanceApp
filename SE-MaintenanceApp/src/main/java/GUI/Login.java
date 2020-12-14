@@ -52,6 +52,7 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
+        setLocationByPlatform(true);
         setResizable(false);
 
         jLoginButton.setText("Login");
@@ -189,7 +190,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jTF_UserActionPerformed
 
     private void jPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldActionPerformed
-        // TODO add your handling code here:
+        this.jLoginButtonActionPerformed(evt);
     }//GEN-LAST:event_jPasswordFieldActionPerformed
 
     /**

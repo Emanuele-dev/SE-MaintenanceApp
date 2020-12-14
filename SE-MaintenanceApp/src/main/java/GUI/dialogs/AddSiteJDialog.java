@@ -51,6 +51,7 @@ public class AddSiteJDialog extends javax.swing.JDialog {
         this.newSite = null;
         this.connection = connection;
         initComponents();
+        setLocationRelativeTo(parent);
     }
 
     /**

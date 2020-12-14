@@ -52,6 +52,7 @@ public class AddMaterialJDialog extends javax.swing.JDialog {
         this.newMaterial = null;
         this.connection = connection;
         initComponents();
+        setLocationRelativeTo(parent);
     }
 
     /** This method is called from within the constructor to
@@ -72,6 +73,7 @@ public class AddMaterialJDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add New Material");
+        setLocationByPlatform(true);
         setResizable(false);
 
         nameJLabel.setText("Name");
@@ -148,8 +150,6 @@ public class AddMaterialJDialog extends javax.swing.JDialog {
 
         if (name.isBlank()) {
             Messages.showErrorEmptyfield(this, "Name");
-        } else if (description.isBlank()) {
-            Messages.showErrorEmptyfield(this, "Description");
         } else {
             newMaterial = new Material(name, description);
             new AddMaterialWorker().execute();

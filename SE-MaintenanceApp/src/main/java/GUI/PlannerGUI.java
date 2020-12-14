@@ -612,7 +612,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                     try {
                         listModel.removeAllElements();
                         listModel = new DefaultListModel();
-                        LinkedList<Competence> competenceList = Procedure.getProcedureCompetences(connection, activity.getProcedure().getId());
+                        LinkedList<Competence> competenceList = activity.getProcedure().getCompetences();
                         competenceList.forEach(competence -> {
                             listModel.addElement(competence.getName());
                         });
@@ -870,7 +870,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             String usernameMaintainer = String.valueOf(assignJComboBox.getSelectedItem()).split(":")[0];
             try {
                 LinkedList<Competence> maintainerCompetences = User.getUserCompetences(connection, usernameMaintainer);
-                LinkedList<Competence> competenceList = Procedure.getProcedureCompetences(connection, targetActivity.getProcedure().getId());
+                LinkedList<Competence> competenceList = targetActivity.getProcedure().getCompetences();
                 listModel.removeAllElements();
                 listModel = new DefaultListModel();
                 competenceList.forEach(competence -> {
