@@ -222,7 +222,7 @@ public class UserJUnit4Test {
     @Test
     public void testGetUsers() throws Exception {
         System.out.println("getUsers");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<User> expResult = new LinkedList<>();
         LinkedList<User> result = User.getUsers(conn);
         assertEquals(expResult, result);
@@ -235,7 +235,7 @@ public class UserJUnit4Test {
     @Test
     public void testGetUserCompetences()throws Exception{
         System.out.println("getUserCompetences");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         String username = "";
         LinkedList<Competence> expResult = new LinkedList<>();
         LinkedList<Competence> result = User.getUserCompetences(conn, username);
@@ -249,7 +249,7 @@ public class UserJUnit4Test {
     @Test
     public void testAssignCompetencesToUser()throws Exception{
         System.out.println("assignCompetenceToProcedure");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = null;
         LinkedList<Competence> competences = new LinkedList<>();
         User.assignCompetencesToUser(conn, user, competences);
@@ -262,7 +262,7 @@ public class UserJUnit4Test {
     @Test
     public void testAddUser() throws Exception {
         System.out.println("addUser");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");
         User.addUser(conn, user);
     }
@@ -274,7 +274,7 @@ public class UserJUnit4Test {
     @Test
     public void testDeactivateUser() throws Exception {
         System.out.println("removeUser");   
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");
         User.deactivateUser(conn, user);
     }
@@ -286,7 +286,7 @@ public class UserJUnit4Test {
     @Test
     public void testUpdateUser() throws Exception {
         System.out.println("updateUser");
-       Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+       Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");;
         String oldUsername = "";
         User.updateUser(conn, user, oldUsername);

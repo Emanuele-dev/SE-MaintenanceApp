@@ -132,7 +132,7 @@ public class LogJUnit4Test {
     @Test
     public void testGetLogs() throws Exception {
         System.out.println("getLogs");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<Log> expResult = new LinkedList<>();
         LinkedList<Log> result = Log.getLogs(conn);
         assertEquals(expResult, result);
@@ -145,7 +145,7 @@ public class LogJUnit4Test {
     @Test
     public void testAddLog() throws Exception {
         System.out.println("addLog");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");
         user.addUser(conn, user);
         Log log = new Log(user.getName(), LocalDateTime.now());
@@ -159,7 +159,7 @@ public class LogJUnit4Test {
     @Test
     public void testRemoveLog() throws Exception {
         System.out.println("removeLog");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Log log = new Log(" ", null);
         Log.removeLog(conn, log);
     }
@@ -171,7 +171,7 @@ public class LogJUnit4Test {
     @Test
     public void testUpdateLog() throws Exception {
         System.out.println("updateLog");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Log log = new Log(" ", LocalDateTime.now());
         int oldId = 0;
         Log.updateLog(conn, log, oldId);

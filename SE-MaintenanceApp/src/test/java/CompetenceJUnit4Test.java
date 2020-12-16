@@ -109,7 +109,7 @@ public class CompetenceJUnit4Test {
     @org.junit.Test
     public void testGetCompetences() throws Exception {
         System.out.println("getCompetences");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<Competence> result = Competence.getCompetences(conn);
         assertEquals(0, result.size());
     }
@@ -121,7 +121,7 @@ public class CompetenceJUnit4Test {
     @org.junit.Test
     public void testAddCompetence() throws Exception {
         System.out.println("addCompetence");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Competence competence = new Competence(0, "");
         Competence.addCompetence(conn, competence);
     }
@@ -133,7 +133,7 @@ public class CompetenceJUnit4Test {
     @org.junit.Test
     public void testRemoveCompetence() throws Exception {
         System.out.println("removeCompetence");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Competence competence = new Competence (0, "");
         Competence.removeCompetence(conn, competence);
     }
@@ -145,7 +145,7 @@ public class CompetenceJUnit4Test {
     @org.junit.Test
     public void testUpdateCompetence() throws Exception {
         System.out.println("updateCompetence");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Competence competence = new Competence (1, "");
         int oldId = 0;
         Competence.updateCompetence(conn, competence, oldId);

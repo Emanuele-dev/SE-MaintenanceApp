@@ -386,7 +386,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testResultQueryGetActivities() throws Exception {
         System.out.println("resultQueryGetActivities");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         String query = "";
         LinkedList<MaintenanceActivity> expResult = null;
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.resultQueryGetActivities(conn, query);
@@ -400,7 +400,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetMaintenanceActivities() throws Exception {
         System.out.println("getMaintenanceActivities");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivities(conn);
         assertEquals(expResult, result);
@@ -413,7 +413,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetMaintenanceActivitiesByWeek() throws Exception {
         System.out.println("getMaintenanceActivitiesByWeek");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         int week_number = 0;
         LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivitiesByWeek(conn, week_number);
@@ -427,7 +427,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetMaterialsForActivity()throws Exception{
         System.out.println("getMaterialsForActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         int activityId = 0;
         LinkedList<Material> expResult = new LinkedList<>();
         LinkedList<Material> result = MaintenanceActivity.getMaterialsForActivity(conn, activityId);
@@ -441,7 +441,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testAddMaintenanceActivity() throws Exception {
         System.out.println("addMaintenanceActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Procedure procedure = new Procedure("", "", null);
         Site site = new Site("");
         Typology typology = new Typology("");
@@ -459,7 +459,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testRemoveMaintenanceActivity() throws Exception {
        System.out.println("removeMaintenanceActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Procedure procedure = new Procedure("", "", null);
         Site site = new Site("");
         Typology typology = new Typology("");
@@ -474,7 +474,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testUpdateMaintenanceActivity() throws Exception {
         System.out.println("updateMaintenanceActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         MaintenanceActivity maintActivity = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         int oldActivityId = 0;
         MaintenanceActivity.updateMaintenanceActivity(conn, maintActivity, oldActivityId);

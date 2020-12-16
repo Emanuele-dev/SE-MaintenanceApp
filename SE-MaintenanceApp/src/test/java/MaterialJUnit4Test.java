@@ -105,7 +105,7 @@ public class MaterialJUnit4Test {
     @Test
     public void testGetMaterials() throws Exception {
         System.out.println("getMaterials");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<Material> expResult = new LinkedList<>();
         LinkedList<Material> result = Material.getMaterials(conn);
         assertEquals(expResult, result);
@@ -118,7 +118,7 @@ public class MaterialJUnit4Test {
     @Test
     public void testAddMaterial() throws Exception {
         System.out.println("addMaterial");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Material material = new Material("", "");
         Material.addMaterial(conn, material);
     }
@@ -130,7 +130,7 @@ public class MaterialJUnit4Test {
     @Test
     public void testRemoveMaterial() throws Exception {
         System.out.println("removeMaterial");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Material material = new Material("", "");
         Material.removeMaterial(conn, material);
     }
@@ -142,7 +142,7 @@ public class MaterialJUnit4Test {
     @Test
     public void testUpdateMaterial() throws Exception {
         System.out.println("updateMaterial");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Material material = new Material("", "");
         String oldName = "";
         Material.updateMaterial(conn, material, oldName);

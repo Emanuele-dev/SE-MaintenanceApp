@@ -82,7 +82,7 @@ public class TypologyJUnit4Test {
     @Test
     public void testGetTypologies() throws Exception {
         System.out.println("getTypologies");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<Typology> expResult = new LinkedList<>();
         LinkedList<Typology> result = Typology.getTypologies(conn);
         assertEquals(expResult, result);
@@ -95,7 +95,7 @@ public class TypologyJUnit4Test {
     @Test
     public void testAddTypology() throws Exception {
         System.out.println("addTypology");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Typology typology = new Typology("");
         Typology.addTypology(conn, typology);
     }
@@ -107,7 +107,7 @@ public class TypologyJUnit4Test {
     @Test
     public void testRemoveTypology() throws Exception {
         System.out.println("removeTypology");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Typology typology = new Typology("");;
         Typology.removeTypology(conn, typology);
     }
@@ -119,7 +119,7 @@ public class TypologyJUnit4Test {
     @Test
     public void testUpdateTypology() throws Exception {
         System.out.println("updateTypology");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Typology typology = new Typology("");;
         String oldName = "";
         Typology.updateTypology(conn, typology, oldName);

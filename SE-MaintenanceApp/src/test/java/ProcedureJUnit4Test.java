@@ -152,7 +152,7 @@ public class ProcedureJUnit4Test {
     @Test
     public void testGetProcedures() throws Exception {
         System.out.println("getProcedures");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<Procedure> expResult = new LinkedList<>();
         LinkedList<Procedure> result = Procedure.getProcedures(conn);
         assertEquals(expResult, result);
@@ -165,7 +165,7 @@ public class ProcedureJUnit4Test {
     @Test
     public void testGetProcedureCompetences()throws Exception{
         System.out.println("getProcedureCompetences");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         int procedureId = 0;
         LinkedList<Competence> expResult = new LinkedList<>();
         LinkedList<Competence> result = Procedure.getProcedureCompetences(conn, procedureId);
@@ -179,7 +179,7 @@ public class ProcedureJUnit4Test {
     @Test
     public void testAssignCompetencesToProcedure()throws Exception{
         System.out.println("assignCompetenceToprocedure");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Procedure procedure = null;
         LinkedList<Competence> competences = new LinkedList<>();
         Procedure.assignCompetencesToProcedure(conn, procedure, competences);
@@ -192,7 +192,7 @@ public class ProcedureJUnit4Test {
     @Test
     public void testAddProcedure() throws Exception {
         System.out.println("addProcedure");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();;
         Procedure procedure =  new Procedure(0, "", "", null);
         Procedure.addProcedure(conn, procedure);
     }
@@ -204,7 +204,7 @@ public class ProcedureJUnit4Test {
     @Test
     public void testRemoveProcedure() throws Exception {
         System.out.println("removeProcedure");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();;;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();;;
         Procedure procedure = new Procedure(0, "", "", null);;
         Procedure.removeProcedure(conn, procedure);
     }
@@ -216,7 +216,7 @@ public class ProcedureJUnit4Test {
     @Test
     public void testUpdateProcedure() throws Exception {
         System.out.println("updateProcedure");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();;;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();;;
         Procedure procedure = new Procedure(0, "", "", null);;
         int oldId = 0;
         Procedure.updateProcedure(conn, procedure, oldId);
