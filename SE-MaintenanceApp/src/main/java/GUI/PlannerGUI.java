@@ -784,7 +784,7 @@ public class PlannerGUI extends javax.swing.JFrame {
      * Method for initialize GUI.
      */
     private void initValues() {
-        initTable(0);
+        initTable(1);
         initTypeComboBox();
         initProcedureComboBox();
         initSiteComboBox();
