@@ -11,6 +11,8 @@ import com.team14.se.maintenanceapp.Procedure;
 import com.team14.se.maintenanceapp.Site;
 import com.team14.se.maintenanceapp.Typology;
 import com.team14.se.maintenanceapp.User;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,12 +28,16 @@ import static org.junit.Assert.*;
  * @author domal
  */
 public class MaintenanceActivityJUnit4Test {
+    private static Connection conn;
+    private static MyConnection myconn;
     
     public MaintenanceActivityJUnit4Test() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception{
+       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+       conn = myconn.getConnection();
     }
     
     @AfterClass
@@ -39,7 +45,8 @@ public class MaintenanceActivityJUnit4Test {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception{
+        conn.createStatement().executeUpdate(Files.readString(Paths.get("../Database Repo/ScriptTest.sql")));
     }
     
     @After
@@ -185,7 +192,7 @@ public class MaintenanceActivityJUnit4Test {
     public void testGetMaterials() {
         System.out.println("getMaterials");
         MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
-        LinkedList<Material> expResult = new LinkedList<>();
+        LinkedList<Material> expResult = null;
         LinkedList<Material> result = instance.getMaterials();
         assertEquals(expResult, result);
     }
@@ -380,27 +387,12 @@ public class MaintenanceActivityJUnit4Test {
     }
 
     /**
-     * Test of resultQueryGetActivities method, of class MaintenanceActivity.
-     * @throws java.lang.Exception
-     */
-    @Test
-    public void testResultQueryGetActivities() throws Exception {
-        System.out.println("resultQueryGetActivities");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        String query = "";
-        LinkedList<MaintenanceActivity> expResult = null;
-        LinkedList<MaintenanceActivity> result = MaintenanceActivity.resultQueryGetActivities(conn, query);
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of getMaintenanceActivities method, of class MaintenanceActivity.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetMaintenanceActivities() throws Exception {
         System.out.println("getMaintenanceActivities");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivities(conn);
         assertEquals(expResult, result);
@@ -413,7 +405,6 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetMaintenanceActivitiesByWeek() throws Exception {
         System.out.println("getMaintenanceActivitiesByWeek");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         int week_number = 0;
         LinkedList<MaintenanceActivity> expResult = new LinkedList<>();
         LinkedList<MaintenanceActivity> result = MaintenanceActivity.getMaintenanceActivitiesByWeek(conn, week_number);
@@ -427,7 +418,6 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testGetMaterialsForActivity()throws Exception{
         System.out.println("getMaterialsForActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         int activityId = 0;
         LinkedList<Material> expResult = new LinkedList<>();
         LinkedList<Material> result = MaintenanceActivity.getMaterialsForActivity(conn, activityId);
@@ -441,11 +431,14 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testAddMaintenanceActivity() throws Exception {
         System.out.println("addMaintenanceActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        MaintenanceActivity maintActivity = null;
+        Procedure procedure = new Procedure("", "", null);
+        Site site = new Site("");
+        Typology typology = new Typology("");
+        procedure.addProcedure(conn, procedure);
+        site.addSite(conn, site);
+        typology.addTypology(conn, typology);
+        MaintenanceActivity maintActivity = new MaintenanceActivity("", "", false, 0, false, 1, procedure, site, typology, "");
         MaintenanceActivity.addMaintenanceActivity(conn, maintActivity);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -454,12 +447,12 @@ public class MaintenanceActivityJUnit4Test {
      */
     @Test
     public void testRemoveMaintenanceActivity() throws Exception {
-        System.out.println("removeMaintenanceActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        MaintenanceActivity maintActivity = null;
+       System.out.println("removeMaintenanceActivity");
+        Procedure procedure = new Procedure("", "", null);
+        Site site = new Site("");
+        Typology typology = new Typology("");
+        MaintenanceActivity maintActivity = new MaintenanceActivity("", "", false, 0, false, 1, procedure, site, typology, "");
         MaintenanceActivity.removeMaintenanceActivity(conn, maintActivity);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -469,12 +462,9 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testUpdateMaintenanceActivity() throws Exception {
         System.out.println("updateMaintenanceActivity");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        MaintenanceActivity maintActivity = null;
+        MaintenanceActivity maintActivity = new MaintenanceActivity("", "", false, 0, false, 0, new Procedure("", "", null), new Site(""), new Typology(""), "");
         int oldActivityId = 0;
         MaintenanceActivity.updateMaintenanceActivity(conn, maintActivity, oldActivityId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

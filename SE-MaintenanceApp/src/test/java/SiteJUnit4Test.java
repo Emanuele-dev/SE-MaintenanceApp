@@ -6,6 +6,8 @@
 
 import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.Site;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.LinkedList;
 import org.junit.After;
@@ -20,12 +22,16 @@ import static org.junit.Assert.*;
  * @author domal
  */
 public class SiteJUnit4Test {
+    private static Connection conn;
+    private static MyConnection myconn;
     
     public SiteJUnit4Test() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception{
+       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+       conn = myconn.getConnection();
     }
     
     @AfterClass
@@ -33,7 +39,8 @@ public class SiteJUnit4Test {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception{
+        conn.createStatement().executeUpdate(Files.readString(Paths.get("../Database Repo/ScriptTest.sql")));
     }
     
     @After
@@ -82,7 +89,6 @@ public class SiteJUnit4Test {
     @Test
     public void testGetSites() throws Exception {
         System.out.println("getSites");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         LinkedList<Site> expResult = new LinkedList<>();
         LinkedList<Site> result = Site.getSites(conn);
         assertEquals(expResult, result);
@@ -95,7 +101,6 @@ public class SiteJUnit4Test {
     @Test
     public void testAddSite() throws Exception {
         System.out.println("addSite");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Site site = new Site("");
         Site.addSite(conn, site);
     }
@@ -107,7 +112,6 @@ public class SiteJUnit4Test {
     @Test
     public void testRemoveSite() throws Exception {
         System.out.println("removeSite");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Site site = new Site("");
         Site.removeSite(conn, site);
     }
@@ -119,7 +123,6 @@ public class SiteJUnit4Test {
     @Test
     public void testUpdateSite() throws Exception {
         System.out.println("updateSite");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
         Site site = new Site("");;
         String oldName = "";
         Site.updateSite(conn, site, oldName);
