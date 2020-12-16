@@ -96,7 +96,7 @@ CREATE TABLE SITO(
 
 CREATE TABLE ATTIVITA_MANUTENZIONE(
 	activity_id SERIAL,
-	nome VARCHAR(30),
+	nome VARCHAR(50),
 	descrizione VARCHAR(255),							   
 	interrompibile BOOLEAN,
 	intervento_stimato INTEGER NOT NULL,	

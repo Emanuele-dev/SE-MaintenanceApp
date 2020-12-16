@@ -35,10 +35,41 @@ INSERT INTO PROCEDURA(nome, SMP) VALUES ('Replacement of robot', 'Replacement.pd
 INSERT INTO PROCEDURA(nome, SMP) VALUES ('Replacement pieces', 'Replacement.pdf');
 INSERT INTO PROCEDURA(nome, SMP) VALUES ('Soldering wires', 'HowToSold.pdf');
 INSERT INTO PROCEDURA(nome, SMP) VALUES ('Clean tank', 'CleaningProcedure.pdf');
-INSERT INTO PROCEDURA(nome, SMP) VALUES ('Glass molding  ', 'Molding.pdf');
+INSERT INTO PROCEDURA(nome, SMP) VALUES ('Glass molding', 'Molding.pdf');
 INSERT INTO PROCEDURA(nome, SMP) VALUES ('Activate the turbine  ', 'Commands.pdf');
 
 INSERT INTO ATTIVITA_MANUTENZIONE(nome, intervento_stimato, settimana, procedura, sito, tipologia) VALUES ('Compressor replacement', 40, 8, 'Replacement pieces', 'Fisciano - Molding', 'Mechanical');
 INSERT INTO ATTIVITA_MANUTENZIONE(nome, intervento_stimato, settimana, procedura, sito, tipologia) VALUES ('Replace the robot in the xSCab', 70, 11, 'Replacement of robot', 'Nusco - Carpentry', 'Mechanical');
 INSERT INTO ATTIVITA_MANUTENZIONE(nome, intervento_stimato, settimana, procedura, sito, tipologia) VALUES ('Restore electric cabinet', 120, 20, 'Soldering wires', 'Salerno - Soldering', 'Electric');
-INSERT INTO ATTIVITA_MANUTENZIONE(nome, intervento_stimato, settimana, procedura, sito, tipologia) VALUES ('Restore electric cabinet', 120, 20, 'Soldering wires', 'Salerno - Soldering', 'Electronics');
+INSERT INTO ATTIVITA_MANUTENZIONE(nome, intervento_stimato, settimana, procedura, sito, tipologia) VALUES ('Cleaning tunks in the C sector', 180, 1, 'Clean tank', 'Morra - Painting', 'Hydraulic');
+INSERT INTO ATTIVITA_MANUTENZIONE(nome, intervento_stimato, settimana, procedura, sito, tipologia) VALUES ('Substitute panel in machine ST24', 50, 1, 'Glass molding', 'Fisciano - Molding', 'Mechanical');
+
+INSERT INTO QUALIFICAZIONE(maintainer, competenza) values ('FraCal', 'Knowledge of robot workstation');
+INSERT INTO QUALIFICAZIONE(maintainer, competenza) values ('FraCal', 'Electronics fundations');
+INSERT INTO QUALIFICAZIONE(maintainer, competenza) values ('Max', 'Electronics fundations');
+INSERT INTO QUALIFICAZIONE(maintainer, competenza) values ('Max', 'Electric maintenance');
+INSERT INTO QUALIFICAZIONE(maintainer, competenza) values ('Silvietta', 'PAV certification');
+
+INSERT INTO ESECUZIONE(maintainer, activity_id) VALUES ('FraCal', 1);
+INSERT INTO ESECUZIONE(maintainer, activity_id) VALUES ('Silvietta', 2);
+INSERT INTO ESECUZIONE(maintainer, activity_id) VALUES ('Max', 3);
+
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (1, 'Electric maintenance');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (2, 'Electric maintenance');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (2, 'Electronics fundations');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (2, 'Knowledge of cable types');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (3, 'Knowledge of cable types');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (3, 'Electronics fundations');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (3, 'Electric maintenance');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (4, 'PAV certification');
+INSERT INTO ASSEGNAZIONE(id_procedura, competenza) values (5, 'Knowledge of robot workstation');
+
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (1, 'Clippers');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (1, 'Compressor');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (2, 'Solder');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (2, 'Clippers');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (3, 'Clippers');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (3, 'Solder');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (4, 'Clean product');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (5, 'Plexiglass');
+INSERT INTO UTILIZZO(activity_id, materiale) VALUES (5, 'Clippers');
