@@ -122,7 +122,6 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Planner View");
-        setResizable(false);
 
         assignTabJPanel.setLayout(new java.awt.BorderLayout());
 
