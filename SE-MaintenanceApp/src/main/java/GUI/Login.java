@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package GUI;
+
 import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
@@ -19,6 +20,7 @@ import javax.swing.JOptionPane;
  * @author emale
  */
 public class Login extends javax.swing.JFrame {
+
     private User logUser;
     private Connection conn;
     private Statement stmt;
@@ -26,7 +28,7 @@ public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
-     * 
+     *
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
@@ -128,60 +130,63 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginButtonActionPerformed
-        
+
         // Take string from interface
         String username = jTF_User.getText();
-        if (username.isEmpty()){
+        if (username.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Field 'Username' can't be empty", "Login Failed", JOptionPane.ERROR_MESSAGE);
             return;
         }
         String password = String.valueOf(jPasswordField.getPassword());
-        if (password.isEmpty()){
+        if (password.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Field 'Password' can't be empty ", "Login Failed", JOptionPane.ERROR_MESSAGE);
             return;
         }
-   
+
         // List of query
         // query for Autentication
-        String autenticationQuery = "SELECT Nome, Cognome, Ruolo FROM UTENTE WHERE Username = '"+username+"' AND pass = '"+password+"' ;";
+        String autenticationQuery = "SELECT Nome, Cognome, Ruolo, Attivo FROM UTENTE WHERE Username = '" + username + "' AND pass = '" + password + "' ;";
         //query to save the acces in the log
         String logsaveQuery = "INSERT INTO LOGGING (username) VALUES ('" + username + "');";
-        
-        
-        try{
-  
+
+        try {
+
             stmt = conn.createStatement();
             // Send query
             rs = stmt.executeQuery(autenticationQuery);
             // If rs has no next, so no exists User with that username and password
-            if(!rs.next()){
+            if (!rs.next()) {
                 JOptionPane.showMessageDialog(rootPane, "Unable to login: incorrect username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            } // Else take the data and put in logUser
+            else {
+                boolean activeUser = rs.getBoolean("Attivo");
+                if (activeUser) {
+                    String name = rs.getString("Nome");
+                    String surname = rs.getString("Cognome");
+                    String role = rs.getString("Ruolo");
+                    JOptionPane.showMessageDialog(rootPane, "Welcome " + name + " " + surname + ", you are loginning as " + role, "Login Success", JOptionPane.INFORMATION_MESSAGE);
+                    logUser = new User(name, surname, username, password, true, role);
+                    /* Need update Class User to continue*/
+                    this.dispose();
+                    if (role.equals("SystemAdministrator")) {
+                        AdminGUI sysGui = new AdminGUI(logUser, conn);
+                        sysGui.setVisible(true);
+                    }
+                    if (role.equals("Planner")) {
+                        PlannerGUI plannerGui = new PlannerGUI(conn);
+                        plannerGui.setVisible(true);
+                    }
+                    if (role.equals("Maintainer")) {
+                        MaintainerGUI maintainerGUI = new MaintainerGUI(logUser, conn);
+                        maintainerGUI.setVisible(true);
+                    }
+                    // Then save in DB the access
+                    stmt.executeQuery(logsaveQuery);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Unable to login: Thiis user was deleted", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            // Else take the data and put in logUser
-            else{
-                String name = rs.getString("Nome");
-                String surname = rs.getString("Cognome");
-                String role = rs.getString("Ruolo");
-                JOptionPane.showMessageDialog(rootPane, "Welcome " + name + " " + surname + ", you are loginning as " + role, "Login Success", JOptionPane.INFORMATION_MESSAGE);
-                logUser = new User(name, surname, username, password, true, role);
-                /* Need update Class User to continue*/
-                this.dispose();
-                if(role.equals("SystemAdministrator")){
-                    AdminGUI sysGui = new AdminGUI(logUser, conn);
-                    sysGui.setVisible(true);
-                }
-                if(role.equals("Planner")){
-                    PlannerGUI plannerGui = new PlannerGUI(conn);
-                    plannerGui.setVisible(true);
-                }
-                if(role.equals("Maintainer")){
-                    MaintainerGUI maintainerGUI = new MaintainerGUI(logUser, conn);
-                    maintainerGUI.setVisible(true);
-                }
-                // Then save in DB the access
-                stmt.executeQuery(logsaveQuery);
-            }      
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_jLoginButtonActionPerformed
@@ -214,7 +219,7 @@ public class Login extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -236,10 +241,13 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField jTF_User;
     // End of variables declaration//GEN-END:variables
 
-    
-    // Init Connection
+    /**
+     * Initialize connection.
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
     private void initConn() throws SQLException, ClassNotFoundException {
-            conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-            System.out.println(conn);
+        conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
+        System.out.println(conn);
     }
 }
