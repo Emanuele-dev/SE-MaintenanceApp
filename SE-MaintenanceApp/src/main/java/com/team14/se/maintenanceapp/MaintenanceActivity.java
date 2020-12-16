@@ -379,7 +379,7 @@ public class MaintenanceActivity {
      * @return list of maintenance activities
      * @throws SQLException
      */
-    public static LinkedList<MaintenanceActivity> resultQueryGetActivities(Connection conn, String query) throws SQLException {
+    private static LinkedList<MaintenanceActivity> resultQueryGetActivities(Connection conn, String query) throws SQLException {
         int procedureId = 0;
         String procedureSmp = null;
         LinkedList<Competence> competences = new LinkedList<>();

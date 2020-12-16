@@ -7,6 +7,8 @@
 import com.team14.se.maintenanceapp.User;
 import com.team14.se.maintenanceapp.Competence;
 import com.team14.se.maintenanceapp.MyConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.LinkedList;
 import org.junit.After;
@@ -21,12 +23,16 @@ import static org.junit.Assert.*;
  * @author domal
  */
 public class UserJUnit4Test {
+    private static Connection conn;
+    private static MyConnection myconn;
     
     public UserJUnit4Test() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception{
+       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+       conn = myconn.getConnection();
     }
     
     @AfterClass
@@ -34,7 +40,8 @@ public class UserJUnit4Test {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception{
+        conn.createStatement().executeUpdate(Files.readString(Paths.get("../Database Repo/ScriptTest.sql")));
     }
     
     @After
@@ -222,7 +229,6 @@ public class UserJUnit4Test {
     @Test
     public void testGetUsers() throws Exception {
         System.out.println("getUsers");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<User> expResult = new LinkedList<>();
         LinkedList<User> result = User.getUsers(conn);
         assertEquals(expResult, result);
@@ -235,7 +241,6 @@ public class UserJUnit4Test {
     @Test
     public void testGetUserCompetences()throws Exception{
         System.out.println("getUserCompetences");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         String username = "";
         LinkedList<Competence> expResult = new LinkedList<>();
         LinkedList<Competence> result = User.getUserCompetences(conn, username);
@@ -249,7 +254,6 @@ public class UserJUnit4Test {
     @Test
     public void testAssignCompetencesToUser()throws Exception{
         System.out.println("assignCompetenceToProcedure");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = null;
         LinkedList<Competence> competences = new LinkedList<>();
         User.assignCompetencesToUser(conn, user, competences);
@@ -262,7 +266,6 @@ public class UserJUnit4Test {
     @Test
     public void testAddUser() throws Exception {
         System.out.println("addUser");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");
         User.addUser(conn, user);
     }
@@ -274,7 +277,6 @@ public class UserJUnit4Test {
     @Test
     public void testDeactivateUser() throws Exception {
         System.out.println("removeUser");   
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");
         User.deactivateUser(conn, user);
     }
@@ -286,7 +288,6 @@ public class UserJUnit4Test {
     @Test
     public void testUpdateUser() throws Exception {
         System.out.println("updateUser");
-       Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");;
         String oldUsername = "";
         User.updateUser(conn, user, oldUsername);

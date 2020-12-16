@@ -6,6 +6,8 @@
 
 import com.team14.se.maintenanceapp.Material;
 import com.team14.se.maintenanceapp.MyConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.LinkedList;
 import org.junit.After;
@@ -20,20 +22,25 @@ import static org.junit.Assert.*;
  * @author domal
  */
 public class MaterialJUnit4Test {
+    private static Connection conn;
+    private static MyConnection myconn;
     
     public MaterialJUnit4Test() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
+   @BeforeClass
+    public static void setUpClass() throws Exception{
+       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+       conn = myconn.getConnection();
     }
     
     @AfterClass
     public static void tearDownClass() {
     }
     
-    @Before
-    public void setUp() {
+   @Before
+    public void setUp() throws Exception{
+        conn.createStatement().executeUpdate(Files.readString(Paths.get("../Database Repo/ScriptTest.sql")));
     }
     
     @After
@@ -105,7 +112,6 @@ public class MaterialJUnit4Test {
     @Test
     public void testGetMaterials() throws Exception {
         System.out.println("getMaterials");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<Material> expResult = new LinkedList<>();
         LinkedList<Material> result = Material.getMaterials(conn);
         assertEquals(expResult, result);
@@ -118,7 +124,6 @@ public class MaterialJUnit4Test {
     @Test
     public void testAddMaterial() throws Exception {
         System.out.println("addMaterial");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Material material = new Material("", "");
         Material.addMaterial(conn, material);
     }
@@ -130,7 +135,6 @@ public class MaterialJUnit4Test {
     @Test
     public void testRemoveMaterial() throws Exception {
         System.out.println("removeMaterial");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Material material = new Material("", "");
         Material.removeMaterial(conn, material);
     }
@@ -142,7 +146,6 @@ public class MaterialJUnit4Test {
     @Test
     public void testUpdateMaterial() throws Exception {
         System.out.println("updateMaterial");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Material material = new Material("", "");
         String oldName = "";
         Material.updateMaterial(conn, material, oldName);

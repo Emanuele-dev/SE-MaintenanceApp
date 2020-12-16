@@ -7,6 +7,8 @@
 import com.team14.se.maintenanceapp.Log;
 import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.User;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -23,12 +25,16 @@ import static org.junit.Assert.*;
  * @author domal
  */
 public class LogJUnit4Test {
+    private static Connection conn;
+    private static MyConnection myconn;
     
     public LogJUnit4Test() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception{
+       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+       conn = myconn.getConnection();
     }
     
     @AfterClass
@@ -36,7 +42,8 @@ public class LogJUnit4Test {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception{
+        conn.createStatement().executeUpdate(Files.readString(Paths.get("../Database Repo/ScriptTest.sql")));
     }
     
     @After
@@ -132,7 +139,6 @@ public class LogJUnit4Test {
     @Test
     public void testGetLogs() throws Exception {
         System.out.println("getLogs");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         LinkedList<Log> expResult = new LinkedList<>();
         LinkedList<Log> result = Log.getLogs(conn);
         assertEquals(expResult, result);
@@ -145,7 +151,6 @@ public class LogJUnit4Test {
     @Test
     public void testAddLog() throws Exception {
         System.out.println("addLog");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         User user = new User("", "", "", "", false, "SystemAdministrator");
         user.addUser(conn, user);
         Log log = new Log(user.getName(), LocalDateTime.now());
@@ -159,7 +164,6 @@ public class LogJUnit4Test {
     @Test
     public void testRemoveLog() throws Exception {
         System.out.println("removeLog");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Log log = new Log(" ", null);
         Log.removeLog(conn, log);
     }
@@ -171,7 +175,6 @@ public class LogJUnit4Test {
     @Test
     public void testUpdateLog() throws Exception {
         System.out.println("updateLog");
-        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest", "team14", "team14").getConnection();
         Log log = new Log(" ", LocalDateTime.now());
         int oldId = 0;
         Log.updateLog(conn, log, oldId);
