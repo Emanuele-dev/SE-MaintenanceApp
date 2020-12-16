@@ -2643,8 +2643,8 @@ public class AdminGUI extends javax.swing.JFrame {
         }
         
         // enable side panel if disabled
-        if (!this.editCompetencesJPanel.isEnabled()){
-            this.editCompetencesJPanel.setEnabled(true);
+        if (!this.editMaterialJPanel.isEnabled()){
+            this.editMaterialJPanel.setEnabled(true);
             
             this.materialNameJLabel.setEnabled(true);
             this.materialNameJTextField.setEnabled(true);
