@@ -140,7 +140,7 @@ public class ProcedureJUnit4Test {
     public void testToString() {
         System.out.println("toString");
         Procedure instance = new Procedure(0, "", "", null);
-        String expResult = "Procedure{" + "id=" + instance.getId() + ", name=" + instance.getName() + ", smpName=" + instance.getSmpName() + ", competence=" + instance.getCompetences() + '}';
+        String expResult = "Procedure{" + "id=" + instance.getId() + ", name=" + instance.getName() + ", smpName=" + instance.getSmpName() + ", competences=" + instance.getCompetences() + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
     }
@@ -192,11 +192,9 @@ public class ProcedureJUnit4Test {
     @Test
     public void testAddProcedure() throws Exception {
         System.out.println("addProcedure");
-        Connection conn = null;
-        Procedure procedure = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();;
+        Procedure procedure =  new Procedure(0, "", "", null);
         Procedure.addProcedure(conn, procedure);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -206,11 +204,9 @@ public class ProcedureJUnit4Test {
     @Test
     public void testRemoveProcedure() throws Exception {
         System.out.println("removeProcedure");
-        Connection conn = null;
-        Procedure procedure = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();;;
+        Procedure procedure = new Procedure(0, "", "", null);;
         Procedure.removeProcedure(conn, procedure);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -220,12 +216,10 @@ public class ProcedureJUnit4Test {
     @Test
     public void testUpdateProcedure() throws Exception {
         System.out.println("updateProcedure");
-        Connection conn = null;
-        Procedure procedure = null;
+        Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();;;
+        Procedure procedure = new Procedure(0, "", "", null);;
         int oldId = 0;
         Procedure.updateProcedure(conn, procedure, oldId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

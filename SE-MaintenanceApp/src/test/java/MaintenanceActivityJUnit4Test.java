@@ -442,10 +442,14 @@ public class MaintenanceActivityJUnit4Test {
     public void testAddMaintenanceActivity() throws Exception {
         System.out.println("addMaintenanceActivity");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        MaintenanceActivity maintActivity = null;
+        Procedure procedure = new Procedure("", "", null);
+        Site site = new Site("");
+        Typology typology = new Typology("");
+        procedure.addProcedure(conn, procedure);
+        site.addSite(conn, site);
+        typology.addTypology(conn, typology);
+        MaintenanceActivity maintActivity = new MaintenanceActivity("", "", false, 0, false, 1, procedure, site, typology, "");
         MaintenanceActivity.addMaintenanceActivity(conn, maintActivity);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -454,12 +458,13 @@ public class MaintenanceActivityJUnit4Test {
      */
     @Test
     public void testRemoveMaintenanceActivity() throws Exception {
-        System.out.println("removeMaintenanceActivity");
+       System.out.println("removeMaintenanceActivity");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        MaintenanceActivity maintActivity = null;
+        Procedure procedure = new Procedure("", "", null);
+        Site site = new Site("");
+        Typology typology = new Typology("");
+        MaintenanceActivity maintActivity = new MaintenanceActivity("", "", false, 0, false, 1, procedure, site, typology, "");
         MaintenanceActivity.removeMaintenanceActivity(conn, maintActivity);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -470,11 +475,9 @@ public class MaintenanceActivityJUnit4Test {
     public void testUpdateMaintenanceActivity() throws Exception {
         System.out.println("updateMaintenanceActivity");
         Connection conn = new MyConnection("jdbc:postgresql://localhost/maintenanceDB", "team14", "team14").getConnection();
-        MaintenanceActivity maintActivity = null;
+        MaintenanceActivity maintActivity = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         int oldActivityId = 0;
         MaintenanceActivity.updateMaintenanceActivity(conn, maintActivity, oldActivityId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }
