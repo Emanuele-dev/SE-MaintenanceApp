@@ -134,7 +134,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         weekNumberJLabel.setText("Week N.");
 
-        weekNumberJSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 53, 1));
+        weekNumberJSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 54, 1));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -404,7 +404,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         estimatedTimeJSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
-        weekJSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 53, 1));
+        weekJSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 54, 1));
 
         eowButtonGroup.add(ewoYesJRadioButton);
         ewoYesJRadioButton.setText("Yes");
@@ -508,7 +508,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 .addComponent(descriptionJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(addJButton)
-                .addContainerGap(280, Short.MAX_VALUE))
+                .addContainerGap(286, Short.MAX_VALUE))
         );
 
         mainJTabbedPane.addTab("Add New Activity", addJPanel);
@@ -519,17 +519,17 @@ public class PlannerGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 797, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
 
         pack();

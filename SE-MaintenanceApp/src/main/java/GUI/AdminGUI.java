@@ -1626,7 +1626,7 @@ public class AdminGUI extends javax.swing.JFrame {
 
         typesJScrollPane.setViewportView(TypeJPanel);
 
-        adminMainJTabbedPane.addTab("Mainenance Types", typesJScrollPane);
+        adminMainJTabbedPane.addTab("Maintenance Types", typesJScrollPane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
