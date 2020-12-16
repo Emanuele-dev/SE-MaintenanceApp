@@ -21,8 +21,10 @@ INSERT INTO TIPOLOGIA(nome) VALUES('Chemical');
 INSERT INTO MATERIALE(nome) VALUES('Solder');
 INSERT INTO MATERIALE(nome) VALUES('Compressor');
 INSERT INTO MATERIALE(nome) VALUES('Clean product');
-INSERT INTO MATERIALE(nome) VALUES('Clippers');
 INSERT INTO MATERIALE(nome) VALUES('Plexiglass');
+INSERT INTO MATERIALE(nome, descrizione) VALUES('Clippers', 'Shear pliers');
+INSERT INTO MATERIALE(nome, descrizione) VALUES('Clippers', 'Nipper pliers');
+INSERT INTO MATERIALE(nome, descrizione) VALUES('Clippers', 'Paroot forceps');
 
 INSERT INTO COMPETENZA(nome) VALUES('PAV certification');
 INSERT INTO COMPETENZA(nome) VALUES('Electric maintenance');
