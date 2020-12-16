@@ -32,7 +32,7 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private Connection connection;
     private LinkedList<MaintenanceActivity> activityList;
     private MaintenanceActivity targetActivity;
-    private DefaultListModel listModel = new DefaultListModel();
+    private DefaultListModel<String> listModel = new DefaultListModel();
 
     /**
      * Creates new form PlannerGUI
@@ -308,17 +308,25 @@ public class MaintainerGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+  
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         refreshElements();
         
     }//GEN-LAST:event_refreshJButtonActionPerformed
 
+    /**
+     * MouseClicker on activity table.
+     * @param evt 
+     * Load all the informations in the fields of a selceted activity.
+     */
     private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
         JTable source = (JTable) evt.getSource();
         int row = source.rowAtPoint(evt.getPoint());
         String id = source.getModel().getValueAt(row, 0) + "";
+        //Search the target activity
         activityList.forEach((MaintenanceActivity activity) -> {
             if (activity.getActivityId() == Integer.parseInt(id)) {
+                //Set all field with activity details
                 try {
                     targetActivity = activity;
                     detailsActivityJTextField.setText(activity.getName());
@@ -353,29 +361,33 @@ public class MaintainerGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_detailsStatusJTextFieldActionPerformed
 
+    /**
+     * Button Action Performed to declare complite an activity.
+     * @param evt 
+     */
     private void statusActivityJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActivityJButtonActionPerformed
+        // Check if an activity is selecyed
         if (targetActivity == null) {
             JOptionPane.showMessageDialog(rootPane, "Please, select an activity to declar complete", "Error: No activity selected", JOptionPane.ERROR_MESSAGE);
         } else {
+            // Check if the selected activity is complete
             if (targetActivity.getState()) {
                 JOptionPane.showMessageDialog(rootPane, "This activity is already complete. Please select a valid activity", "Error: Activity Already Complete", JOptionPane.ERROR_MESSAGE);
             } else {
                 int input = JOptionPane.showConfirmDialog(rootPane,
                         "Are you sure to declare this activity ?",
                         "Select an Option...", JOptionPane.YES_NO_CANCEL_OPTION);
-
+                // input 0 is "Yes"
                 if (input == 0) {
                     try {
                         targetActivity.setState(true);
-                        System.out.println(targetActivity.getState());
-                        System.out.println(targetActivity.getActivityId());
+                        // Update activity
                         MaintenanceActivity.updateMaintenanceActivity(connection, targetActivity, targetActivity.getActivityId());
                          JOptionPane.showMessageDialog(rootPane, "Operation completed successfully");
                          refreshElements();
                     } catch (SQLException ex) {
                         Logger.getLogger(MaintainerGUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                   
                 }
                 else{
                     JOptionPane.showMessageDialog(rootPane, "Operation canceled");
@@ -385,7 +397,9 @@ public class MaintainerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_statusActivityJButtonActionPerformed
 
     
-
+    /**
+     * Method for initialize GUI.
+     */
     private void initTable(int n_week) {
         try {
             activityList = MaintenanceActivity.getMaintenanceActivities(connection);
@@ -441,7 +455,10 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private javax.swing.JSpinner weekJSpinner;
     private javax.swing.JLabel weekNumberJLabel;
     // End of variables declaration//GEN-END:variables
-
+    
+    /**
+     * Refresh GUI elements.
+     */
     private void refreshElements() {
         int week_n = (int) weekJSpinner.getValue();
         initTable(week_n);
