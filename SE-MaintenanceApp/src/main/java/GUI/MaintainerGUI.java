@@ -32,7 +32,7 @@ public class MaintainerGUI extends javax.swing.JFrame {
     private Connection connection;
     private LinkedList<MaintenanceActivity> activityList;
     private MaintenanceActivity targetActivity;
-    private DefaultListModel<String> listModel = new DefaultListModel();
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
 
     /**
      * Creates new form PlannerGUI
@@ -310,13 +310,12 @@ public class MaintainerGUI extends javax.swing.JFrame {
   
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         refreshElements();
-        
     }//GEN-LAST:event_refreshJButtonActionPerformed
 
     /**
      * MouseClicker on activity table.
      * @param evt 
-     * Load all the informations in the fields of a selceted activity.
+     * Load all the information in the fields of a selected activity.
      */
     private void activitiesJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activitiesJTableMouseClicked
         JTable source = (JTable) evt.getSource();
@@ -333,7 +332,7 @@ public class MaintainerGUI extends javax.swing.JFrame {
                     detailsSMPJTextField.setText(activity.getProcedure().getSmpName());
                     detailsDescriptionJTextArea.setText(activity.getDescription());
                     detailsNotesJTextArea.setText(activity.getNote());
-                    listModel = new DefaultListModel();
+                    listModel = new DefaultListModel<>();
                     LinkedList<Competence> competenceList = Procedure.getProcedureCompetences(connection, activity.getProcedure().getId());
                     competenceList.forEach(competence -> {
                         listModel.addElement(competence.getName());
@@ -361,7 +360,7 @@ public class MaintainerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_detailsStatusJTextFieldActionPerformed
 
     /**
-     * Button Action Performed to declare complite an activity.
+     * Button Action Performed to declare complete an activity.
      * @param evt 
      */
     private void statusActivityJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActivityJButtonActionPerformed

@@ -357,7 +357,7 @@ public class MaintenanceActivity {
      *
      * @param users new users assigned to the activity
      */
-    public void setUsers(ArrayList users) {
+    public void setUsers(ArrayList<User> users) {
         this.users = users;
     }
 

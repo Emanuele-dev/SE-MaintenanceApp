@@ -28,14 +28,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PlannerGUI extends javax.swing.JFrame {
 
-    private User loggedUser;
     private Connection connection;
     private LinkedList<MaintenanceActivity> activityList;
     private LinkedList<MaintenanceActivity> assignedActivityList;
     private boolean activityIsSelected = false;
     boolean mainActivityIsAssigned = false;
     private MaintenanceActivity targetActivity;
-    private DefaultListModel listModel = new DefaultListModel();
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
 
     /**
      * Creates new form MantainerGUI
@@ -47,11 +46,9 @@ public class PlannerGUI extends javax.swing.JFrame {
     /**
      * Creates new form MantainerGUI
      *
-     * @param loggedUser the logged user
      * @param connection the database connection
      */
-    public PlannerGUI(User loggedUser, Connection connection) {
-        this.loggedUser = loggedUser;
+    public PlannerGUI(Connection connection) {
         this.connection = connection;
         initComponents();
         initValues();
@@ -609,7 +606,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                     checkCommonCompetences();
                 } else {
                     listModel.removeAllElements();
-                    listModel = new DefaultListModel();
+                    listModel = new DefaultListModel<>();
                     LinkedList<Competence> competenceList = activity.getProcedure().getCompetences();
                     competenceList.forEach(competence -> {
                         listModel.addElement(competence.getName());
@@ -634,6 +631,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                             detailsStatusJTextField.setText("Assigned");
                             detailsStatusJTextField.setBackground(Color.yellow);
                         }
+                        break;
                     }
                 }
                 if (!mainActivityIsAssigned) {
@@ -651,7 +649,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_detailsSMPJTextFieldActionPerformed
 
     /**
-     * Method that start assigne sequence.
+     * Method that start assigned sequence.
      * @param evt  
      */
     private void forwardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardJButtonActionPerformed
@@ -858,7 +856,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     /**
      * Methods used for check common competence between selected activity and selected maintainer.
-     * When a common copetence is found, a ✔ is added near the competence name.
+     * When a common competence is found, a ✔ is added near the competence name.
      */
     private void checkCommonCompetences() {
         if (targetActivity != null) {
@@ -867,7 +865,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 LinkedList<Competence> maintainerCompetences = User.getUserCompetences(connection, usernameMaintainer);
                 LinkedList<Competence> competenceList = targetActivity.getProcedure().getCompetences();
                 listModel.removeAllElements();
-                listModel = new DefaultListModel();
+                listModel = new DefaultListModel<>();
                 competenceList.forEach(competence -> {
                     String competenceName = competence.getName();
                     for (Competence maintainerCompetence : maintainerCompetences) {

@@ -4,14 +4,12 @@
  * and open the template in the editor.
  */
 package GUI;
-import com.team14.se.maintenanceapp.MaintenanceActivity;
 import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -28,6 +26,9 @@ public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
+     * 
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
     public Login() throws SQLException, ClassNotFoundException {
         initConn();
@@ -134,7 +135,7 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Field 'Username' can't be empty", "Login Failed", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        String password = jPasswordField.getText();
+        String password = String.valueOf(jPasswordField.getPassword());
         if (password.isEmpty()){
             JOptionPane.showMessageDialog(rootPane, "Field 'Password' can't be empty ", "Login Failed", JOptionPane.ERROR_MESSAGE);
             return;
@@ -170,7 +171,7 @@ public class Login extends javax.swing.JFrame {
                     sysGui.setVisible(true);
                 }
                 if(role.equals("Planner")){
-                    PlannerGUI plannerGui = new PlannerGUI(logUser, conn);
+                    PlannerGUI plannerGui = new PlannerGUI(conn);
                     plannerGui.setVisible(true);
                 }
                 if(role.equals("Maintainer")){
@@ -209,15 +210,11 @@ public class Login extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */

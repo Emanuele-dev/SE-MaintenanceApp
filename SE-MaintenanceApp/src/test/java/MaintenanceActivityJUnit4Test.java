@@ -10,6 +10,7 @@ import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.Procedure;
 import com.team14.se.maintenanceapp.Site;
 import com.team14.se.maintenanceapp.Typology;
+import com.team14.se.maintenanceapp.User;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -361,7 +362,7 @@ public class MaintenanceActivityJUnit4Test {
     @Test
     public void testSetUsers() {
         System.out.println("setUsers");
-        ArrayList users = null;
+        ArrayList<User> users = null;
         MaintenanceActivity instance = new MaintenanceActivity("", "", false, 0, false, 0, null, null, null, "");
         instance.setUsers(users);
     }

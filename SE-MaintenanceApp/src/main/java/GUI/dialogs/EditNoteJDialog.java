@@ -18,13 +18,18 @@ import javax.swing.JOptionPane;
  */
 public class EditNoteJDialog extends javax.swing.JDialog {
 
-    private int activity_id;
-    private MaintenanceActivity activity;
-    private String oldNote;
-    private Connection conn;
+    private final int activity_id;
+    private final MaintenanceActivity activity;
+    private final String oldNote;
+    private final Connection conn;
 
     /**
      * Creates new form EditNoteJDialog
+     * 
+     * @param parent parent frame
+     * @param modal if modal
+     * @param conn database connection
+     * @param activity note activity
      */
     public EditNoteJDialog(java.awt.Frame parent, boolean modal, Connection conn, MaintenanceActivity activity) {
         super(parent, modal);
