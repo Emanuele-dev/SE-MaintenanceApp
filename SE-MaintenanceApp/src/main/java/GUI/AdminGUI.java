@@ -428,8 +428,8 @@ public class AdminGUI extends javax.swing.JFrame {
         this.refreshMaterialsJButton.setEnabled(false);
         this.materialsTableJTable.setEnabled(false);
         
-        if (this.editCompetencesJPanel.isEnabled()){
-            this.editCompetencesJPanel.setEnabled(false);
+        if (this.editMaterialJPanel.isEnabled()){
+            this.editMaterialJPanel.setEnabled(false);
             
             this.materialNameJLabel.setEnabled(false);
             this.materialNameJTextField.setEnabled(false);
