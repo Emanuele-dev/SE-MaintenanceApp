@@ -382,13 +382,13 @@ public class MaintenanceActivity {
     private static LinkedList<MaintenanceActivity> resultQueryGetActivities(Connection conn, String query) throws SQLException {
         int procedureId = 0;
         String procedureSmp = null;
-        LinkedList<Competence> competences = new LinkedList<>();
+        LinkedList<Competence> competences;
         LinkedList<MaintenanceActivity> maintenaceActivities = new LinkedList<>();
 
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rst = stm.executeQuery();
         while (rst.next()) {
-
+            competences = new LinkedList<>();
             String procedureName = rst.getString("procedura");
             if (!procedureName.equals("")) {
                 String query2 = "SELECT * FROM procedura WHERE nome = '" + procedureName + "'";
