@@ -619,6 +619,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 activityIsSelected = true;
 
                 /* -------- STATUS CHECK -------- */
+                mainActivityIsAssigned = false;
                 detailsStatusJTextField.setEnabled(true);
                 for (MaintenanceActivity assignedActivity : assignedActivityList) {
                     if (assignedActivity.getActivityId() == Integer.parseInt(id)) {
