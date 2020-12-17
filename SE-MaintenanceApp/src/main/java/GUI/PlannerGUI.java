@@ -920,4 +920,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         detailsStatusJTextField.setText("N/D");
         detailsStatusJTextField.setEnabled(false);
     }
+    
+    public void setNoteAfterUpdate(String note){
+        detailsNotesJTextArea.setText(note);
+    }
 }

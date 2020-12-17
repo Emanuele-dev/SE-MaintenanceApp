@@ -30,7 +30,7 @@ public class CompetenceJUnit4Test {
 
     @org.junit.BeforeClass
     public static void setUpClass() throws Exception {
-        myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+        myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "1234");
         conn = myconn.getConnection();
     }
 

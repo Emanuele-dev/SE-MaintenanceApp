@@ -5,6 +5,7 @@
  */
 package GUI.dialogs;
 
+import GUI.PlannerGUI;
 import com.team14.se.maintenanceapp.MaintenanceActivity;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,6 +23,7 @@ public class EditNoteJDialog extends javax.swing.JDialog {
     private final MaintenanceActivity activity;
     private final String oldNote;
     private final Connection conn;
+    private final PlannerGUI parent;
 
     /**
      * Creates new form EditNoteJDialog
@@ -34,6 +36,7 @@ public class EditNoteJDialog extends javax.swing.JDialog {
     public EditNoteJDialog(java.awt.Frame parent, boolean modal, Connection conn, MaintenanceActivity activity) {
         super(parent, modal);
         initComponents();
+        this.parent = (PlannerGUI) parent;
         this.activity = activity;
         this.activity_id = activity.getActivityId();
         this.oldNote = activity.getNote();
@@ -113,6 +116,7 @@ public class EditNoteJDialog extends javax.swing.JDialog {
             try {
                 MaintenanceActivity.updateMaintenanceActivity(conn, activity, activity_id);
                 JOptionPane.showMessageDialog(rootPane, "Note changed successfully", "Change Saved", JOptionPane.INFORMATION_MESSAGE);
+                parent.setNoteAfterUpdate(newNote);
                 this.dispose();
 
             } catch (SQLException ex) {
