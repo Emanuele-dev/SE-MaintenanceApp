@@ -5,6 +5,7 @@
  */
 
 import com.team14.se.maintenanceapp.Competence;
+import com.team14.se.maintenanceapp.DatabaseUserTest;
 import com.team14.se.maintenanceapp.MyConnection;
 import com.team14.se.maintenanceapp.Procedure;
 import java.io.FileReader;
@@ -37,7 +38,7 @@ public class ProcedureJUnit4Test {
     
     @BeforeClass
     public static void setUpClass() throws Exception{
-       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", DatabaseUserTest.USER_DATABASE, DatabaseUserTest.PASSWORD_DATABASE);
        conn = myconn.getConnection();
     }
     

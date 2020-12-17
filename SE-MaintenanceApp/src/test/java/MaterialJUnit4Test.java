@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import com.team14.se.maintenanceapp.DatabaseUserTest;
 import com.team14.se.maintenanceapp.Material;
 import com.team14.se.maintenanceapp.MyConnection;
 import java.nio.file.Files;
@@ -30,7 +31,7 @@ public class MaterialJUnit4Test {
     
    @BeforeClass
     public static void setUpClass() throws Exception{
-       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", "postgres", "2036");
+       myconn = new MyConnection("jdbc:postgresql://localhost/maintenanceDBTest?allowMultiQueries=true", DatabaseUserTest.USER_DATABASE, DatabaseUserTest.PASSWORD_DATABASE);
        conn = myconn.getConnection();
     }
     
