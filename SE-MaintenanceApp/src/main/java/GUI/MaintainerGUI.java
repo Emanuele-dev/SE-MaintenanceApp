@@ -88,6 +88,7 @@ public class MaintainerGUI extends javax.swing.JFrame {
         activitiesJTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Maintainer View");
 
         jScrollPane1.setBorder(null);
 
