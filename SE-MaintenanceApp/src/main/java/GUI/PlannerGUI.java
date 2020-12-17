@@ -573,6 +573,9 @@ public class PlannerGUI extends javax.swing.JFrame {
             try {
                 MaintenanceActivity.addMaintenanceActivity(connection, maintenanceActivity);
                 JOptionPane.showMessageDialog(rootPane, "Activity created successfully");
+                nameJTextField.setText("");
+                descriptionJTextArea.setText("");
+                estimatedTimeJSpinner.setValue(1);
             } catch (SQLException ex) {
                 Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
