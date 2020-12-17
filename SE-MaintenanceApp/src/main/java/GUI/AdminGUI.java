@@ -1787,7 +1787,7 @@ public class AdminGUI extends javax.swing.JFrame {
                     refreshUsersList();
                 } else {
                     JOptionPane.showMessageDialog(frame,
-                        "An error has occurred",
+                        "An error occurred",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
                     removeUserJButton.setEnabled(true);
@@ -1838,10 +1838,7 @@ public class AdminGUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(frame, "Procedure Deleted!");
                     refreshProceduresList();
                 } else {
-                    JOptionPane.showMessageDialog(frame,
-                        "An error has occurred",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    Messages.showErrorDelete(frame, "procedure");
                     removeProcedureJButton.setEnabled(true);
                     proceduresTableJTable.setEnabled(true);
                 }
@@ -1939,10 +1936,7 @@ public class AdminGUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(frame, "Site Deleted!");
                     refreshSitesList();
                 } else {
-                    JOptionPane.showMessageDialog(frame,
-                        "An error has occurred",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    Messages.showErrorDelete(frame, "site");
                     removeSiteJButton.setEnabled(true);
                     sitesJList.setEnabled(true);
                 }
@@ -1990,10 +1984,7 @@ public class AdminGUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(frame, "Material Deleted!");
                     refreshMaterialsList();
                 } else {
-                    JOptionPane.showMessageDialog(frame,
-                        "An error has occurred",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    Messages.showErrorDelete(frame, "material");
                     removeMaterialJButton.setEnabled(true);
                     materialsTableJTable.setEnabled(true);
                 }
@@ -2041,10 +2032,7 @@ public class AdminGUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(frame, "Type Deleted!");
                     refreshTypesList();
                 } else {
-                    JOptionPane.showMessageDialog(frame,
-                        "An error has occurred",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    Messages.showErrorDelete(frame, "type");
                     removeTypeJButton.setEnabled(true);
                     typesJList.setEnabled(true);
                 }

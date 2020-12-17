@@ -21,4 +21,11 @@ public class Messages {
             JOptionPane.ERROR_MESSAGE);
     }
     
+    public static void showErrorDelete(Component parent, String name){
+        JOptionPane.showMessageDialog(parent,
+                        "An error occurred, make sure the " + name + " is not alredy "
+                                + "assigned to some activity",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+    } 
 }
