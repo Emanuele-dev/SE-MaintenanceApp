@@ -21,4 +21,4 @@ I file di consegna:
 - Presentazione Sprint 2 
 - SoE Demo (Video)
 
-Sono stati caricati nel file zip Consegne.zip sulla cartella drive condivisa "Consegne"
+Sono stati caricati sulla cartella drive condivisa nella cartella "Consegne"
